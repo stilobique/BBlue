@@ -30,3 +30,11 @@ main windows. Now, select your level(s) and click built-it.
 ### How to setup the Network
 
 ~\BBLUE4\network.json
+
+### How to Build
+Launch a build packages inside the folder Builds, launch the Release.py 
+files with python and use an absolute path like 
+`X:/PathAboutThisFiles/Release.py` and don't forget to check the 7-zip path 
+-inside the packages.bat.
+
+Now, it's work only with PyCharm.
