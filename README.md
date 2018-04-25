@@ -37,4 +37,5 @@ files with python and use an absolute path like
 `X:/PathAboutThisFiles/Release.py` and don't forget to check the 7-zip path 
 -inside the packages.bat.
 
-Now, it's work only with PyCharm.
+Now, it's work only with PyCharm -setup an absolute path, and correctly use 
+the module BatchBuildLight.
