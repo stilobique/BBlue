@@ -42,6 +42,7 @@ class TableProgram(object):
 
         self.bd.execute('''CREATE TABLE csv(
                 software    TEXT,
+                path        TEXT,
                 server      TEXT,
                 user        TEXT,
                 password    TEXT)''')
