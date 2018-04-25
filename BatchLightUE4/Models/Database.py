@@ -41,7 +41,10 @@ class TableProgram(object):
                 state       INTEGER)''')
 
         self.bd.execute('''CREATE TABLE csv(
-                software    TEXT)''')
+                software    TEXT,
+                server      TEXT,
+                user        TEXT,
+                password    TEXT)''')
 
         csv = 'False'
         self.bd.execute('''INSERT INTO csv VALUES (?)''', (csv,))
