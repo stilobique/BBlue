@@ -5,7 +5,6 @@ from os.path import dirname, join, exists, expanduser
 
 """This files include the Object to work with the INI files, read, writes
 and more"""
-# TODO The User path are good, but not inside the Document Folder
 
 
 class Setup(object):
