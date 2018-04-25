@@ -3,7 +3,7 @@ import os
 from configparser import ConfigParser
 from os.path import dirname, join, exists, expanduser
 
-"""This files include the Object to work with the INI files, read, writes 
+"""This files include the Object to work with the INI files, read, writes
 and more"""
 # TODO The User path are good, but not inside the Document Folder
 
@@ -11,6 +11,7 @@ and more"""
 class Setup(object):
     config = ConfigParser()
     config_name = 'settings.ini'
+    number = '0.9.3'
     config_path = join(expanduser('~'), 'BBLUE4', config_name)
 
     if not exists(dirname(config_path)):
@@ -29,7 +30,7 @@ class Setup(object):
         self.config.add_section('Version')
 
         self.config['Project Work'] = {'Run': '', }
-        self.config['Version'] = {'Release': '0.9.0', }
+        self.config['Version'] = {'Release': self.number, }
         self.config['Default'] = {
             'Editor': '',
             'Project': '',
