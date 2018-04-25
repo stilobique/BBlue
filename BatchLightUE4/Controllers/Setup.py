@@ -10,7 +10,7 @@ and more"""
 class Setup(object):
     config = ConfigParser()
     config_name = 'settings.ini'
-    number = '0.9.3'
+    number = '0.9.4'
     config_path = join(expanduser('~'), 'BBLUE4', config_name)
 
     if not exists(dirname(config_path)):
@@ -29,7 +29,6 @@ class Setup(object):
         self.config.add_section('Version')
 
         self.config['Project Work'] = {'Run': '', }
-        self.config['Version'] = {'Release': self.number, }
         self.config['Default'] = {
             'Editor': '',
             'Project': '',
@@ -64,15 +63,3 @@ class Setup(object):
         with open(self.config_path, 'w') as configfile:
             self.config.write(configfile)
 
-    def version(self, update=None):
-        self.config.read(self.config_path)
-        data = self.config.get('Version', 'release')
-
-        if update is not None:
-            print('Update the Version to : ', update)
-            self.config.set('Version', 'release', update)
-
-            with open(self.config_path, 'w') as configfile:
-                self.config.write(configfile)
-
-        return data

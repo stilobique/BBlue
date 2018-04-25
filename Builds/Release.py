@@ -20,16 +20,14 @@ setup_file = join(
 # str_find = re.search('number = \'\' ', setup_file)
 package = dirname(__file__) + '/packages.bat'
 
-print('Actual Version : ', init.version())
+print('Actual Version : ', init.number)
 nbr_version = input('Number Version : ')
 
 with fileinput.FileInput(setup_file, inplace=True) as file:
     for line in file:
         # print(re.search(r"number = '(.)*'", 'wesh = ', line.rstrip()))
-        str_old = r"number = '" + init.version() + "'"
+        str_old = r"number = '" + init.number + "'"
         str_new = r"number = '" + nbr_version + "'"
         print(line.rstrip().replace(str_old, str_new))
-
-init.version(update=nbr_version)
 
 subprocess.call(package)
