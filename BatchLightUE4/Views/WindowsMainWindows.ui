@@ -319,13 +319,12 @@
       <iconset>
        <normaloff>../Ressources/link-external.png</normaloff>../Ressources/link-external.png</iconset>
      </property>
-     <addaction name="actionLast_project"/>
+     <addaction name="actionLoad_Lastproject"/>
      <addaction name="separator"/>
-     <addaction name="actionProj_blabla"/>
+     <addaction name="actionLoad_Placeholder"/>
     </widget>
-    <addaction name="actionNouveau_Setup"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSave_As"/>
+    <addaction name="actionNew_Setup"/>
+    <addaction name="actionSave_Copy"/>
     <addaction name="menuLoad"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -374,7 +373,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionNouveau_Setup">
+  <action name="actionNew_Setup">
    <property name="checked">
     <bool>false</bool>
    </property>
@@ -502,13 +501,13 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="actionSave_Copy">
    <property name="icon">
     <iconset>
      <normaloff>../Resources/pencil.png</normaloff>../Resources/pencil.png</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>Save As</string>
    </property>
    <property name="statusTip">
     <string>Save your project</string>
@@ -517,7 +516,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionLast_project">
+  <action name="actionLoad_Lastproject">
    <property name="text">
     <string>Last project</string>
    </property>
@@ -528,7 +527,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionProj_blabla">
+  <action name="actionLoad_Placeholder">
    <property name="text">
     <string>Proj blabla</string>
    </property>
