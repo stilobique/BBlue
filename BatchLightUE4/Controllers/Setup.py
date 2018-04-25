@@ -3,9 +3,9 @@ import os
 from configparser import ConfigParser
 from os.path import dirname, join, exists, expanduser
 
-"""This files include the Object to work with the INI files, read, writes 
-and more"""
-# TODO The User path are good, but not inside the Document Folder
+"""
+This file control the instances to work with the INI files, write and read it.
+"""
 
 
 class Setup(object):
