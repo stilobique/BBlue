@@ -3,8 +3,17 @@ import os
 from configparser import ConfigParser
 from os.path import dirname, join, exists, expanduser
 
-"""This files include the Object to work with the INI files, read, writes
-and more"""
+"""
+    This file control the instances to work with the INI files, write and 
+    read it. He include the setup name file and the number version ; it's 
+    automatically update with the built setup.
+    
+    The ``Setup`` Class
+    ===================
+    
+    Main Class, all function use this class.
+    
+"""
 
 
 class Setup(object):
