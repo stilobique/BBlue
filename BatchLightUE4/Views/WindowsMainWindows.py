@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'WindowsMainWindows.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -144,6 +144,7 @@ class Ui_MainWindow(object):
         self.menuSetup = QtWidgets.QMenu(self.menubar)
         self.menuSetup.setObjectName("menuSetup")
         self.menuLog = QtWidgets.QMenu(self.menubar)
+        self.menuLog.setEnabled(False)
         self.menuLog.setObjectName("menuLog")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
@@ -177,8 +178,10 @@ class Ui_MainWindow(object):
         self.actionCSV.setIcon(icon11)
         self.actionCSV.setObjectName("actionCSV")
         self.actionShow_log_folder = QtWidgets.QAction(MainWindow)
+        self.actionShow_log_folder.setEnabled(True)
         self.actionShow_log_folder.setObjectName("actionShow_log_folder")
         self.actionClean_Log = QtWidgets.QAction(MainWindow)
+        self.actionClean_Log.setEnabled(True)
         self.actionClean_Log.setObjectName("actionClean_Log")
         self.actionAbout = QtWidgets.QAction(MainWindow)
         icon12 = QtGui.QIcon()
@@ -192,18 +195,21 @@ class Ui_MainWindow(object):
         self.actionShortcut.setObjectName("actionShortcut")
         self.actionOuvrir = QtWidgets.QAction(MainWindow)
         self.actionOuvrir.setObjectName("actionOuvrir")
-        self.actionSave_as = QtWidgets.QAction(MainWindow)
-        self.actionSave_as.setIcon(icon13)
-        self.actionSave_as.setObjectName("actionSave_as")
+        self.actionSave = QtWidgets.QAction(MainWindow)
+        self.actionSave.setIcon(icon13)
+        self.actionSave.setObjectName("actionSave")
         self.actionLast_project = QtWidgets.QAction(MainWindow)
         self.actionLast_project.setObjectName("actionLast_project")
         self.actionProj_blabla = QtWidgets.QAction(MainWindow)
         self.actionProj_blabla.setObjectName("actionProj_blabla")
+        self.actionSave_As = QtWidgets.QAction(MainWindow)
+        self.actionSave_As.setObjectName("actionSave_As")
         self.menuLoad.addAction(self.actionLast_project)
         self.menuLoad.addSeparator()
         self.menuLoad.addAction(self.actionProj_blabla)
         self.menu_Fichier.addAction(self.actionNouveau_Setup)
-        self.menu_Fichier.addAction(self.actionSave_as)
+        self.menu_Fichier.addAction(self.actionSave)
+        self.menu_Fichier.addAction(self.actionSave_As)
         self.menu_Fichier.addAction(self.menuLoad.menuAction())
         self.menu_Fichier.addSeparator()
         self.menu_Fichier.addAction(self.actionExit)
@@ -276,11 +282,12 @@ class Ui_MainWindow(object):
         self.actionOuvrir.setText(_translate("MainWindow", "Open Setup"))
         self.actionOuvrir.setStatusTip(_translate("MainWindow", "Choose the project you want open"))
         self.actionOuvrir.setShortcut(_translate("MainWindow", "Ctrl+O"))
-        self.actionSave_as.setText(_translate("MainWindow", "Save as"))
-        self.actionSave_as.setStatusTip(_translate("MainWindow", "Save your project"))
-        self.actionSave_as.setShortcut(_translate("MainWindow", "Ctrl+S"))
+        self.actionSave.setText(_translate("MainWindow", "Save"))
+        self.actionSave.setStatusTip(_translate("MainWindow", "Save your project"))
+        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.actionLast_project.setText(_translate("MainWindow", "Last project"))
         self.actionLast_project.setStatusTip(_translate("MainWindow", "Load the last project create"))
         self.actionLast_project.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.actionProj_blabla.setText(_translate("MainWindow", "Proj blabla"))
+        self.actionSave_As.setText(_translate("MainWindow", "Save As"))
 

@@ -324,7 +324,8 @@
      <addaction name="actionProj_blabla"/>
     </widget>
     <addaction name="actionNouveau_Setup"/>
-    <addaction name="actionSave_as"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
     <addaction name="menuLoad"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -338,6 +339,9 @@
     <addaction name="actionCSV"/>
    </widget>
    <widget class="QMenu" name="menuLog">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>Log</string>
     </property>
@@ -442,6 +446,9 @@
    </property>
   </action>
   <action name="actionShow_log_folder">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Show log folder</string>
    </property>
@@ -450,6 +457,9 @@
    </property>
   </action>
   <action name="actionClean_Log">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Clean Log</string>
    </property>
@@ -492,13 +502,13 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionSave_as">
+  <action name="actionSave">
    <property name="icon">
     <iconset>
      <normaloff>../Resources/pencil.png</normaloff>../Resources/pencil.png</iconset>
    </property>
    <property name="text">
-    <string>Save as</string>
+    <string>Save</string>
    </property>
    <property name="statusTip">
     <string>Save your project</string>
@@ -521,6 +531,11 @@
   <action name="actionProj_blabla">
    <property name="text">
     <string>Proj blabla</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As</string>
    </property>
   </action>
  </widget>
