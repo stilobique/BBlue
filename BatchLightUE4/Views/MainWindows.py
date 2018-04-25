@@ -149,7 +149,7 @@ class ViewTabHelp(QtWidgets.QDialog, Ui_Help):
         self.data = Setup()
 
         # Version Panel
-        self.lineEdit.setText(self.data.version())
+        self.lineEdit.setText(self.data.number)
         url_octi = self.label_url_octicons
         url_website = self.label_url_website
         url_octi.setText('''<a 
