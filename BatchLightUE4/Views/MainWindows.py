@@ -388,7 +388,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Triggered Menu
         #     File Menu
-        self.actionLast_project.triggered.connect(self.open_save)
+        self.actionLoad_Lastproject.triggered.connect(self.open_save)
         self.actionExit.triggered.connect(self.close)
 
         #    Setup and Option Menu
@@ -452,10 +452,10 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         # TODO Proof of concept, no object has setup
         if state == 1:
             self.str_debug = 'First Value'
-            self.file_setup = filter="Project (*.blight)"
+            self.file_setup = filter="Project (*.db)"
         else:
             self.str_debug = 'Pas de status, basique way'
-            self.file_setup = filter="Project (*.blight)"
+            self.file_setup = filter="Project (*.db)"
 
         (filename, filter) = QtWidgets.QFileDialog.getOpenFileName(
             self,
