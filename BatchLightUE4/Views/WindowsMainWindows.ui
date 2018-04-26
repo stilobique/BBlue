@@ -518,7 +518,7 @@
   </action>
   <action name="actionLoad_Lastproject">
    <property name="text">
-    <string>Last project</string>
+    <string>Open a Project</string>
    </property>
    <property name="statusTip">
     <string>Load the last project create</string>
@@ -529,7 +529,7 @@
   </action>
   <action name="actionLoad_Placeholder">
    <property name="text">
-    <string>Proj blabla</string>
+    <string>Placeholder</string>
    </property>
   </action>
   <action name="actionSave_As">
