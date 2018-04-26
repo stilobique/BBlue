@@ -401,7 +401,6 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         #     File Menu
         self.actionNew_Setup.triggered.connect(self.project_new)
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
-        self.actionExit.triggered.connect(self.close)
 
         #    Setup and Option Menu
         self.actionProject.triggered.connect(self.view_project)
