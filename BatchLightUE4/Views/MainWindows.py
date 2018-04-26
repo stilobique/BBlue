@@ -168,6 +168,7 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.setupUi(self)
 
         self.data = Setup()
+        self.load = True
         self.job = self.data.last_job_run()
 
         if self.job:
@@ -239,6 +240,8 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.buttonBoxNetwork.button(btn.Cancel).clicked.connect(self.close)
         self.buttonBoxCSV.button(btn.Cancel).clicked.connect(self.close)
 
+    def baseUI(self):
+        print('Hello')
     def open_save(self, state):
         file_description = ''
         file_select = ''
@@ -386,8 +389,17 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.data.last_job_run()
         self.checkBoxLevels = {}
 
+        self.FileMenuSetup()
+        self.LevelsTools()
+        self.LevelsGenerate()
+        self.BottomTools()
+
+    # -------------
+    # UI Function
+    def FileMenuSetup(self):
         # Triggered Menu
         #     File Menu
+        self.actionNew_Setup.triggered.connect(self.project_new)
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
         self.actionExit.triggered.connect(self.close)
 
@@ -404,13 +416,13 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(self.view_help)
         self.actionShortcut.triggered.connect(lambda: self.view_help(1))
 
+    def LevelsTools(self):
         self.pushLevelsSelect.clicked.connect(lambda: self.select_level(True))
         self.pushLevelsDeselect.clicked.connect(self.select_level)
         self.toolLevelsEdit.clicked.connect(lambda: self.view_project(0))
 
+    def LevelsGenerate(self):
         # Generate all Checkbox Levels.
-        # TODO Refactoring the Check perforce (not OO and fonctional only
-        # with Perforce ! Need to be think with Subversion and Git.
         if self.job:
             self.data = TableProgram()
             levels = self.data.select_levels()
@@ -444,10 +456,11 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             if 'False' not in self.csv[0]:
                 self.checkBoxSubmit.setEnabled(True)
 
+    def BottomTools(self):
         self.pushToolsBuils.clicked.connect(self.view_rendering)
         self.pushToolsBuils.setToolTip(self.pushToolsBuils.statusTip())
-
-    # File Menu
+    # -------------
+    # File Menu Events
     def open_save(self, state):
         # TODO Proof of concept, no object has setup
         if state == 1:
@@ -461,6 +474,15 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             self,
             'Open a previous project',
             self.file_setup)
+
+    def project_new(self):
+        """
+        This action open the Windows Setup with all empty field. The don't
+        return object.
+        """
+        dialog_setup = ViewTabSetup()
+        dialog_setup.show()
+        dialog_setup.setCurrentIndex(0)
 
     @staticmethod
     def view_project(index):
@@ -477,6 +499,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         dialog_help.show()
         dialog_help.tabWidget.setCurrentIndex(index)
 
+    # -------------
     # Events
     def select_level(self, state):
         boolean = False
