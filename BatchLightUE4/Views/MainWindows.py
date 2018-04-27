@@ -168,7 +168,6 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.setupUi(self)
 
         self.data = Setup()
-        self.load = True
         self.job = self.data.last_job_run()
 
         self.TabProject()
@@ -218,7 +217,6 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
                 self.csv_software = self.data_csv[0]
 
         else:
-            news_DB = True
             self.ue4_path = self.data.base('editor')
             self.ue4_project = self.data.base('project')
             self.scene = self.data.base('sub folder')
