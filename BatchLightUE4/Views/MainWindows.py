@@ -171,6 +171,29 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.load = True
         self.job = self.data.last_job_run()
 
+        self.TabProject()
+        self.TabNetwork()
+        self.TabCsv()
+
+        # Button Box, Save and Cancel
+        btn = QtWidgets.QDialogButtonBox
+        #   Restore Default
+
+        #   Save
+        self.buttonBoxProjects.button(btn.Save).clicked.connect(self.tab_save)
+        self.buttonBoxCSV.button(btn.Save).clicked.connect(self.tab_save)
+
+        #   Close Event
+        self.buttonBoxProjects.button(btn.Cancel).clicked.connect(self.close)
+        self.buttonBoxNetwork.button(btn.Cancel).clicked.connect(self.close)
+        self.buttonBoxCSV.button(btn.Cancel).clicked.connect(self.close)
+
+    def baseUI(self):
+        print('Hello')
+
+    # -------------
+    # UI Function
+    def TabProject(self):
         if self.job:
             # Project Tab
             self.data = TableProgram()
@@ -217,9 +240,12 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.lineEditProjectName.setText(name)
         self.lineEditSubfolder.setText(self.scene)
 
+    def TabNetwork(self):
         # Network Panel
         # TODO Make all network options
+        print('Network Setup')
 
+    def TabCsv(self):
         # CSV Panel
         """All option about the CSV options."""
         self.csv_checkBox_enable.setCheckState(self.csv_boolean)
@@ -227,21 +253,6 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         if self.csv_software:
             self.csv_comboBox.itemText(2)
 
-        # Button Box, Save and Cancel
-        btn = QtWidgets.QDialogButtonBox
-        #   Restore Default
-
-        #   Save
-        self.buttonBoxProjects.button(btn.Save).clicked.connect(self.tab_save)
-        self.buttonBoxCSV.button(btn.Save).clicked.connect(self.tab_save)
-
-        #   Close Event
-        self.buttonBoxProjects.button(btn.Cancel).clicked.connect(self.close)
-        self.buttonBoxNetwork.button(btn.Cancel).clicked.connect(self.close)
-        self.buttonBoxCSV.button(btn.Cancel).clicked.connect(self.close)
-
-    def baseUI(self):
-        print('Hello')
     def open_save(self, state):
         file_description = ''
         file_select = ''
