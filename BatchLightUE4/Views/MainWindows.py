@@ -498,6 +498,15 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         dialog_setup.show()
         dialog_setup.setCurrentIndex(index)
 
+        dialog_rsp = dialog_setup.update()
+        print('Rendering View', dialog_rsp)
+
+        if dialog_rsp == QtWidgets.QDialog.Accepted:
+            print('Dialog Good View')
+
+        else:
+            print('Dialog Canceled')
+
     def view_log(self):
         dialog_log = LogView(self)
         dialog_log.show()
