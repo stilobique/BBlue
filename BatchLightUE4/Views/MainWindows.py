@@ -11,6 +11,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 # Adding all view used
 from BatchLightUE4.Views.WindowsMainWindows import Ui_MainWindow
 from BatchLightUE4.Views.WindowsSetupView import Ui_TabWidgetProjects
+from BatchLightUE4.Views.Dial_SetupTab import Ui_DialogSetupProject
 from BatchLightUE4.Views.WindowsHelpView import Ui_Help
 from BatchLightUE4.Views.WindowsLogView import Ui_DialogLog
 from BatchLightUE4.Views.WindowsRendering import Ui_Rendering
@@ -161,6 +162,14 @@ class ViewTabHelp(QtWidgets.QDialog, Ui_Help):
         self.pushButtonClose.clicked.connect(self.close)
 
 
+# ---------------------------------------------
+# ---------------------------------------------
+# ---------------------------------------------
+# Remove this class !!! Note used
+# Todo Remove this class
+# ---------------------------------------------
+# ---------------------------------------------
+# ---------------------------------------------
 class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
     """This widget contains all setup tab"""
     def __init__(self):
@@ -412,9 +421,11 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
 
         #    Setup and Option Menu
-        self.actionProject.triggered.connect(self.view_project)
-        self.actionNetworks.triggered.connect(lambda: self.view_project(1))
-        self.actionCSV.triggered.connect(lambda: self.view_project(2))
+        self.actionProject.triggered.connect(self.button_DialSetupProject)
+        self.actionNetworks.triggered.connect(lambda:
+                                              self.button_DialSetupProject(2))
+        self.actionCSV.triggered.connect(lambda:
+                                         self.button_DialSetupProject(3))
 
         #   Log Panel
         self.actionShow_log_folder.triggered.connect(self.view_log)
@@ -427,7 +438,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
     def LevelsTools(self):
         self.pushLevelsSelect.clicked.connect(lambda: self.select_level(True))
         self.pushLevelsDeselect.clicked.connect(self.select_level)
-        self.toolLevelsEdit.clicked.connect(lambda: self.view_project(0))
+        self.toolLevelsEdit.clicked.connect(lambda: self.button_DialSetupProject(0))
 
     def LevelsGenerate(self):
         # Generate all Checkbox Levels.
@@ -491,22 +502,25 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         """
         dialog_setup = ViewTabSetup()
         dialog_setup.show()
+        dialog_setup.new = True
         dialog_setup.setCurrentIndex(0)
 
-    @staticmethod
-    def view_project(index):
-        dialog_setup = ViewTabSetup()
-        dialog_setup.show()
-        dialog_setup.setCurrentIndex(index)
+    def button_DialSetupProject(self, index):
+        # Dialog = QtWidgets.QDialog()
+        ui_SetupTab = Dial_SetupTab()
+        ui_SetupTab.tabWidget.setCurrentIndex(index)
 
-        dialog_rsp = dialog_setup.update()
-        print('Rendering View', dialog_rsp)
+        ui_SetupTab.show()
+        rsp = ui_SetupTab.exec_()
 
-        if dialog_rsp == QtWidgets.QDialog.Accepted:
-            print('Dialog Good View')
+        if rsp == QtWidgets.QDialog.Accepted:
+            print('Project Saved')
 
+        elif rsp == QtWidgets.QDialog.Rejected:
+            print('Rejected !')
         else:
-            print('Dialog Canceled')
+            print('Error, nothing ??')
+
 
     def view_log(self):
         dialog_log = LogView(self)
@@ -570,6 +584,14 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 msg = 'Rendering abort.'
 
         self.statusbar.showMessage(msg)
+
+
+class Dial_SetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
+    def __init__(self):
+        super(Dial_SetupTab, self).__init__()
+        self.setupUi(self)
+
+        print('Show Setup Tab')
 
 
 if __name__ == "__main__":
