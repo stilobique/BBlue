@@ -12,6 +12,7 @@ class Ui_DialogSetupProject(object):
     def setupUi(self, DialogSetupProject):
         DialogSetupProject.setObjectName("DialogSetupProject")
         DialogSetupProject.resize(640, 480)
+        DialogSetupProject.setModal(True)
         self.gridLayout = QtWidgets.QGridLayout(DialogSetupProject)
         self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
