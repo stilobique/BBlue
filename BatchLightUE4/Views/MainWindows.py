@@ -467,6 +467,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
     def BottomTools(self):
         self.pushToolsBuils.clicked.connect(self.view_rendering)
         self.pushToolsBuils.setToolTip(self.pushToolsBuils.statusTip())
+
     # -------------
     # File Menu Events
     def open_save(self, state):
