@@ -22,7 +22,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_project">
         <attribute name="title">
@@ -198,7 +198,7 @@
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout_9">
                 <item row="0" column="0">
-                 <widget class="QLabel" name="softwares_comboBox_2">
+                 <widget class="QLabel" name="softwares_label">
                   <property name="text">
                    <string>Source Control Software :</string>
                   </property>
@@ -257,11 +257,11 @@
              </layout>
              <zorder>path_sc_label</zorder>
              <zorder>softwares_comboBox</zorder>
-             <zorder>softwares_comboBox_2</zorder>
+             <zorder>softwares_label</zorder>
              <zorder>path_sc_text</zorder>
              <zorder>softwares_comboBox</zorder>
              <zorder>path_sc_label</zorder>
-             <zorder>softwares_comboBox_2</zorder>
+             <zorder>softwares_label</zorder>
              <zorder>path_sc_text</zorder>
             </widget>
            </item>
