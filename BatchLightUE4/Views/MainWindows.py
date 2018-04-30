@@ -196,9 +196,6 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.buttonBoxNetwork.button(btn.Cancel).clicked.connect(self.close)
         self.buttonBoxCSV.button(btn.Cancel).clicked.connect(self.close)
 
-    def baseUI(self):
-        print('Hello')
-
     # -------------
     # UI Function
     def TabProject(self):
@@ -260,6 +257,9 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         if self.csv_software:
             self.csv_comboBox.itemText(2)
 
+
+    # -------------
+    # Event
     def open_save(self, state):
         file_description = ''
         file_select = ''
@@ -591,7 +591,88 @@ class Dial_SetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         super(Dial_SetupTab, self).__init__()
         self.setupUi(self)
 
-        print('Show Setup Tab')
+        self.data = Setup()
+        self.job = self.data.last_job_run()
+
+        # self.TabProject()
+        self.TabNetwork()
+        self.TabSc()
+
+    # -------------
+    # UI Function
+    def TabProject(self):
+        if self.job:
+            # Project Tab
+            self.data = TableProgram()
+            data_paths = self.data.select_path(1)
+
+            self.ue4_path_text = data_paths[0][1]
+            self.ue4_project = data_paths[0][2]
+            self.dir_project = os.path.dirname(self.ue4_project)
+            self.scene = data_paths[0][3]
+            self.levels_path = join(self.dir_project,
+                                    'content', self.scene)
+            self.levels_path = os.path.abspath(self.levels_path)
+            self.data_level = self.project_list_level(self.levels_path)
+
+            # CSV Tab
+            self.data_csv = self.data.csv_data()
+            if self.data_csv[0] == 'False' or self.data_csv is None:
+                self.csv_boolean = 0
+                self.csv_software = 2
+            else:
+                self.csv_boolean = 2
+                self.csv_software = self.data_csv[0]
+
+        else:
+            self.ue4_path_text = self.data.base('editor')
+            self.project_file_text = self.data.base('project')
+            self.sub_folder_text = self.data.base('sub folder')
+            self.data_level = []
+            self.csv_boolean = 0
+            self.csv_software = 1
+
+        # Project Panel
+        self.levels_list = QtGui.QStandardItemModel()
+        self.project_tree_generate(self.levels_list, self.data_level)
+        self.treeViewLevels.setModel(self.levels_list)
+        self.treeViewLevels.clicked.connect(self.project_update_level)
+        self.levels_list.setHorizontalHeaderLabels([self.tr('Level Name')])
+        self.pushPathOpenUnreal.clicked.connect(lambda: self.open_save(1))
+        self.lineEditUnreal.setText(self.ue4_path)
+        self.pushPathOpenProject.clicked.connect(lambda: self.open_save(2))
+        self.lineEditProject.setText(self.ue4_project)
+        name = project_name(self.lineEditProject.text())
+        self.lineEditProjectName.setText(name)
+        self.lineEditSubfolder.setText(self.scene)
+
+    def TabNetwork(self):
+        # Network Panel
+        # TODO Make all network options
+        print('Network Tab, WIP.')
+
+    def TabSc(self):
+        state = self.softwares_comboBox
+        state.currentIndexChanged.connect(self.TabSc_update_field)
+
+    def TabSc_update_field(self):
+        if self.softwares_comboBox.currentText() == 'Disabled':
+            self.path_sc_label.setDisabled(True)
+            self.path_sc_text.setDisabled(True)
+            self.path_sc_edit.setDisabled(True)
+            self.user_label.setDisabled(True)
+            self.user_text.setDisabled(True)
+            self.password_label.setDisabled(True)
+            self.password_text.setDisabled(True)
+
+        else:
+            self.path_sc_label.setDisabled(False)
+            self.path_sc_text.setDisabled(False)
+            self.path_sc_edit.setDisabled(False)
+            self.user_text.setDisabled(False)
+            self.user_label.setDisabled(False)
+            self.password_text.setDisabled(False)
+            self.password_label.setDisabled(False)
 
 
 if __name__ == "__main__":
