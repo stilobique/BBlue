@@ -177,21 +177,7 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.job = self.data.last_job_run()
 
         self.TabProject()
-        self.TabNetwork()
         self.TabCsv()
-
-        # Button Box, Save and Cancel
-        btn = QtWidgets.QDialogButtonBox
-        #   Restore Default
-
-        #   Save
-        self.buttonBoxProjects.button(btn.Save).clicked.connect(self.tab_save)
-        self.buttonBoxCSV.button(btn.Save).clicked.connect(self.tab_save)
-
-        #   Close Event
-        self.buttonBoxProjects.button(btn.Cancel).clicked.connect(self.close)
-        self.buttonBoxNetwork.button(btn.Cancel).clicked.connect(self.close)
-        self.buttonBoxCSV.button(btn.Cancel).clicked.connect(self.close)
 
     # -------------
     # UI Function
@@ -241,11 +227,6 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.lineEditProjectName.setText(name)
         self.lineEditSubfolder.setText(self.scene)
 
-    def TabNetwork(self):
-        # Network Panel
-        # TODO Make all network options
-        print('Network Setup')
-
     def TabCsv(self):
         # CSV Panel
         """All option about the CSV options."""
@@ -253,7 +234,6 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         self.csv_checkBox_enable.clicked.connect(self.csv_enable)
         if self.csv_software:
             self.csv_comboBox.itemText(2)
-
 
     # -------------
     # Event
@@ -326,68 +306,8 @@ class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
         edit = Setup()
         edit.last_job_add(database[0])
 
-    def project_tree_generate(self, parent, elements):
-        self.data = TableProgram()
-        levels = self.data.select_levels()
-        state = i = 0
-
-        for name, path in elements:
-            item = QtGui.QStandardItem(name)
-            item.setCheckable(True)
-            if levels is not None:
-                for i in range(0, len(levels)):
-                    if name in levels[i]:
-                        state = levels[i][3]
-                    i = i + 1
-
-            item.setCheckState(state)
-            parent.appendRow(item)
-            if path:
-                self.project_tree_generate(item, path)
-
-    def project_list_level(self, folder_directory):
-        levels = []
-        for item in os.listdir(folder_directory):
-            absolute_path = join(folder_directory, item)
-            child = isdir(absolute_path)
-            if child:
-                sublevel = [(item, self.project_list_level(absolute_path))]
-                levels.extend(sublevel)
-            else:
-                if '.umap' in item:
-                    sublevel = [(item, [])]
-                    levels.extend(sublevel)
-
-        return levels
-
     def project_update_level(self, index):
         self.data.write_data_levels(treeview=self, index=index)
-
-    def csv_enable(self):
-        csv_enable = self.csv_checkBox_enable
-        if QtWidgets.QAbstractButton.isChecked(csv_enable):
-            self.csv_label_name.setEnabled(True)
-            self.csv_comboBox.setEnabled(True)
-            self.csv_label_file.setEnabled(True)
-            self.csv_lineEdit_file.setEnabled(True)
-            self.csv_pushButton_file.setEnabled(True)
-            # self.csv_label_id.setEnabled(True)
-            # self.csv_lineEdit_id.setEnabled(True)
-            # self.csv_label_password.setEnabled(True)
-            # self.csv_lineEdit_password.setEnabled(True)
-
-            # Enable inside the DB.
-
-        else:
-            self.csv_label_name.setEnabled(False)
-            self.csv_comboBox.setEnabled(False)
-            self.csv_label_file.setEnabled(False)
-            self.csv_lineEdit_file.setEnabled(False)
-            self.csv_pushButton_file.setEnabled(False)
-            # self.csv_label_id.setEnabled(False)
-            # self.csv_lineEdit_id.setEnabled(False)
-            # self.csv_label_password.setEnabled(False)
-            # self.csv_lineEdit_password.setEnabled(False)
 
 
 class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -503,7 +423,6 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         dialog_setup.setCurrentIndex(0)
 
     def button_DialSetupProject(self, index):
-        # Dialog = QtWidgets.QDialog()
         ui_SetupTab = Dial_SetupTab()
         ui_SetupTab.tabWidget.setCurrentIndex(index)
 
@@ -584,6 +503,9 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
 class Dial_SetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
+    levels_list = QtGui.QStandardItemModel()
+    data_level = []
+
     def __init__(self):
         super(Dial_SetupTab, self).__init__()
         self.setupUi(self)
@@ -591,57 +513,100 @@ class Dial_SetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.data = Setup()
         self.job = self.data.last_job_run()
 
-        # self.TabProject()
+        # All Tab setup, options are split inside many function
+        self.TabProject()
         self.TabNetwork()
         self.TabSc()
+
+        # Gestion and button setup
+        box_btn = QtWidgets.QDialogButtonBox
+        btn = self.buttonBox.button
+        btn(box_btn.RestoreDefaults).clicked.connect(self.BTN_restore)
+        btn(box_btn.Save).clicked.connect(self.BTN_save)
+        btn(box_btn.Open).clicked.connect(self.BTN_open)
+        btn(box_btn.Cancel).clicked.connect(self.close)
 
     # -------------
     # UI Function
     def TabProject(self):
-        if self.job:
-            # Project Tab
-            self.data = TableProgram()
-            data_paths = self.data.select_path(1)
-
-            self.ue4_path_text = data_paths[0][1]
-            self.ue4_project = data_paths[0][2]
-            self.dir_project = os.path.dirname(self.ue4_project)
-            self.scene = data_paths[0][3]
-            self.levels_path = join(self.dir_project,
-                                    'content', self.scene)
-            self.levels_path = os.path.abspath(self.levels_path)
-            self.data_level = self.project_list_level(self.levels_path)
-
-            # CSV Tab
-            self.data_csv = self.data.csv_data()
-            if self.data_csv[0] == 'False' or self.data_csv is None:
-                self.csv_boolean = 0
-                self.csv_software = 2
-            else:
-                self.csv_boolean = 2
-                self.csv_software = self.data_csv[0]
-
-        else:
-            self.ue4_path_text = self.data.base('editor')
-            self.project_file_text = self.data.base('project')
-            self.sub_folder_text = self.data.base('sub folder')
-            self.data_level = []
-            self.csv_boolean = 0
-            self.csv_software = 1
+        # if self.job:
+        #     self.data = TableProgram()
+        #     data_paths = self.data.select_path(1)
+        #
+        #     self.ue4_path_text = data_paths[0][1]
+        #     self.ue4_project = data_paths[0][2]
+        #     self.dir_project = os.path.dirname(self.ue4_project)
+        #     self.scene = data_paths[0][3]
+        #     self.levels_path = join(self.dir_project,
+        #                             'content', self.scene)
+        #     self.levels_path = os.path.abspath(self.levels_path)
+        #     self.data_level = self.TabProject_list_level(self.levels_path)
+        #
+        #     # CSV Tab
+        #     self.data_csv = self.data.csv_data()
+        #     if self.data_csv[0] == 'False' or self.data_csv is None:
+        #         self.csv_boolean = 0
+        #         self.csv_software = 2
+        #     else:
+        #         self.csv_boolean = 2
+        #         self.csv_software = self.data_csv[0]
+        #
+        # else:
+        #     self.ue4_path_text = self.data.base('editor')
+        #     self.project_file_text = self.data.base('project')
+        #     self.sub_folder_text = self.data.base('sub folder')
+        #     self.csv_boolean = 0
+        #     self.csv_software = 1
 
         # Project Panel
-        self.levels_list = QtGui.QStandardItemModel()
-        self.project_tree_generate(self.levels_list, self.data_level)
-        self.treeViewLevels.setModel(self.levels_list)
-        self.treeViewLevels.clicked.connect(self.project_update_level)
-        self.levels_list.setHorizontalHeaderLabels([self.tr('Level Name')])
-        self.pushPathOpenUnreal.clicked.connect(lambda: self.open_save(1))
-        self.lineEditUnreal.setText(self.ue4_path)
-        self.pushPathOpenProject.clicked.connect(lambda: self.open_save(2))
-        self.lineEditProject.setText(self.ue4_project)
-        name = project_name(self.lineEditProject.text())
-        self.lineEditProjectName.setText(name)
-        self.lineEditSubfolder.setText(self.scene)
+        self.TabProject_tree_generate(self.levels_list, self.data_level)
+        self.ProjectTreeLevels.setModel(self.levels_list)
+        self.ProjectTreeLevels.clicked.connect(self.TabProject_update_level)
+        # self.levels_list.setHorizontalHeaderLabels([self.tr('Level Name')])
+        # self.pushPathOpenUnreal.clicked.connect(lambda: self.open_save(1))
+        # self.lineEditUnreal.setText(self.ue4_path)
+        # self.pushPathOpenProject.clicked.connect(lambda: self.open_save(2))
+        # self.lineEditProject.setText(self.ue4_project)
+        # name = project_name(self.lineEditProject.text())
+        # self.lineEditProjectName.setText(name)
+        # self.lineEditSubfolder.setText(self.scene)
+
+    def TabProject_tree_generate(self, parent, elements):
+        self.data = TableProgram()
+        levels = self.data.select_levels()
+        state = i = 0
+
+        for name, path in elements:
+            item = QtGui.QStandardItem(name)
+            item.setCheckable(True)
+            if levels is not None:
+                for i in range(0, len(levels)):
+                    if name in levels[i]:
+                        state = levels[i][3]
+                    i = i + 1
+
+            item.setCheckState(state)
+            parent.appendRow(item)
+            if path:
+                self.TabProject_tree_generate(item, path)
+
+    def TabProject_list_level(self, folder_directory):
+        levels = []
+        for item in os.listdir(folder_directory):
+            absolute_path = join(folder_directory, item)
+            child = isdir(absolute_path)
+            if child:
+                sublevel = [(item, self.TabProject_list_level(absolute_path))]
+                levels.extend(sublevel)
+            else:
+                if '.umap' in item:
+                    sublevel = [(item, [])]
+                    levels.extend(sublevel)
+
+        return levels
+
+    def TabProject_update_level(self, index):
+        self.data.write_data_levels(treeview=self, index=index)
 
     def TabNetwork(self):
         # Network Panel
@@ -670,6 +635,20 @@ class Dial_SetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.user_label.setDisabled(False)
             self.password_text.setDisabled(False)
             self.password_label.setDisabled(False)
+
+    # -------------
+    # Button Event
+    def BTN_restore(self):
+
+        return print('Restore')
+
+    def BTN_save(self):
+
+        return print('Save')
+
+    def BTN_open(self):
+
+        return print('Open')
 
 
 if __name__ == "__main__":

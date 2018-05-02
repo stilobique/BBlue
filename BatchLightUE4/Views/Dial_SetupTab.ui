@@ -22,7 +22,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_project">
         <attribute name="title">
@@ -153,10 +153,15 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <item>
-                 <widget class="QTreeWidget" name="treeWidget">
+                 <widget class="QTreeWidget" name="ProjectTreeLevels">
                   <column>
                    <property name="text">
                     <string>Editable</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Types</string>
                    </property>
                   </column>
                   <column>
@@ -267,14 +272,6 @@
                </layout>
               </item>
              </layout>
-             <zorder>path_sc_label</zorder>
-             <zorder>softwares_comboBox</zorder>
-             <zorder>softwares_label</zorder>
-             <zorder>path_sc_text</zorder>
-             <zorder>softwares_comboBox</zorder>
-             <zorder>path_sc_label</zorder>
-             <zorder>softwares_label</zorder>
-             <zorder>path_sc_text</zorder>
             </widget>
            </item>
            <item>
