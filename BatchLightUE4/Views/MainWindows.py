@@ -128,7 +128,6 @@ class ViewRendering(QtWidgets.QDialog, Ui_Rendering):
         #     self.buttonBox.button(btn.Ok).setEnabled(True)
 
 
-
 class LogView(QtWidgets.QDialog, Ui_DialogLog):
     """Log Panel"""
     def __init__(self, parent=None):
