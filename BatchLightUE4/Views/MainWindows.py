@@ -27,14 +27,12 @@ from BatchLightUE4.Controllers.Setup import Setup
 from BatchLightUE4.Controllers.Swarm import build, swarm_setup
 
 # TODO Add a check if an UE version has launch
-# TODO WIP Signal See previous comment
-# https://blog.manash.me/quick-pyqt5-1-signal-and-slot-example-in-pyqt5
-# -bf502ccaf11d
 
 """
 This page control all views generate with Qt-Designer, to make an update or 
 change something about the UI, update the .ui and generate a news .py.
 """
+
 
 class ThreadRendering(QtCore.QThread):
     def __init__(self, level_rendering, csv, submit):
