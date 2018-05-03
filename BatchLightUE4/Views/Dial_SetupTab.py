@@ -88,7 +88,7 @@ class Ui_DialogSetupProject(object):
         self.verticalLayout_2.addWidget(self.groupBox_2)
         self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("/Resources/Icons/package.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Resources/Icons/package.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.tab_project, icon, "")
         self.tab_sc = QtWidgets.QWidget()
         self.tab_sc.setObjectName("tab_sc")
@@ -158,7 +158,7 @@ class Ui_DialogSetupProject(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_6.addItem(spacerItem1, 1, 0, 1, 1)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("/Resources/Icons/git-branch.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("Resources/Icons/git-branch.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.tab_sc, icon1, "")
         self.tab_network = QtWidgets.QWidget()
         self.tab_network.setObjectName("tab_network")
@@ -181,7 +181,7 @@ class Ui_DialogSetupProject(object):
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_5.addItem(spacerItem2, 1, 0, 1, 1)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("/Resources/Icons/globe.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("Resources/Icons/globe.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.tab_network, icon2, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.buttonBox = QtWidgets.QDialogButtonBox(DialogSetupProject)
@@ -192,7 +192,7 @@ class Ui_DialogSetupProject(object):
         self.project_file_label.setBuddy(self.project_file_label)
 
         self.retranslateUi(DialogSetupProject)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(DialogSetupProject)
 
     def retranslateUi(self, DialogSetupProject):

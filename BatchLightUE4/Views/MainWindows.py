@@ -10,7 +10,6 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 
 # Adding all view used
 from BatchLightUE4.Views.WindowsMainWindows import Ui_MainWindow
-from BatchLightUE4.Views.WindowsSetupView import Ui_TabWidgetProjects
 from BatchLightUE4.Views.Dial_SetupTab import Ui_DialogSetupProject
 from BatchLightUE4.Views.WindowsHelpView import Ui_Help
 from BatchLightUE4.Views.WindowsLogView import Ui_DialogLog
@@ -167,7 +166,7 @@ class ViewTabHelp(QtWidgets.QDialog, Ui_Help):
 # ---------------------------------------------
 # ---------------------------------------------
 # ---------------------------------------------
-class ViewTabSetup(QtWidgets.QTabWidget, Ui_TabWidgetProjects):
+class ViewTabSetup(QtWidgets.QTabWidget):
     """This widget contains all setup tab"""
     def __init__(self):
         super(ViewTabSetup, self).__init__()
