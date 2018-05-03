@@ -25,6 +25,10 @@
         <number>0</number>
        </property>
        <widget class="QWidget" name="tab_project">
+        <attribute name="icon">
+         <iconset>
+          <normaloff>../../Resources/Icons/package.png</normaloff>../../Resources/Icons/package.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Project</string>
         </attribute>
@@ -158,6 +162,9 @@
                    <property name="text">
                     <string>Editable</string>
                    </property>
+                   <property name="textAlignment">
+                    <set>AlignTrailing|AlignVCenter</set>
+                   </property>
                   </column>
                   <column>
                    <property name="text">
@@ -188,6 +195,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tab_sc">
+        <attribute name="icon">
+         <iconset>
+          <normaloff>../../Resources/Icons/git-branch.png</normaloff>../../Resources/Icons/git-branch.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Source Control</string>
         </attribute>
@@ -345,6 +356,10 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tab_network">
+        <attribute name="icon">
+         <iconset>
+          <normaloff>../../Resources/Icons/globe.png</normaloff>../../Resources/Icons/globe.png</iconset>
+        </attribute>
         <attribute name="title">
          <string>Network</string>
         </attribute>

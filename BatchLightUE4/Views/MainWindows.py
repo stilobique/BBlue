@@ -560,8 +560,8 @@ class Dial_SetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         # Project Panel
         self.TabProject_tree_generate(self.levels_list, self.data_level)
-        self.ProjectTreeLevels.setModel(self.levels_list)
-        self.ProjectTreeLevels.clicked.connect(self.TabProject_update_level)
+        # self.ProjectTreeLevels.setModel(self.levels_list)
+        # self.ProjectTreeLevels.clicked.connect(self.TabProject_update_level)
         # self.levels_list.setHorizontalHeaderLabels([self.tr('Level Name')])
         # self.pushPathOpenUnreal.clicked.connect(lambda: self.open_save(1))
         # self.lineEditUnreal.setText(self.ue4_path)

@@ -48,7 +48,7 @@ class Ui_Rendering(object):
         self.lvl_logo1.setMinimumSize(QtCore.QSize(16, 16))
         self.lvl_logo1.setMaximumSize(QtCore.QSize(16, 16))
         self.lvl_logo1.setText("")
-        self.lvl_logo1.setPixmap(QtGui.QPixmap("BatchLightUE4/Resources/s-valid.png"))
+        self.lvl_logo1.setPixmap(QtGui.QPixmap("Resources/Icons/s-valid.png"))
         self.lvl_logo1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.lvl_logo1.setObjectName("lvl_logo1")
         self.lyt_lvl1.addWidget(self.lvl_logo1)

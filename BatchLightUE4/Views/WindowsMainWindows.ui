@@ -41,7 +41,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../Resources/checklist.png</normaloff>../Resources/checklist.png</iconset>
+               <normaloff>../../Resources/Icons/checklist.png</normaloff>../../Resources/Icons/checklist.png</iconset>
              </property>
              <property name="checkable">
               <bool>false</bool>
@@ -378,9 +378,6 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>New Setup</string>
-   </property>
-   <property name="iconText">
     <string>New Setup</string>
    </property>
    <property name="toolTip">

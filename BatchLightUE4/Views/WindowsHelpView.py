@@ -61,7 +61,7 @@ class Ui_Help(object):
         self.line.setObjectName("line")
         self.gridLayout_2.addWidget(self.line, 3, 0, 1, 2)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("BatchLightUE4/Resources/issues-closed.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("Resources/Icons/issues-closed.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.version, icon, "")
         self.shortcut = QtWidgets.QWidget()
         self.shortcut.setObjectName("shortcut")
@@ -71,7 +71,7 @@ class Ui_Help(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout_3.addWidget(self.label_2, 0, 0, 1, 1)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("BatchLightUE4/Resources/pencil.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("Resources/Icons/pencil.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.shortcut, icon1, "")
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
 
