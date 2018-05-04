@@ -10,7 +10,7 @@ from BatchLightUE4.Views.Dial_About import Dial_View_About
 from BatchLightUE4.Views.Dial_LogTools import Dial_Log_Tools
 from BatchLightUE4.Views.Dial_Rendering import DialRendering
 from BatchLightUE4.Views.DialSetupTab import DialSetupTab
-
+from BatchLightUE4.Views.MainWindows_convert import Ui_MainWindow
 # Adding Data Base utils
 from BatchLightUE4.Models.Database import TableProgram
 
@@ -26,7 +26,7 @@ change something about the UI, update the .ui and generate a news .py.
 """
 
 
-class MainWindows(QtWidgets.QMainWindow, DialSetupTab):
+class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         """
         Main Window, principal view, this windows can show all level,
@@ -153,7 +153,7 @@ class MainWindows(QtWidgets.QMainWindow, DialSetupTab):
             print('Error, nothing ??')
 
     def view_log(self):
-        dialog_log = LogView(self)
+        dialog_log = Dial_Log_Tools(self)
         dialog_log.show()
 
     def view_help(self, index):
