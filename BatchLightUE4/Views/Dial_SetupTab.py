@@ -16,7 +16,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         # self.tab_network()
         # self.tab_source_control()
 
-        # Gestion and button setup
+        # Setups Buttons
         box_btn = QtWidgets.QDialogButtonBox
         btn = self.buttonBox.button
         btn(box_btn.RestoreDefaults).clicked.connect(self.btn_restore)
