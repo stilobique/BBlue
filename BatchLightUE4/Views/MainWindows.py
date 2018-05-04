@@ -47,22 +47,22 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
     # Ui Function -------------------------------------------------------------
     def menubar_setup(self):
-        # Triggered Menu
-        self.actionNew_Setup.triggered.connect(self.project_new)
+        # File Menu
+        self.actionNew_Setup.triggered.connect(self.dial_setup_project)
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
 
-        #    Setup and Option Menu
+        # Setup Menu
         self.actionProject.triggered.connect(self.dial_setup_project)
         self.actionNetworks.triggered.connect(lambda:
                                               self.dial_setup_project(2))
         self.actionCSV.triggered.connect(lambda:
-                                         self.dial_setup_project(3))
+                                         self.dial_setup_project(1))
 
-        #   Log Panel
+        # Log Menu
         self.actionShow_log_folder.triggered.connect(self.view_log)
         self.actionClean_Log.triggered.connect(self.view_log)
 
-        #   Help Tab
+        # Help Menu
         self.actionAbout.triggered.connect(self.view_help)
         self.actionShortcut.triggered.connect(lambda: self.view_help(1))
 
@@ -110,29 +110,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushToolsBuils.clicked.connect(self.view_rendering)
         self.pushToolsBuils.setToolTip(self.pushToolsBuils.statusTip())
 
-    # All Events --------------------------------------------------------------
-    def open_save(self, state):
-        # TODO Proof of concept, no object has setup
-        if state == 1:
-            self.str_debug = 'First Value'
-            self.file_setup = filter="Project (*.db)"
-        else:
-            self.str_debug = 'Pas de status, basique way'
-            self.file_setup = filter="Project (*.db)"
-
-        (filename, filter) = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            'Open a previous project',
-            self.file_setup)
-
-    def project_new(self):
-        """
-        This action open the Windows Setup with all empty field. The don't
-        return object.
-        """
-
-        return print('New Project, empty Setup')
-
+    # Window Call -------------------------------------------------------------
     @staticmethod
     def dial_setup_project(index):
         ui_setup_tab = DialSetupTab()
@@ -149,6 +127,22 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print('Error, nothing ??')
 
+    # All Events --------------------------------------------------------------
+    def open_save(self, state):
+        # TODO Proof of concept, no object has setup
+        if state == 1:
+            self.str_debug = 'First Value'
+            self.file_setup = filter="Project (*.db)"
+        else:
+            self.str_debug = 'Pas de status, basique way'
+            self.file_setup = filter="Project (*.db)"
+
+        (filename, filter) = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            'Open a previous project',
+            self.file_setup)
+
+    # Old, refactoring function -----------------------------------------------
     def view_log(self):
         dialog_log = DialLogTools(self)
         dialog_log.show()

@@ -23,3 +23,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         btn(box_btn.Save).clicked.connect(self.btn_save)
         btn(box_btn.Open).clicked.connect(self.btn_open)
         btn(box_btn.Cancel).clicked.connect(self.close)
+
+    # All Events --------------------------------------------------------------
+    def btn_restore(self):
+        return print('Restore View')
+
+    def btn_save(self):
+        return print('Save View')
+
+    def btn_open(self):
+        return print('Open View')
