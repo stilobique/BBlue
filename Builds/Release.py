@@ -8,10 +8,9 @@ all indication."""
 
 import subprocess
 import fileinput
-import re
 
 from os.path import dirname, join
-from BatchLightUE4.Controllers.Setup import Setup
+from BatchLightUE4.Models.Setup import Setup
 
 # All Variable
 init = Setup()

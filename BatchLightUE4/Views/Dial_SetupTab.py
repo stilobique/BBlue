@@ -1,6 +1,10 @@
 from PyQt5 import QtWidgets
+from os.path import join, expanduser
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
+
+from BatchLightUE4.Models.Setup import Setup
+from BatchLightUE4.Models.Database import TableProgram
 
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
@@ -16,8 +20,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             'name': self.project_name_text.text()
         }
 
-        # self.data = Setup()
-        # self.job = self.data.last_job_run()
+        self.settings = Setup()
+        self.database = TableProgram()
+        self.job = self.data.last_job_run()
 
         # All Tab setup, options are split inside many function
         # Tab Project setup ---------------------------------------------------
@@ -78,9 +83,26 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     def btn_restore():
         return print('Restore View')
 
-    @staticmethod
-    def btn_save():
-        return print('Save View')
+    def btn_save(self):
+        description = 'Save your Project'
+        file = '*.db'
+        directory = join(expanduser('~'), 'BBLUE4')
+        popup = QtWidgets.QFileDialog.getSaveFileName(
+            parent=self,
+            directory=directory,
+            caption=description,
+            filter=file,
+        )
+
+        # Write the setup file (.ini) with the last DB write.
+        self.settings.last_job_add(popup[0])
+
+        # Write the .db file
+        self.database.write_data_path(
+            self.all_path.get('unreal'),
+            self.all_path.get('game'),
+            self.all_path.get('folder'))
+        self.close()
 
     def btn_open(self, index):
         if index == 1:

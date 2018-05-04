@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 from os.path import dirname
-from BatchLightUE4.Controllers.Setup import Setup
+from BatchLightUE4.Models.Setup import Setup
 
 
 class TableProgram(object):

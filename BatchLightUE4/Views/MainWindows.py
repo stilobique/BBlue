@@ -15,7 +15,7 @@ from BatchLightUE4.Views.MainWindows_convert import Ui_MainWindow
 from BatchLightUE4.Models.Database import TableProgram
 
 # Adding all Operator used
-from BatchLightUE4.Controllers.Setup import Setup
+from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Controllers.Swarm import swarm_setup
 
 # TODO Add a check if an UE version has launch

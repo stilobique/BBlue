@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets
 
 from BatchLightUE4.Views.Dial_About_convert import Ui_Help
 
-from BatchLightUE4.Controllers.Setup import Setup
+from BatchLightUE4.Models.Setup import Setup
 
 
 class DialViewAbout(QtWidgets.QDialog, Ui_Help):
