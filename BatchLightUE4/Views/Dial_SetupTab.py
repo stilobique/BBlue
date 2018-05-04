@@ -14,7 +14,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         # All Tab setup, options are split inside many function
         # self.tab_project()
         # self.tab_network()
-        # self.tab_source_control()
+        self.tab_source_control()
 
         # Setups Buttons
         box_btn = QtWidgets.QDialogButtonBox
@@ -23,6 +23,32 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         btn(box_btn.Save).clicked.connect(self.btn_save)
         btn(box_btn.Open).clicked.connect(self.btn_open)
         btn(box_btn.Cancel).clicked.connect(self.close)
+
+    # Ui Functions ------------------------------------------------------------
+    #   Tab Source Control ----------------------------------------------------
+    def tab_source_control(self):
+        soft_work = self.softwares_comboBox
+        soft_work.currentIndexChanged.connect(self.sc_software)
+
+    def sc_software(self):
+        # Todo Use a loop with a children to change the statue
+        if self.softwares_comboBox.currentText() == 'Disabled':
+            self.path_sc_label.setDisabled(True)
+            self.path_sc_text.setDisabled(True)
+            self.path_sc_edit.setDisabled(True)
+            self.user_label.setDisabled(True)
+            self.user_text.setDisabled(True)
+            self.password_label.setDisabled(True)
+            self.password_text.setDisabled(True)
+
+        else:
+            self.path_sc_label.setDisabled(False)
+            self.path_sc_text.setDisabled(False)
+            self.path_sc_edit.setDisabled(False)
+            self.user_text.setDisabled(False)
+            self.user_label.setDisabled(False)
+            self.password_text.setDisabled(False)
+            self.password_label.setDisabled(False)
 
     # All Events --------------------------------------------------------------
     def btn_restore(self):
