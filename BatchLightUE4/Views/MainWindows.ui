@@ -64,7 +64,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../Resources/circle-slash.png</normaloff>../Resources/circle-slash.png</iconset>
+               <normaloff>../../Resources/Icons/circle-slash.png</normaloff>../../Resources/Icons/circle-slash.png</iconset>
              </property>
             </widget>
            </item>
@@ -91,7 +91,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../Resources/sync.png</normaloff>../Resources/sync.png</iconset>
+               <normaloff>../../Resources/Icons/sync.png</normaloff>../../Resources/Icons/sync.png</iconset>
              </property>
             </widget>
            </item>
@@ -105,7 +105,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../Resources/beaker.png</normaloff>../Resources/beaker.png</iconset>
+               <normaloff>../../Resources/Icons/beaker.png</normaloff>../../Resources/Icons/beaker.png</iconset>
              </property>
             </widget>
            </item>
@@ -197,7 +197,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../Resources/gear.png</normaloff>../Resources/gear.png</iconset>
+               <normaloff>../../Resources/Icons/gear.png</normaloff>../../Resources/Icons/gear.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -267,7 +267,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../Resources/book.png</normaloff>../Resources/book.png</iconset>
+             <normaloff>../../Resources/Icons/book.png</normaloff>../../Resources/Icons/book.png</iconset>
            </property>
           </widget>
          </item>
@@ -284,7 +284,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../Resources/trashcan.png</normaloff>../Resources/trashcan.png</iconset>
+             <normaloff>../../Resources/Icons/trashcan.png</normaloff>../../Resources/Icons/trashcan.png</iconset>
            </property>
           </widget>
          </item>
@@ -317,7 +317,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../Ressources/link-external.png</normaloff>../Ressources/link-external.png</iconset>
+       <normaloff>../../Resources/Icons/link-external.png</normaloff>../../Resources/Icons/link-external.png</iconset>
      </property>
      <addaction name="actionLoad_Lastproject"/>
      <addaction name="separator"/>
@@ -377,6 +377,10 @@
    <property name="checked">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../../Resources/Icons/file.png</normaloff>../../Resources/Icons/file.png</iconset>
+   </property>
    <property name="text">
     <string>New Setup</string>
    </property>
@@ -393,7 +397,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/sign-out.png</normaloff>../Resources/sign-out.png</iconset>
+     <normaloff>../../Resources/Icons/sign-out.png</normaloff>../../Resources/Icons/sign-out.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -408,7 +412,7 @@
   <action name="actionProject">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/package.png</normaloff>../Resources/package.png</iconset>
+     <normaloff>../../Resources/Icons/package.png</normaloff>../../Resources/Icons/package.png</iconset>
    </property>
    <property name="text">
     <string>Projects</string>
@@ -420,7 +424,7 @@
   <action name="actionNetworks">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/globe.png</normaloff>../Resources/globe.png</iconset>
+     <normaloff>../../Resources/Icons/globe.png</normaloff>../../Resources/Icons/globe.png</iconset>
    </property>
    <property name="text">
     <string>Networks</string>
@@ -432,7 +436,7 @@
   <action name="actionCSV">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/git-branch.png</normaloff>../Resources/git-branch.png</iconset>
+     <normaloff>../../Resources/Icons/git-branch.png</normaloff>../../Resources/Icons/git-branch.png</iconset>
    </property>
    <property name="text">
     <string>CSV</string>
@@ -466,7 +470,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/issues-closed.png</normaloff>../Resources/issues-closed.png</iconset>
+     <normaloff>../../Resources/Icons/issues-closed.png</normaloff>../../Resources/Icons/issues-closed.png</iconset>
    </property>
    <property name="text">
     <string>About and Updates</string>
@@ -481,7 +485,7 @@
   <action name="actionShortcut">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/pencil.png</normaloff>../Resources/pencil.png</iconset>
+     <normaloff>../../Resources/Icons/pencil.png</normaloff>../../Resources/Icons/pencil.png</iconset>
    </property>
    <property name="text">
     <string>Shortcut</string>
@@ -504,7 +508,7 @@
   <action name="actionSave_Copy">
    <property name="icon">
     <iconset>
-     <normaloff>../Resources/pencil.png</normaloff>../Resources/pencil.png</iconset>
+     <normaloff>../../Resources/Icons/pencil.png</normaloff>../../Resources/Icons/pencil.png</iconset>
    </property>
    <property name="text">
     <string>Save As</string>

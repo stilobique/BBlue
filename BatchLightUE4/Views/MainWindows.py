@@ -40,16 +40,15 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.data.last_job_run()
         self.checkBoxLevels = {}
 
-        self.FileMenuSetup()
-        self.LevelsTools()
-        self.LevelsGenerate()
-        self.BottomTools()
+        self.file_menu_setup()
+        self.levels_tools()
+        self.levels_generate()
+        self.bottom_tools()
 
     # -------------
     # UI Function
-    def FileMenuSetup(self):
+    def file_menu_setup(self):
         # Triggered Menu
-        #     File Menu
         self.actionNew_Setup.triggered.connect(self.project_new)
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
 
@@ -68,12 +67,12 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(self.view_help)
         self.actionShortcut.triggered.connect(lambda: self.view_help(1))
 
-    def LevelsTools(self):
+    def levels_tools(self):
         self.pushLevelsSelect.clicked.connect(lambda: self.select_level(True))
         self.pushLevelsDeselect.clicked.connect(self.select_level)
         self.toolLevelsEdit.clicked.connect(self.dial_setup_project)
 
-    def LevelsGenerate(self):
+    def levels_generate(self):
         # Generate all Checkbox Levels.
         if self.job:
             self.data = TableProgram()
@@ -108,7 +107,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             if 'False' not in self.csv[0]:
                 self.checkBoxSubmit.setEnabled(True)
 
-    def BottomTools(self):
+    def bottom_tools(self):
         self.pushToolsBuils.clicked.connect(self.view_rendering)
         self.pushToolsBuils.setToolTip(self.pushToolsBuils.statusTip())
 
