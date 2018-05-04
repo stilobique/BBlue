@@ -8,12 +8,27 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         super(DialSetupTab, self).__init__()
         self.setupUi(self)
 
+        # Defined all Data and Variable use
+        self.all_path = {
+            'unreal': self.ue4_path_text.text(),
+            'game': self.project_file_text.text(),
+            'folder': self.sub_folder_text.text(),
+            'name': self.project_name_text.text()
+        }
+
         # self.data = Setup()
         # self.job = self.data.last_job_run()
 
         # All Tab setup, options are split inside many function
-        # self.tab_project()
+        # Tab Project setup ---------------------------------------------------
+        self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
+        self.project_file_edit.clicked.connect(lambda: self.btn_open(2))
+        self.tab_project_setup()
+
+        # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
+
+        # Tab Source Control Setup --------------------------------------------
         self.tab_source_control()
 
         # Setups Buttons
@@ -23,6 +38,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         btn(box_btn.Save).clicked.connect(self.btn_save)
         btn(box_btn.Open).clicked.connect(self.btn_open)
         btn(box_btn.Cancel).clicked.connect(self.close)
+
+    # Ui Functions ------------------------------------------------------------
+    #   Tab Project setup -----------------------------------------------------
+    def tab_project_setup(self, unreal='', game='', folder='', name=''):
+        self.ue4_path_text.setText(unreal)
+        self.project_file_text.setText(game)
+        self.sub_folder_text.setText(folder)
+        self.project_name_text.setText(name)
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
@@ -50,12 +73,37 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.password_text.setDisabled(False)
             self.password_label.setDisabled(False)
 
-    # All Events --------------------------------------------------------------
-    def btn_restore(self):
+    # Buttons Box Function ----------------------------------------------------
+    @staticmethod
+    def btn_restore():
         return print('Restore View')
 
-    def btn_save(self):
+    @staticmethod
+    def btn_save():
         return print('Save View')
 
-    def btn_open(self):
-        return print('Open View')
+    def btn_open(self, index):
+        if index == 1:
+            description = 'Select your Unreal Path'
+            file = 'UE4Editor.exe'
+            key_value = 'unreal'
+        elif index == 2:
+            description = 'Select your Project file'
+            file = '*.uproject'
+            key_value = 'game'
+        else:
+            description = 'Load a project generate with BBlue'
+            file = '*.db'
+            key_value = 'other'
+
+        popup = QtWidgets.QFileDialog.getOpenFileName(
+            parent=self,
+            caption=description,
+            filter=file,
+        )
+
+        self.all_path[key_value] = popup[0]
+
+        return self.tab_project_setup(
+            self.all_path.get('unreal'),
+            self.all_path.get('game'))
