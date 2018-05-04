@@ -40,13 +40,13 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.data.last_job_run()
         self.checkBoxLevels = {}
 
-        self.menubar_setup()
+        self.menu_setup()
         self.levels_tools()
         self.levels_generate()
         self.bottom_tools()
 
     # Ui Function -------------------------------------------------------------
-    def menubar_setup(self):
+    def menu_setup(self):
         # File Menu
         self.actionNew_Setup.triggered.connect(self.dial_setup_project)
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
