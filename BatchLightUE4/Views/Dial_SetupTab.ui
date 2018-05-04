@@ -63,7 +63,7 @@
                 <item row="0" column="2">
                  <widget class="QPushButton" name="ue4_path_edit">
                   <property name="text">
-                   <string>Choice File</string>
+                   <string>Select Engine</string>
                   </property>
                  </widget>
                 </item>
@@ -126,7 +126,7 @@
                 <item row="1" column="2">
                  <widget class="QPushButton" name="project_file_edit">
                   <property name="text">
-                   <string>Open File</string>
+                   <string>Game Project</string>
                   </property>
                  </widget>
                 </item>
