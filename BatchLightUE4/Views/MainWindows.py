@@ -40,14 +40,13 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.data.last_job_run()
         self.checkBoxLevels = {}
 
-        self.file_menu_setup()
+        self.menubar_setup()
         self.levels_tools()
         self.levels_generate()
         self.bottom_tools()
 
-    # -------------
-    # UI Function
-    def file_menu_setup(self):
+    # Ui Function -------------------------------------------------------------
+    def menubar_setup(self):
         # Triggered Menu
         self.actionNew_Setup.triggered.connect(self.project_new)
         self.actionLoad_Lastproject.triggered.connect(self.open_save)
@@ -111,8 +110,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushToolsBuils.clicked.connect(self.view_rendering)
         self.pushToolsBuils.setToolTip(self.pushToolsBuils.statusTip())
 
-    # -------------
-    # File Menu Events
+    # All Events --------------------------------------------------------------
     def open_save(self, state):
         # TODO Proof of concept, no object has setup
         if state == 1:
@@ -160,8 +158,6 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         dialog_help.show()
         dialog_help.tabWidget.setCurrentIndex(index)
 
-    # -------------
-    # Events
     def select_level(self, state):
         boolean = False
         if state:
