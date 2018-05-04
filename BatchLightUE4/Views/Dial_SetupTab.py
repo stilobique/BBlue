@@ -22,7 +22,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         self.settings = Setup()
         self.database = TableProgram()
-        self.job = self.data.last_job_run()
+        # self.job = self.data.last_job_run()
 
         # All Tab setup, options are split inside many function
         # Tab Project setup ---------------------------------------------------
