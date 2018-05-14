@@ -87,11 +87,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         description = 'Save your Project'
         file = '*.db'
         directory = join(expanduser('~'), 'BBLUE4')
-        popup = QtWidgets.QFileDialog.getSaveFileName(
+        options = QtWidgets.QFileDialog.Options()
+        popup = QtWidgets.QFileDialog()
+        popup = popup.getSaveFileName(
             parent=self,
             directory=directory,
             caption=description,
             filter=file,
+            options=options
         )
 
         # Write the setup file (.ini) with the last DB write.
@@ -102,7 +105,10 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.all_path.get('unreal'),
             self.all_path.get('game'),
             self.all_path.get('folder'))
+        # self.database.write_data_levels()
         self.close()
+
+        return popup
 
     def btn_open(self, index):
         if index == 1:
@@ -118,10 +124,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             file = '*.db'
             key_value = 'other'
 
-        popup = QtWidgets.QFileDialog.getOpenFileName(
+        options = QtWidgets.QFileDialog.Options()
+        popup = QtWidgets.QFileDialog()
+        popup = popup.getOpenFileName(
             parent=self,
             caption=description,
             filter=file,
+            options=options
         )
 
         self.all_path[key_value] = popup[0]
