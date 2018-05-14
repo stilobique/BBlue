@@ -6,27 +6,13 @@ from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Models.Database import TableProgram
 
+from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
+
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     def __init__(self):
         super(DialSetupTab, self).__init__()
         self.setupUi(self)
-
-        # Defined all Data and Variable use
-        self.all_path = {
-            'unreal': self.ue4_path_text.text(),
-            'game': self.project_file_text.text(),
-            'folder': self.sub_folder_text.text(),
-            'name': self.project_name_text.text()
-        }
-
-        self.settings = Setup()
-        self.data = TableProgram()
-        self.job = None
-        if isfile(self.settings.last_job_run()):
-            self.job = self.settings.last_job_run()
-            print(self.settings.last_job_run())
-            print('No data base, use empty field')
 
         # All Tab setup, options are split inside many function
         # Tab Project setup ---------------------------------------------------
@@ -50,11 +36,15 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Project setup -----------------------------------------------------
-    def tab_project_setup(self, unreal='', game=''):
-        self.ue4_path_text.setText(unreal)
-        self.project_file_text.setText(game)
-        # self.sub_folder_text.setText()
+    def tab_project_setup(self):
+        data = setup_tab_paths()
+        self.ue4_path_text.setText(data['editor'])
+        self.project_file_text.setText(data['project'])
+        self.sub_folder_text.setText(data['folder'])
         # self.project_name_text.setText()
+        print('Path field operation')
+
+        return self
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
@@ -101,21 +91,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             options=options
         )
 
-        if isfile(popup[0]):
-            print('This DB exist')
-        else:
-            print('Write a news DB')
-
-        # Write the .db file
-        self.data.write_data_path(
-            self.all_path.get('unreal'),
-            self.all_path.get('game'),
-            self.all_path.get('folder'))
-        # self.data.write_data_levels()
         # Write the setup file (.ini) with the last DB write.
         self.settings.last_job_add(popup[0])
 
         self.close()
+        self.tab_project_setup()
 
     def btn_open(self, index):
         if index == 1:
@@ -140,9 +120,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             options=options
         )
 
-        self.all_path[key_value] = popup[0]
+        self.tab_project_setup()
+        setup_tab_paths()
 
-        return self.tab_project_setup(
-            self.all_path.get('unreal'),
-            self.all_path.get('game')
-        )
+        return popup[0]
