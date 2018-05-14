@@ -18,7 +18,7 @@ def build(level_used):
     :type level_used: basestring
     :return The process ID, wait to communicate it
     """
-    paths = TableProgram().select_path(1)
+    paths = TableProgram().select_paths(1)
     ue4_editor = paths[0][1]
     ue4_project = paths[0][2]
     swarm = subprocess.Popen([ue4_editor,
@@ -35,7 +35,7 @@ def build(level_used):
 
 def swarm_setup(boolean):
     """Change your setup with all parameter."""
-    path_ue4 = TableProgram().select_path(1)
+    path_ue4 = TableProgram().select_paths(1)
     path_exe = os.path.dirname(path_ue4[0][1])
     os.path.dirname(path_exe)
     path_exe = os.path.dirname(path_exe)
@@ -98,7 +98,7 @@ def launch_swarm(path_exe):
 
 
 def clean_cache_swarm():
-    path_ue4 = TableProgram().select_path(1)
+    path_ue4 = TableProgram().select_paths(1)
     path_exe = os.path.dirname(path_ue4[1])
     os.path.dirname(path_exe)
     path_exe = os.path.dirname(path_exe)

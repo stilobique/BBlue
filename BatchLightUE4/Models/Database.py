@@ -19,6 +19,8 @@ class TableProgram(object):
         if not self.bd_exist:
             self.create_all_tables()
 
+        self.bd.cursor()
+
     def create_all_tables(self):
         """Generate all Table inside the Database"""
         self.bd.cursor()
@@ -50,11 +52,11 @@ class TableProgram(object):
         # self.bd.close()
 
     def select_project(self):
-        self.bd.cursor()
+        # self.bd.cursor()
         self.bd.execute('''SELECT id, project_id, paths_id
                         FROM projects''')
 
-    def select_path(self, id_project):
+    def select_paths(self, id_project):
         """Select a Data path from a project used.
         :id_project : The project working"""
         request = self.bd.cursor()
@@ -101,10 +103,11 @@ class TableProgram(object):
                             (editor, project, scene, id_project))
 
         self.bd.commit()
+        self.bd.close()
 
     def write_data_levels(self, treeview=None, index=None):
         id_project = 1
-        path_data = self.select_path(id_project)
+        path_data = self.select_paths(id_project)
         path_project = dirname(path_data[0][2])
         path_subfolder = path_data[0][3]
         path_project = path_project + '/Content/' + path_subfolder

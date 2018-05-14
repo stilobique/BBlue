@@ -1,6 +1,6 @@
 import perforce
 
-from os.path import basename, dirname
+from os.path import basename, dirname, isfile
 from PyQt5 import QtWidgets
 
 from PyQt5.QtWidgets import QMessageBox
@@ -37,7 +37,9 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         # Setup settings base
 
         self.data = Setup()
+        self.job = None
         self.job = self.data.last_job_run()
+
         self.checkBoxLevels = {}
 
         self.menu_setup()
