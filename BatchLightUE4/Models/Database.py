@@ -87,6 +87,13 @@ class TableProgram(object):
         return data
 
     def write_data_path(self, editor, project, scene):
+        """
+        Function to write all paths data :
+        :param editor: path with the Editor path (UE4editor.exe)
+        :param project: path with the project path (*.uproject)
+        :param scene: string with the sub level
+        :return:
+        """
         id_project = 1
         self.bd.cursor()
         count_paths = self.bd.execute('''SELECT count(path_id) FROM paths''')
