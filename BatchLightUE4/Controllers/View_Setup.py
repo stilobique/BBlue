@@ -34,3 +34,21 @@ def setup_tab_paths(unreal, project, folder, update=False):
     #     paths_field['folder'] = paths_data[3]
 
     return paths_field
+
+
+def setup_tab_paths_save(file, paths):
+    """
+    Function to generate or update the database file.
+    :param file: tuple with the path file and file format
+    :param paths: dict fill with all paths
+
+    :return: return a success or an error
+    """
+    print('Make a new or rewrite file')
+    print('Path >> ', file[0])
+    print('All paths >> ', paths)
+
+    data = TableProgram()
+    data.write_data_path(paths['unreal'], paths['project'], paths['folder'])
+
+    return 'Data Save'

@@ -6,7 +6,9 @@ from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
 # from BatchLightUE4.Models.Database import TableProgram
 
-from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
+from BatchLightUE4.Controllers.View_Setup import \
+    setup_tab_paths, \
+    setup_tab_paths_save
 
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
@@ -104,7 +106,10 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         # Write the setup file (.ini) with the last DB write.
         self.settings.last_job_add(popup[0])
-        self.close()
+
+        self.paths_dict['folder'] = self.sub_folder_text.text()
+        setup_tab_paths_save(popup, self.paths_dict)
+        # self.close()
 
     def btn_open(self, index):
         if index == 1:
