@@ -10,23 +10,27 @@ All function to work between the View Setup Tab and the Data Base.
 """
 
 
-def setup_tab_paths():
+def setup_tab_paths(unreal, project, folder, update=False):
     view_tab = Ui_DialogSetupProject()
     data = TableProgram()
+    setup = Setup()
+
     paths_field = {
-        'editor': '',
-        'project': '',
-        'folder': '',
+        'editor': unreal,
+        'project': project,
+        'folder': folder,
         'name': ''
     }
 
-    setup = Setup()
+    print('Check the data')
+
     if isfile(setup.last_job_run()):
         print('Use the last job')
         paths_data = data.select_paths(1)
-        paths_data = paths_data[0]
-        paths_field['editor'] = paths_data[1]
-        paths_field['project'] = paths_data[2]
-        paths_field['folder'] = paths_data[3]
+        print(paths_data)
+    #     paths_data = paths_data[0]
+    #     paths_field['editor'] = paths_data[1]
+    #     paths_field['project'] = paths_data[2]
+    #     paths_field['folder'] = paths_data[3]
 
     return paths_field

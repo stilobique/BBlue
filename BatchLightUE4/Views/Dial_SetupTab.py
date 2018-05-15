@@ -1,10 +1,10 @@
 from PyQt5 import QtWidgets
-from os.path import join, expanduser, isfile
+from os.path import join, expanduser
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
 from BatchLightUE4.Models.Setup import Setup
-from BatchLightUE4.Models.Database import TableProgram
+# from BatchLightUE4.Models.Database import TableProgram
 
 from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
 
@@ -14,8 +14,18 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         super(DialSetupTab, self).__init__()
         self.setupUi(self)
 
+        self.settings = Setup()
+
         # All Tab setup, options are split inside many function
         # Tab Project setup ---------------------------------------------------
+        #   Defined data needed -----------------------------------------------
+        self.paths_dict = {
+            'unreal': self.ue4_path_text.text(),
+            'project': self.project_file_text.text(),
+            'folder': self.sub_folder_text.text(),
+        }
+
+        #   Write all Slot and Connect ----------------------------------------
         self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
         self.project_file_edit.clicked.connect(lambda: self.btn_open(2))
         self.tab_project_setup()
@@ -36,13 +46,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Project setup -----------------------------------------------------
-    def tab_project_setup(self):
-        data = setup_tab_paths()
+    def tab_project_setup(self, unreal='', project=''):
+        folder = self.sub_folder_text.text()
+        data = setup_tab_paths(unreal, project, folder)
+
         self.ue4_path_text.setText(data['editor'])
         self.project_file_text.setText(data['project'])
-        self.sub_folder_text.setText(data['folder'])
+        # self.sub_folder_text.setText(data['folder'])
         # self.project_name_text.setText()
-        print('Path field operation')
 
         return self
 
@@ -93,9 +104,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         # Write the setup file (.ini) with the last DB write.
         self.settings.last_job_add(popup[0])
-
         self.close()
-        self.tab_project_setup()
 
     def btn_open(self, index):
         if index == 1:
@@ -105,12 +114,29 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         elif index == 2:
             description = 'Select your Project file'
             file = '*.uproject'
-            key_value = 'game'
+            key_value = 'project'
         else:
             description = 'Load a project generate with BBlue'
             file = '*.db'
-            key_value = 'other'
+            key_value = 'folder'
 
+        popup = self.load(description, file)
+        self.paths_dict[key_value] = popup[0]
+        self.tab_project_setup(
+            unreal=self.paths_dict['unreal'],
+            project=self.paths_dict['project'],
+        )
+
+        return self
+
+    def load(self, description, file):
+        """
+        This function generate a popup to load a file, it's to take a string
+        path and all data returns is the Path and the file name.
+        :param description: this field give the dialogue name
+        :param file: use it to specify a type file (.png, .db...)
+        :return: a tuple with the path and the file name
+        """
         options = QtWidgets.QFileDialog.Options()
         popup = QtWidgets.QFileDialog()
         popup = popup.getOpenFileName(
@@ -120,7 +146,4 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             options=options
         )
 
-        self.tab_project_setup()
-        setup_tab_paths()
-
-        return popup[0]
+        return popup
