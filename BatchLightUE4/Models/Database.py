@@ -118,6 +118,8 @@ class TableProgram(object):
 
     def write_data_levels(self, treeview=None, index=None):
         id_project = 1
+        self.bd.cursor()
+
         path_data = self.select_paths(id_project)
         path_project = dirname(path_data[0][2])
         path_subfolder = path_data[0][3]
@@ -126,7 +128,6 @@ class TableProgram(object):
         # Check if the levels are write
         # Isn't into the table add a news entry
         # Else update this entry
-        self.bd.cursor()
 
         for root, dirs, files in os.walk(path_project):
             for file in files:
