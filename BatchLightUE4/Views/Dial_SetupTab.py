@@ -64,7 +64,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :param project: string with the 'uproject' file path
         :return:
         """
-        print('Generate the Tab Setup')
         folder = self.sub_folder_text.text()
         data = setup_tab_paths(unreal, project, folder)
 
@@ -74,7 +73,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         # self.project_name_text.setText()
 
         if self.project_file_text.text():
-            print('Generate the Tree levels')
             level_path = join(dirname(self.project_file_text.text()),
                               'Content',
                               self.sub_folder_text.text())
@@ -85,29 +83,28 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
     #   Generate the Tree Levels ----------------------------------------------
     def tree_levels(self, path):
-        print('Levels Make it')
         self.ProjectTreeLevels.clear()
         path = normpath(path)
-        base_folder = []
-        reference = (['0', 'Name', 'Path'])
+        library = []
+        library_sub = []
+        count = 0
 
         for root, folders, files in walk(path):
-            count = 0
             for folder in enumerate(folders):
-                base_folder.append(['0', folder[1], root])
+                library_sub.append(['0', folder[1], root])
 
             for file in enumerate(files):
                 if '.umap' in file[1]:
-                    base_folder.append(['0', file[1], root])
+                    library_sub.append(['0', file[1], root])
 
-            print(count)
+            library.append([count, root, library_sub])
             count += 1
 
-        # tree = QTreeWidgetItem(self.ProjectTreeLevels, reference)
-        for data in range(len(base_folder)):
-            tree = QTreeWidgetItem(self.ProjectTreeLevels, base_folder[data])
-            # levels = QTreeWidgetItem(base_folder[data])
-            # tree.addChild(levels)
+        for data in range(len(library)):
+            tree = QTreeWidgetItem(self.ProjectTreeLevels, library[data][0])
+            # for data_sub in range(len(library_sub)):
+            #     # levels = QTreeWidgetItem(library[data])
+            #     tree.addChild(library_sub[data_sub])
 
     # -------------------------------------------------------------------------
     #     for item in listdir(path):
