@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
-from os.path import join, expanduser
+from os import listdir
+from os.path import join, expanduser, isdir, dirname, normpath
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
@@ -49,6 +50,16 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     # Ui Functions ------------------------------------------------------------
     #   Tab Project setup -----------------------------------------------------
     def tab_project_setup(self, unreal='', project=''):
+        """
+        Generate the Tab Setup, includ the Paths field and the Tree Levels
+        with all editable data.
+        It's only a function to add the slot and signal inside the Ui.
+
+        :param unreal: string with the editor path
+        :param project: string with the 'uproject' file path
+        :return:
+        """
+        print('Generate the Tab Setup')
         folder = self.sub_folder_text.text()
         data = setup_tab_paths(unreal, project, folder)
 
@@ -57,7 +68,32 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         # self.sub_folder_text.setText(data['folder'])
         # self.project_name_text.setText()
 
+        if self.project_file_text.text():
+            print('Generate the Tree levels')
+            level_path = join(dirname(self.project_file_text.text()),
+                              'Content',
+                              self.sub_folder_text.text())
+            self.tree_levels(level_path)
+
         return self
+
+    #   Generate the Tree Levels ----------------------------------------------
+    def tree_levels(self, path):
+        print('Levels Make it')
+        levels = []
+        path = normpath(path)
+
+        for item in listdir(path):
+            absolute_path = join(path, item)
+            if isdir(absolute_path):
+                sublevel = [(item, self.tree_levels(absolute_path))]
+                levels.extend(sublevel)
+            else:
+                if '.umap' in item:
+                    sublevel = [(item, [])]
+                    levels.extend(sublevel)
+
+        return levels
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
