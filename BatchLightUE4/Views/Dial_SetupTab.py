@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QTreeWidgetItem
-from os import listdir
+from PyQt5.QtWidgets import QTreeWidgetItem, QFileSystemModel
+from os import listdir, walk
 from os.path import join, expanduser, isdir, dirname, normpath
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
@@ -32,8 +32,10 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         #   Write all Slot and Connect ----------------------------------------
         self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
         self.project_file_edit.clicked.connect(lambda: self.btn_open(2))
-        self.sub_folder_edit.clicked.connect(lambda: self.tab_project_setup(
-            self.paths_dict['unreal'], self.paths_dict['project']))
+        self.sub_folder_edit.clicked.connect(
+            lambda: self.tab_project_setup(
+                self.paths_dict['unreal'],
+                self.paths_dict['project']))
         self.tab_project_setup()
 
         # Tab Network Setup ---------------------------------------------------
@@ -86,23 +88,41 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         print('Levels Make it')
         self.ProjectTreeLevels.clear()
         path = normpath(path)
-        base_folder = ['hello', 'why not']
+        base_folder = []
+        reference = (['0', 'Name', 'Path'])
 
-        for item in listdir(path):
-            absolute_path = join(path, item)
+        for root, folders, files in walk(path):
             count = 0
+            for folder in enumerate(folders):
+                base_folder.append(['0', folder[1], root])
 
-            data = QTreeWidgetItem(['0', item, absolute_path])
-            levels = QTreeWidgetItem(self.ProjectTreeLevels,
-                                     base_folder)
-            # levels.addChild(data)
-            if isdir(absolute_path):
-                levels.addChild(data)
-                self.tree_levels(absolute_path)
-            elif '.umap' in item:
-                levels.addChild(data)
+            for file in enumerate(files):
+                if '.umap' in file[1]:
+                    base_folder.append(['0', file[1], root])
 
-        # return levels
+            print(count)
+            count += 1
+
+        # tree = QTreeWidgetItem(self.ProjectTreeLevels, reference)
+        for data in range(len(base_folder)):
+            tree = QTreeWidgetItem(self.ProjectTreeLevels, base_folder[data])
+            # levels = QTreeWidgetItem(base_folder[data])
+            # tree.addChild(levels)
+
+    # -------------------------------------------------------------------------
+    #     for item in listdir(path):
+    #         absolute_path = join(path, item)
+    #
+    #         data = QTreeWidgetItem(['0', item, absolute_path])
+    #         base_folder.extend(['0', item, absolute_path])
+    #         levels = QTreeWidgetItem(self.ProjectTreeLevels,
+    #                                  base_folder)
+    #         # levels.addChild(data)
+    #         if isdir(absolute_path):
+    #             levels.addChild(data)
+    #             self.tree_levels(absolute_path)
+    #         elif '.umap' in item:
+    #             levels.addChild(data)
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
