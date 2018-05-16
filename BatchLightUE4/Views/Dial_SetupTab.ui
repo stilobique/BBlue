@@ -168,12 +168,12 @@
                   </column>
                   <column>
                    <property name="text">
-                    <string>Types</string>
+                    <string>Names</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string>Level Names</string>
+                    <string>Paths</string>
                    </property>
                   </column>
                  </widget>
