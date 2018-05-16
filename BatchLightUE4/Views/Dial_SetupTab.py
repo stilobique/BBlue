@@ -32,6 +32,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         #   Write all Slot and Connect ----------------------------------------
         self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
         self.project_file_edit.clicked.connect(lambda: self.btn_open(2))
+        self.sub_folder_edit.clicked.connect(lambda: self.tab_project_setup(
+            self.paths_dict['unreal'], self.paths_dict['project']))
         self.tab_project_setup()
 
         # Tab Network Setup ---------------------------------------------------
@@ -84,22 +86,23 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         print('Levels Make it')
         self.ProjectTreeLevels.clear()
         path = normpath(path)
+        base_folder = ['hello', 'why not']
 
         for item in listdir(path):
             absolute_path = join(path, item)
+            count = 0
 
             data = QTreeWidgetItem(['0', item, absolute_path])
-            levels = QTreeWidgetItem(self.ProjectTreeLevels, ['0', item, absolute_path])
+            levels = QTreeWidgetItem(self.ProjectTreeLevels,
+                                     base_folder)
             # levels.addChild(data)
-            # if isdir(absolute_path):
-            #     # sublevel = [(item, self.tree_levels(absolute_path))]
-            #     levels.addChild(sublevel)
-            # else:
-            #     if '.umap' in item:
-            #         # sublevel = [(item, [])]
-            #         levels.addChild(sublevel)
+            if isdir(absolute_path):
+                levels.addChild(data)
+                self.tree_levels(absolute_path)
+            elif '.umap' in item:
+                levels.addChild(data)
 
-        return levels
+        # return levels
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
