@@ -51,11 +51,6 @@ class TableProgram(object):
         self.bd.commit()
         # self.bd.close()
 
-    def select_project(self):
-        # self.bd.cursor()
-        self.bd.execute('''SELECT id, project_id, paths_id
-                        FROM projects''')
-
     def select_paths(self, id_project):
         """
         Select a Data path from a project used
