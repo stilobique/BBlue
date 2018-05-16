@@ -130,6 +130,17 @@
                   </property>
                  </widget>
                 </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="sub_folder_edit">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>../../Resources/Icons/sync.png</normaloff>../../Resources/Icons/sync.png</iconset>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
              </layout>
