@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QTreeWidgetItem
 from os import listdir
 from os.path import join, expanduser, isdir, dirname, normpath
 
@@ -74,24 +75,29 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                               'Content',
                               self.sub_folder_text.text())
             self.tree_levels(level_path)
+            # self.ProjectTreeLevels.setModel()
 
         return self
 
     #   Generate the Tree Levels ----------------------------------------------
     def tree_levels(self, path):
         print('Levels Make it')
-        levels = []
+        self.ProjectTreeLevels.clear()
         path = normpath(path)
 
         for item in listdir(path):
             absolute_path = join(path, item)
-            if isdir(absolute_path):
-                sublevel = [(item, self.tree_levels(absolute_path))]
-                levels.extend(sublevel)
-            else:
-                if '.umap' in item:
-                    sublevel = [(item, [])]
-                    levels.extend(sublevel)
+
+            data = QTreeWidgetItem(['0', item, absolute_path])
+            levels = QTreeWidgetItem(self.ProjectTreeLevels, ['0', item, absolute_path])
+            # levels.addChild(data)
+            # if isdir(absolute_path):
+            #     # sublevel = [(item, self.tree_levels(absolute_path))]
+            #     levels.addChild(sublevel)
+            # else:
+            #     if '.umap' in item:
+            #         # sublevel = [(item, [])]
+            #         levels.addChild(sublevel)
 
         return levels
 
