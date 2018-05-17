@@ -1,7 +1,9 @@
+import re
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QTreeWidgetItem, QFileSystemModel
 from os import listdir, walk
-from os.path import join, expanduser, isdir, dirname, normpath
+from os.path import join, expanduser, isdir, dirname, normpath, basename
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
@@ -33,6 +35,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
         self.project_file_edit.clicked.connect(lambda: self.btn_open(2))
         self.sub_folder_edit.clicked.connect(
+            lambda: self.tab_project_setup(
+                self.paths_dict['unreal'],
+                self.paths_dict['project']))
+        # Don't work :-(
+        self.sub_folder_text.returnPressed.connect(
             lambda: self.tab_project_setup(
                 self.paths_dict['unreal'],
                 self.paths_dict['project']))
@@ -69,15 +76,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         self.ue4_path_text.setText(data['editor'])
         self.project_file_text.setText(data['project'])
-        # self.sub_folder_text.setText(data['folder'])
-        # self.project_name_text.setText()
-
         if self.project_file_text.text():
             level_path = join(dirname(self.project_file_text.text()),
                               'Content',
                               self.sub_folder_text.text())
             self.tree_levels(level_path)
-            # self.ProjectTreeLevels.setModel()
 
         return self
 
@@ -92,11 +95,15 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             loop = []
             library.append(loop)
             for folder in enumerate(folders):
+                reg = '^(.*)Content'
+                test = r'E:\\WORKS\\Perforce\\ProVolley\\UnrealProjects\\ProVolley\\'
+                print(dirname(root))
+                print(re.sub(reg, '', normpath(root)))
                 library[count].append([str(count), folder[1], root])
 
-            for file in enumerate(files):
-                if '.umap' in file[1]:
-                    library[count].append([str(count), file[1], root])
+            # for file in enumerate(files):7
+            #     if '.umap' in file[1]:
+            #         library[count].append([str(count), file[1], root])
 
             # Remove empty list generate
             if len(library[count]) == 0:
@@ -106,39 +113,21 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             count += 1
 
         for loop in range(len(library)):
-            if loop == 0:
-                for data in range(len(library[loop])):
-                    tree = QTreeWidgetItem(self.ProjectTreeLevels,
-                                           library[loop][data])
+            for data in range(len(library[loop])):
+                tree = QTreeWidgetItem(self.ProjectTreeLevels,
+                                       library[0][data])
 
-            else:
-                print('It is a Child !')
+                if loop >= 1:
+                    print('Data Nbr >> ', loop, ' | ', data, ' | ', library[
+                        loop][data][1])
+                    parent = basename(library[loop][data][2])
+                    print('Folder Name >> ', parent)
+                    level = QTreeWidgetItem(library[loop][data])
+                    tree.addChild(level)
 
-                # print(library[loop][data][0])
-
-                # if int(library[data][0]) >= 1:
-                #     print('Child Tree')
-                #     level = QTreeWidgetItem(library[data])
-                #     tree.addChild(level)
-                # -------------
             # for data_sub in range(len(library_sub)):
             #     # levels = QTreeWidgetItem(library[data])
             #     tree.addChild(library_sub[data_sub])
-
-    # -------------------------------------------------------------------------
-    #     for item in listdir(path):
-    #         absolute_path = join(path, item)
-    #
-    #         data = QTreeWidgetItem(['0', item, absolute_path])
-    #         base_folder.extend(['0', item, absolute_path])
-    #         levels = QTreeWidgetItem(self.ProjectTreeLevels,
-    #                                  base_folder)
-    #         # levels.addChild(data)
-    #         if isdir(absolute_path):
-    #             levels.addChild(data)
-    #             self.tree_levels(absolute_path)
-    #         elif '.umap' in item:
-    #             levels.addChild(data)
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
