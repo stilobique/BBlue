@@ -86,22 +86,39 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.ProjectTreeLevels.clear()
         path = normpath(path)
         library = []
-        library_sub = []
         count = 0
 
         for root, folders, files in walk(path):
+            loop = []
+            library.append(loop)
             for folder in enumerate(folders):
-                library_sub.append(['0', folder[1], root])
+                library[count].append([str(count), folder[1], root])
 
             for file in enumerate(files):
                 if '.umap' in file[1]:
-                    library_sub.append(['0', file[1], root])
+                    library[count].append([str(count), file[1], root])
 
-            library.append([count, root, library_sub])
+            # Remove empty list generate
+            if len(library[count]) == 0:
+                print('cette liste est vide, delete')
+                print(library[count])
+                del library[count]
+
             count += 1
 
-        for data in range(len(library)):
-            tree = QTreeWidgetItem(self.ProjectTreeLevels, library[data][0])
+        for loop in range(len(library)):
+            if loop == 0:
+                for data in range(len(library[loop])):
+                    tree = QTreeWidgetItem(self.ProjectTreeLevels,
+                                           library[loop][data])
+
+                # print(library[loop][data][0])
+
+                # if int(library[data][0]) >= 1:
+                #     print('Child Tree')
+                #     level = QTreeWidgetItem(library[data])
+                #     tree.addChild(level)
+                    # -------------
             # for data_sub in range(len(library_sub)):
             #     # levels = QTreeWidgetItem(library[data])
             #     tree.addChild(library_sub[data_sub])
