@@ -100,9 +100,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
             # Remove empty list generate
             if len(library[count]) == 0:
-                print('cette liste est vide, delete')
-                print(library[count])
                 del library[count]
+                count = count - 1
 
             count += 1
 
@@ -112,13 +111,16 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     tree = QTreeWidgetItem(self.ProjectTreeLevels,
                                            library[loop][data])
 
+            else:
+                print('It is a Child !')
+
                 # print(library[loop][data][0])
 
                 # if int(library[data][0]) >= 1:
                 #     print('Child Tree')
                 #     level = QTreeWidgetItem(library[data])
                 #     tree.addChild(level)
-                    # -------------
+                # -------------
             # for data_sub in range(len(library_sub)):
             #     # levels = QTreeWidgetItem(library[data])
             #     tree.addChild(library_sub[data_sub])
