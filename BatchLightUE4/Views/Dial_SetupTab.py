@@ -101,9 +101,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                 root = normpath(folder_base + r'\\Content\\' + root)
                 library[count].append([str(count), folder[1], root])
 
-            # for file in enumerate(files):7
-            #     if '.umap' in file[1]:
-            #         library[count].append([str(count), file[1], root])
+            for file in enumerate(files):
+                if '.umap' in file[1]:
+                    library[count].append([str(count), file[1], root])
 
             # Remove empty list generate
             if len(library[count]) == 0:
@@ -120,14 +120,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                 if loop >= 1:
                     print('Data Nbr >> ', loop, ' | ', data, ' | ', library[
                         loop][data][1])
-                    parent = basename(library[loop][data][2])
-                    print('Folder Name >> ', parent)
+                    parent = QTreeWidgetItem(library[loop][data])
                     level = QTreeWidgetItem(library[loop][data])
                     tree.addChild(level)
-
-            # for data_sub in range(len(library_sub)):
-            #     # levels = QTreeWidgetItem(library[data])
-            #     tree.addChild(library_sub[data_sub])
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
