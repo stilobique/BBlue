@@ -83,20 +83,16 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                               self.sub_folder_text.text())
 
             self.tree_levels()
-            # self.treeViewLevels.setModel(self.list_levels)
             self.ProjectTreeLevels.setModel(self, self.list_levels)
-
 
         return self
 
     #   Generate the Tree Levels ----------------------------------------------
     def tree_levels(self):
-        self.ProjectTreeLevels.clear()
+        # self.ProjectTreeLevels.clear()
         path = normpath(dirname(self.project_file_text.text()) + '/Content/')
-        folder_base = basename(dirname(self.project_file_text.text()))
-        library = []
-        count = 0
         levels_list = self.levels_list(path)
+        levels_list = [x for x in levels_list if x != []]
 
         for name_object, root in levels_list:
             item = QtGui.QStandardItem(name_object)

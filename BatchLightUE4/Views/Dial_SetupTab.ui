@@ -155,26 +155,7 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <item>
-                 <widget class="QTreeWidget" name="ProjectTreeLevels">
-                  <column>
-                   <property name="text">
-                    <string>Editable</string>
-                   </property>
-                   <property name="textAlignment">
-                    <set>AlignTrailing|AlignVCenter</set>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Names</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Paths</string>
-                   </property>
-                  </column>
-                 </widget>
+                 <widget class="QTreeView" name="ProjectTreeLevels"/>
                 </item>
                 <item>
                  <widget class="QLabel" name="label_5">
