@@ -1,9 +1,9 @@
 import re
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QTreeWidgetItem
-from os import walk
-from os.path import join, expanduser, dirname, normpath, basename
+from os import listdir
+from os.path import join, expanduser, dirname, normpath, basename, isdir
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
@@ -30,6 +30,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             'project': self.project_file_text.text(),
             'folder': self.sub_folder_text.text(),
         }
+        self.list_levels = QtGui.QStandardItemModel()
 
         #   Write all Slot and Connect ----------------------------------------
         self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
@@ -80,49 +81,47 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             level_path = join(dirname(self.project_file_text.text()),
                               'Content',
                               self.sub_folder_text.text())
-            self.tree_levels(level_path)
+
+            self.tree_levels()
+            # self.treeViewLevels.setModel(self.list_levels)
+            self.ProjectTreeLevels.setModel(self, self.list_levels)
+
 
         return self
 
     #   Generate the Tree Levels ----------------------------------------------
-    def tree_levels(self, path):
+    def tree_levels(self):
         self.ProjectTreeLevels.clear()
-        path = normpath(path)
+        path = normpath(dirname(self.project_file_text.text()) + '/Content/')
         folder_base = basename(dirname(self.project_file_text.text()))
         library = []
         count = 0
+        levels_list = self.levels_list(path)
 
-        for root, folders, files in walk(path):
-            loop = []
-            library.append(loop)
-            for folder in enumerate(folders):
-                reg = '^(.*)Content'
-                root = re.sub(reg, '', normpath(root))
-                root = normpath(folder_base + r'\\Content\\' + root)
-                library[count].append([str(count), folder[1], root])
+        for name_object, root in levels_list:
+            item = QtGui.QStandardItem(name_object)
+            item.setCheckable(True)
 
-            for file in enumerate(files):
-                if '.umap' in file[1]:
-                    library[count].append([str(count), file[1], root])
+            self.list_levels.appendRow(item)
 
-            # Remove empty list generate
-            if len(library[count]) == 0:
-                del library[count]
-                count = count - 1
+    def levels_list(self, path):
+        """
+        Generate a list with all levels inside a path give than argument
+        :param path: specify a path to scan the folder
+        :return: a list with all levels
+        """
+        levels = []
+        for item in listdir(path):
+            absolute_path = join(path, item)
+            if isdir(absolute_path):
+                sublevel = [(item, self.levels_list(absolute_path))]
+                levels.extend(sublevel)
+            else:
+                if '.umap' in item:
+                    sublevel = [(item, absolute_path)]
+                    levels.extend(sublevel)
 
-            count += 1
-
-        for loop in range(len(library)):
-            for data in range(len(library[loop])):
-                tree = QTreeWidgetItem(self.ProjectTreeLevels,
-                                       library[0][data])
-
-                if loop >= 1:
-                    print('Data Nbr >> ', loop, ' | ', data, ' | ', library[
-                        loop][data][1])
-                    parent = QTreeWidgetItem(library[loop][data])
-                    level = QTreeWidgetItem(library[loop][data])
-                    tree.addChild(level)
+        return levels
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
