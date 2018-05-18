@@ -1,9 +1,9 @@
 import re
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QTreeWidgetItem, QFileSystemModel
-from os import listdir, walk
-from os.path import join, expanduser, isdir, dirname, normpath, basename
+from PyQt5.QtWidgets import QTreeWidgetItem
+from os import walk
+from os.path import join, expanduser, dirname, normpath, basename
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
@@ -63,7 +63,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     #   Tab Project setup -----------------------------------------------------
     def tab_project_setup(self, unreal='', project=''):
         """
-        Generate the Tab Setup, includ the Paths field and the Tree Levels
+        Generate the Tab Setup, include the Paths field and the Tree Levels
         with all editable data.
         It's only a function to add the slot and signal inside the Ui.
 
@@ -88,6 +88,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     def tree_levels(self, path):
         self.ProjectTreeLevels.clear()
         path = normpath(path)
+        folder_base = basename(dirname(self.project_file_text.text()))
         library = []
         count = 0
 
@@ -96,9 +97,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             library.append(loop)
             for folder in enumerate(folders):
                 reg = '^(.*)Content'
-                test = r'E:\\WORKS\\Perforce\\ProVolley\\UnrealProjects\\ProVolley\\'
-                print(dirname(root))
-                print(re.sub(reg, '', normpath(root)))
+                root = re.sub(reg, '', normpath(root))
+                root = normpath(folder_base + r'\\Content\\' + root)
                 library[count].append([str(count), folder[1], root])
 
             # for file in enumerate(files):7
