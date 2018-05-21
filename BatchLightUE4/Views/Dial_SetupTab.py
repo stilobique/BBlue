@@ -1,8 +1,4 @@
-import re
-import types
-
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtWidgets import QTreeWidgetItem
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt
 from os import listdir
