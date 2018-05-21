@@ -119,8 +119,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         for item in listdir(path):
             absolute_path = join(path, item)
             if isdir(absolute_path):
-                # sublevel = {item: self.levels_list(absolute_path)}
-                folders[item] = {item: self.levels_list(absolute_path)}
+                key = basename(dirname(absolute_path))
+                folders[key] = self.levels_list(absolute_path)
             else:
                 if '.umap' in item:
                     levels.append(item)
