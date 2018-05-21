@@ -2,6 +2,8 @@ import re
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from PyQt5.QtCore import Qt
 from os import listdir
 from os.path import join, expanduser, dirname, normpath, basename, isdir
 
@@ -16,6 +18,8 @@ from BatchLightUE4.Controllers.View_Setup import \
 
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
+    header1, header2, header3 = range(3)
+
     def __init__(self):
         super(DialSetupTab, self).__init__()
         self.setupUi(self)
@@ -45,6 +49,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                 self.paths_dict['unreal'],
                 self.paths_dict['project']))
         self.tab_project_setup()
+
+        self.model = self.model_base(self)
+        self.ProjectTreeLevels.setModel(self.model)
 
         # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
@@ -82,23 +89,19 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                               'Content',
                               self.sub_folder_text.text())
 
-            self.tree_levels()
-            self.ProjectTreeLevels.setModel(self, self.list_levels)
+            self.tree_levels(self.model)
 
         return self
 
     #   Generate the Tree Levels ----------------------------------------------
-    def tree_levels(self):
-        # self.ProjectTreeLevels.clear()
+    def tree_levels(self, model):
+        # self.ProjectTreeLevels.reset()
         path = normpath(dirname(self.project_file_text.text()) + '/Content/')
         levels_list = self.levels_list(path)
-        levels_list = [x for x in levels_list if x != []]
+        # levels_list = [x for x in levels_list if x != []]
 
         for name_object, root in levels_list:
-            item = QtGui.QStandardItem(name_object)
-            item.setCheckable(True)
-
-            self.list_levels.appendRow(item)
+            self.model_data(model, 'edit', name_object, root)
 
     def levels_list(self, path):
         """
@@ -118,6 +121,19 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     levels.extend(sublevel)
 
         return levels
+
+    def model_base(self, parent):
+        model = QStandardItemModel(0, 3, parent)
+        model.setHeaderData(self.header1, Qt.Horizontal, 'Editable')
+        model.setHeaderData(self.header2, Qt.Horizontal, 'Names')
+        model.setHeaderData(self.header3, Qt.Horizontal, 'Paths')
+        return model
+
+    def model_data(self, model, editable, name, path):
+        model.insertRow(0)
+        model.setData(model.index(0, self.header1), editable)
+        model.setData(model.index(0, self.header2), name)
+        model.setData(model.index(0, self.header3), path)
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
