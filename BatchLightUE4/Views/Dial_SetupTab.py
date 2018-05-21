@@ -133,6 +133,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         # print('test')
         for item in sorted(children):
             item_object = QStandardItem(item)
+            item_object.setCheckable(True)
             parent.appendRow(item_object)
             if isinstance(children, dict):
                 self.model_populate(children[item], item_object)
