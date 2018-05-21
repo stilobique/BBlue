@@ -1,4 +1,5 @@
 import re
+import types
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QTreeWidgetItem
@@ -18,7 +19,7 @@ from BatchLightUE4.Controllers.View_Setup import \
 
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
-    header1, header2, header3 = range(3)
+    header1, header2 = range(2)
 
     def __init__(self):
         super(DialSetupTab, self).__init__()
@@ -52,6 +53,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         self.model = self.model_base(self)
         self.ProjectTreeLevels.setModel(self.model)
+        self.ProjectTreeLevels.setColumnWidth(0, 200)
 
         # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
@@ -89,7 +91,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                               'Content',
                               self.sub_folder_text.text())
 
-            self.tree_levels(self.model)
+            # self.tree_levels(self.model)
+            root_model = self.model_base(self)
+            self.ProjectTreeLevels.setModel(root_model)
+            data_tree = self.levels_list(level_path)
+            self.model_populate(data_tree,
+                                root_model.invisibleRootItem())
+
+            print(data_tree)
 
         return self
 
@@ -109,31 +118,42 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :param path: specify a path to scan the folder
         :return: a list with all levels
         """
+        folders = {}
         levels = []
         for item in listdir(path):
             absolute_path = join(path, item)
             if isdir(absolute_path):
-                sublevel = [(item, self.levels_list(absolute_path))]
-                levels.extend(sublevel)
+                # sublevel = {item: self.levels_list(absolute_path)}
+                folders[item] = {item: self.levels_list(absolute_path)}
             else:
                 if '.umap' in item:
-                    sublevel = [(item, absolute_path)]
-                    levels.extend(sublevel)
+                    levels.append(item)
+                    key = basename(dirname(absolute_path))
+                    folders[key] = levels
 
-        return levels
+        return folders
+
+    def model_populate(self, children, parent):
+        # print('test')
+        for item in sorted(children):
+            item_object = QStandardItem(item)
+            parent.appendRow(item_object)
+            if isinstance(children, dict):
+                self.model_populate(children[item], item_object)
 
     def model_base(self, parent):
-        model = QStandardItemModel(0, 3, parent)
-        model.setHeaderData(self.header1, Qt.Horizontal, 'Editable')
-        model.setHeaderData(self.header2, Qt.Horizontal, 'Names')
-        model.setHeaderData(self.header3, Qt.Horizontal, 'Paths')
+        model = QStandardItemModel(0, 2, parent)
+        model.setHeaderData(self.header1, Qt.Horizontal, 'Names')
+        model.setHeaderData(self.header2, Qt.Horizontal, 'Paths')
         return model
 
-    def model_data(self, model, editable, name, path):
-        model.insertRow(0)
-        model.setData(model.index(0, self.header1), editable)
-        model.setData(model.index(0, self.header2), name)
-        model.setData(model.index(0, self.header3), path)
+    def model_data(self, model, name, path, number_index=0,
+                   number_row=0):
+        model.insertRow(number_row)
+        model.setData(model.index(number_index, self.header1), name)
+        model.setData(model.index(number_index, self.header2), path)
+        # model.indexFromItem()
+        # model.itemFromIndex()
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
