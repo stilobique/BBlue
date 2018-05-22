@@ -134,13 +134,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     def model_populate(self, children, parent):
         print('Children >> ', children, ' | Type >>', type(children))
         print('Parent >> ', parent, ' | Type >>', type(parent))
-        for key in sorted(children):
-            item_object = QStandardItem(key)
-            item_object.setCheckable(True)
-            parent.appendRow(item_object)
-            if isinstance(children[key], dict):
-                print(children[key], ' | ', item_object)
-                self.model_populate(children[key], item_object)
+        # for key in sorted(children):
+        #     item_object = QStandardItem(key)
+        #     item_object.setCheckable(True)
+        #     parent.appendRow(item_object)
+        #     if isinstance(children[key], dict):
+        #         print(children[key], ' | ', item_object)
+        #         self.model_populate(children[key], item_object)
 
     def model_base(self, parent):
         model = QStandardItemModel(0, 2, parent)
