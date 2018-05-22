@@ -91,6 +91,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             root_model = self.model_base(self)
             self.ProjectTreeLevels.setModel(root_model)
             data_tree = self.levels_list(level_path)
+            print(data_tree)
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
 
@@ -110,7 +111,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         """
         Generate a list with all levels inside a path give than argument
         :param path: specify a path to scan the folder
-        :return: a list with all levels
+        :return: a dict with all levels and folder
         """
         folders = {}
         levels = []
@@ -119,26 +120,27 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             if isdir(absolute_path):
                 key = basename(dirname(absolute_path))
                 sub_levels = self.levels_list(absolute_path)
-                if len(sub_levels):
-                    folders[key].append(sub_levels)
+                # if len(sub_levels) and type(sub_levels) == dict:
+                folders.update(sub_levels)
+                # print('Add a subfolder')
             else:
-                if '.umap' in item:
-                    levels.append(item)
-                    key = basename(dirname(absolute_path))
-                    folders[key] = levels
+                # if '.umap' in item:
+                levels.append(item)
+                key = basename(dirname(absolute_path))
+                folders[key] = levels
 
         return folders
 
     def model_populate(self, children, parent):
         print('Children >> ', children, ' | Type >>', type(children))
         print('Parent >> ', parent, ' | Type >>', type(parent))
-        for key in children.keys():
+        for key in sorted(children):
             item_object = QStandardItem(key)
             item_object.setCheckable(True)
             parent.appendRow(item_object)
-            # if isinstance(children[key], dict):
-            #     print(children[key], ' | ', item_object)
-            #     self.model_populate(children[key], item_object)
+            if isinstance(children[key], dict):
+                print(children[key], ' | ', item_object)
+                self.model_populate(children[key], item_object)
 
     def model_base(self, parent):
         model = QStandardItemModel(0, 2, parent)
