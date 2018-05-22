@@ -94,8 +94,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
 
-            print(data_tree)
-
         return self
 
     #   Generate the Tree Levels ----------------------------------------------
@@ -120,7 +118,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             absolute_path = join(path, item)
             if isdir(absolute_path):
                 key = basename(dirname(absolute_path))
-                folders[key] = self.levels_list(absolute_path)
+                sub_levels = self.levels_list(absolute_path)
+                if len(sub_levels):
+                    folders[key].append(sub_levels)
             else:
                 if '.umap' in item:
                     levels.append(item)
@@ -130,13 +130,15 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         return folders
 
     def model_populate(self, children, parent):
-        # print('test')
-        for item in sorted(children):
-            item_object = QStandardItem(item)
+        print('Children >> ', children, ' | Type >>', type(children))
+        print('Parent >> ', parent, ' | Type >>', type(parent))
+        for key in children.keys():
+            item_object = QStandardItem(key)
             item_object.setCheckable(True)
             parent.appendRow(item_object)
-            if isinstance(children, dict):
-                self.model_populate(children[item], item_object)
+            # if isinstance(children[key], dict):
+            #     print(children[key], ' | ', item_object)
+            #     self.model_populate(children[key], item_object)
 
     def model_base(self, parent):
         model = QStandardItemModel(0, 2, parent)
