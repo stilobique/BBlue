@@ -93,6 +93,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
             self.ProjectTreeLevels.expandAll()
+            self.ProjectTreeLevels.clicked.connect(self.update_level)
 
         return self
 
@@ -119,6 +120,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     folders[key] = levels
 
         return folders
+
+    def update_level(self):
+        """
+        Function to save or remove the levels from the Data Base
+        :return:
+        """
+        print('hi')
 
     def model_populate(self, children, parent):
         """
