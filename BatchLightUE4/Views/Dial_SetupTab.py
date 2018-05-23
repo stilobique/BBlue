@@ -131,6 +131,22 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         return folders
 
     def model_populate(self, children, parent):
+        for key, values in sorted(children.items()):
+            item_object = QStandardItem(key)
+            item_object.setCheckable(False)
+            parent.appendRow(item_object)
+            print(item_object.index())
+
+            if type(values) == list:
+                for value in values:
+                    print('Value list >', value)
+                    if type(value) == str:
+                        sub_item = QStandardItem(value)
+                        sub_item.setCheckable(True)
+                        parent.appendRow(sub_item)
+                    elif type(value) == dict:
+                        self.model_populate(value, item_object)
+
         # for key in sorted(children):
         # for key in children:
         #     item_object = QStandardItem(key)
@@ -142,38 +158,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         #         count += 1
         #         self.model_populate(children[key], item_object)
 
-        for key, values in children.items():
-            print('key > ', key, ' | value > ', values)
-            print('Children >> ', children)
-            print('Sorted >> ', sorted(children))
-            item_object = QStandardItem(key)
-            item_object.setCheckable(False)
-            parent.appendRow(item_object)
-
-            if type(values) == list:
-                for value in values:
-                    print('Value list >', value)
-                    if type(value) == str:
-                        sub_item = QStandardItem(value)
-                        sub_item.setCheckable(True)
-                        parent.appendRow(sub_item)
-                    elif type(value) == dict:
-                        print('c du dict')
-                        self.model_populate(value, item_object)
-
     def model_base(self, parent):
         model = QStandardItemModel(0, 2, parent)
         model.setHeaderData(self.header1, Qt.Horizontal, 'Names')
         model.setHeaderData(self.header2, Qt.Horizontal, 'Paths')
         return model
-
-    def model_data(self, model, name, path, number_index=0,
-                   number_row=0):
-        model.insertRow(number_row)
-        model.setData(model.index(number_index, self.header1), name)
-        model.setData(model.index(number_index, self.header2), path)
-        # model.indexFromItem()
-        # model.itemFromIndex()
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
