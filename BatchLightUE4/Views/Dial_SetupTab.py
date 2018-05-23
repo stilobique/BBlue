@@ -93,6 +93,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             data_tree = self.levels_list(level_path)
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
+            self.ProjectTreeLevels.expandAll()
 
         return self
 
