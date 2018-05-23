@@ -146,15 +146,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     elif type(value) == dict:
                         self.model_populate(value, item_object)
 
-        # for key in sorted(children):
-        # for key in children:
-        #     item_object = QStandardItem(key)
-        #     item_object.setCheckable(True)
-        #     # print(type(children[count]), children[count])
-        #     parent.appendRow(item_object)
-        #     if isinstance(children[key], list):
-        #         self.model_populate(children[key], item_object)
-
     def model_base(self, parent):
         model = QStandardItemModel(0, 2, parent)
         model.setHeaderData(self.header1, Qt.Horizontal, 'Names')
