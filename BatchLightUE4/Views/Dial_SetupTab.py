@@ -50,7 +50,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.model = self.model_base(self)
         self.ProjectTreeLevels.setModel(self.model)
         self.ProjectTreeLevels.setColumnWidth(0, 200)
-        self.ProjectTreeLevels.expandAll()
 
         # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
@@ -141,9 +140,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             parent.appendRow(item_object)
 
             if type(values) == list:
-                print(values)
                 for value in values:
-                    print('Value list >', value)
                     if type(value) == str:
                         sub_item = QStandardItem(value)
                         sub_item.setCheckable(True)

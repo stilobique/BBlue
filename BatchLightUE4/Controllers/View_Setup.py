@@ -44,7 +44,7 @@ def setup_tab_paths_save(file, paths):
 
     data = TableProgram()
     data.write_data_path(paths['unreal'], paths['project'], paths['folder'])
-    generate_levels(paths['project'], paths['folder'])
+    # generate_levels(paths['project'], paths['folder'])
     # data.write_data_levels()
 
     return 'Data Save'
