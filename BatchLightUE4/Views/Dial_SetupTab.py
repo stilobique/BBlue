@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 from os import listdir
-from os.path import join, expanduser, dirname, normpath, basename, isdir
+from os.path import join, expanduser, dirname, basename, isdir
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
