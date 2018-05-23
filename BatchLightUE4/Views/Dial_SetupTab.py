@@ -7,7 +7,7 @@ from os.path import join, expanduser, dirname, basename, isdir
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 
 from BatchLightUE4.Models.Setup import Setup
-# from BatchLightUE4.Models.Database import TableProgram
+from BatchLightUE4.Models.Database import TableProgram
 
 from BatchLightUE4.Controllers.View_Setup import \
     setup_tab_paths, \
@@ -22,6 +22,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.setupUi(self)
 
         self.settings = Setup()
+        self.data = TableProgram()
 
         # All Tab setup, options are split inside many function
         # Tab Project setup ---------------------------------------------------
@@ -121,12 +122,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         return folders
 
-    def update_level(self):
+    def update_level(self, level_name=''):
         """
         Function to save or remove the levels from the Data Base
+        :param level_name: A string with the level name to save it.
         :return:
         """
         print('hi')
+        self.data.write_data_levels()
 
     def model_populate(self, children, parent):
         """
