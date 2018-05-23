@@ -144,6 +144,10 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         """
         for key, values in sorted(children.items()):
             item_object = QStandardItem(key)
+            folder_icon = QtGui.QIcon()
+            folder_icon.addPixmap(
+                QtGui.QPixmap("Resources/Icons/file-submodule.png"))
+            item_object.setIcon(folder_icon)
             parent.appendRow(item_object)
 
             if type(values) == list:
