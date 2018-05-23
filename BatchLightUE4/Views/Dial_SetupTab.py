@@ -88,7 +88,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                               'Content',
                               self.sub_folder_text.text())
 
-            # self.tree_levels(self.model)
             root_model = self.model_base(self)
             self.ProjectTreeLevels.setModel(root_model)
             data_tree = self.levels_list(level_path)
@@ -101,11 +100,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     def tree_levels(self, model):
         # self.ProjectTreeLevels.reset()
         path = normpath(dirname(self.project_file_text.text()) + '/Content/')
-        levels_list = self.levels_list(path)
-        # levels_list = [x for x in levels_list if x != []]
-
-        # for name_object, root in levels_list:
-        #     self.model_data(model, 'edit', name_object, root)
 
     def levels_list(self, path):
         """
