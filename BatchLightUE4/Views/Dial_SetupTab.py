@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 from os import listdir
 from os.path import join, expanduser, dirname, normpath, basename, isdir
@@ -91,7 +91,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             root_model = self.model_base(self)
             self.ProjectTreeLevels.setModel(root_model)
             data_tree = self.levels_list(level_path)
-            print(data_tree)
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
 
@@ -104,8 +103,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         levels_list = self.levels_list(path)
         # levels_list = [x for x in levels_list if x != []]
 
-        for name_object, root in levels_list:
-            self.model_data(model, 'edit', name_object, root)
+        # for name_object, root in levels_list:
+        #     self.model_data(model, 'edit', name_object, root)
 
     def levels_list(self, path):
         """
@@ -120,27 +119,47 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             if isdir(absolute_path):
                 key = basename(dirname(absolute_path))
                 sub_levels = self.levels_list(absolute_path)
-                # if len(sub_levels) and type(sub_levels) == dict:
-                folders.update(sub_levels)
-                # print('Add a subfolder')
+                if len(sub_levels) and type(sub_levels) == dict:
+                    levels.append(sub_levels)
+                    folders[key] = levels
             else:
-                # if '.umap' in item:
-                levels.append(item)
-                key = basename(dirname(absolute_path))
-                folders[key] = levels
+                if '.umap' in item:
+                    levels.append(item)
+                    key = basename(dirname(absolute_path))
+                    folders[key] = levels
 
         return folders
 
     def model_populate(self, children, parent):
-        print('Children >> ', children, ' | Type >>', type(children))
-        print('Parent >> ', parent, ' | Type >>', type(parent))
         # for key in sorted(children):
+        # for key in children:
         #     item_object = QStandardItem(key)
         #     item_object.setCheckable(True)
+        #     # print(type(children[count]), children[count])
+        #     print(type(parent), parent)
         #     parent.appendRow(item_object)
-        #     if isinstance(children[key], dict):
-        #         print(children[key], ' | ', item_object)
+        #     if isinstance(children[key], list):
+        #         count += 1
         #         self.model_populate(children[key], item_object)
+
+        for key, values in children.items():
+            print('key > ', key, ' | value > ', values)
+            print('Children >> ', children)
+            print('Sorted >> ', sorted(children))
+            item_object = QStandardItem(key)
+            item_object.setCheckable(False)
+            parent.appendRow(item_object)
+
+            if type(values) == list:
+                for value in values:
+                    print('Value list >', value)
+                    if type(value) == str:
+                        sub_item = QStandardItem(value)
+                        sub_item.setCheckable(True)
+                        parent.appendRow(sub_item)
+                    elif type(value) == dict:
+                        print('c du dict')
+                        self.model_populate(value, item_object)
 
     def model_base(self, parent):
         model = QStandardItemModel(0, 2, parent)
