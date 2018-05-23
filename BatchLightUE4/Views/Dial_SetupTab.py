@@ -50,6 +50,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.model = self.model_base(self)
         self.ProjectTreeLevels.setModel(self.model)
         self.ProjectTreeLevels.setColumnWidth(0, 200)
+        self.ProjectTreeLevels.expandAll()
 
         # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
@@ -131,6 +132,16 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         return folders
 
     def model_populate(self, children, parent):
+        """
+        Function to work with the Model.
+        You need to give 2 parameter, a dict with your Data you want show,
+        and a parent to define the index.
+        It's a recursive function, if your Data has a Dict inside a Dict,
+        the function generate the Tree with all sub-node.
+        :param children: It's only a Dict, included your Data
+        :param parent: Define your first level, work with the Invisible Root
+        :return: nothing returns.
+        """
         for key, values in sorted(children.items()):
             item_object = QStandardItem(key)
             parent.appendRow(item_object)
@@ -147,9 +158,16 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                         self.model_populate(value, item_object)
 
     def model_base(self, parent):
+        """
+        Function to work with the Model.
+        This function generate the Tree View base, with all header generate.
+        :param parent: QTreeView
+        :return: give a Model
+        """
         model = QStandardItemModel(0, 2, parent)
         model.setHeaderData(self.header1, Qt.Horizontal, 'Names')
         model.setHeaderData(self.header2, Qt.Horizontal, 'Paths')
+
         return model
 
     # Ui Functions ------------------------------------------------------------
