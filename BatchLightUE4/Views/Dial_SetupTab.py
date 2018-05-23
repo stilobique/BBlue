@@ -133,17 +133,16 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     def model_populate(self, children, parent):
         for key, values in sorted(children.items()):
             item_object = QStandardItem(key)
-            item_object.setCheckable(False)
             parent.appendRow(item_object)
-            print(item_object.index())
 
             if type(values) == list:
+                print(values)
                 for value in values:
                     print('Value list >', value)
                     if type(value) == str:
                         sub_item = QStandardItem(value)
                         sub_item.setCheckable(True)
-                        parent.appendRow(sub_item)
+                        item_object.appendRow(sub_item)
                     elif type(value) == dict:
                         self.model_populate(value, item_object)
 
@@ -152,10 +151,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         #     item_object = QStandardItem(key)
         #     item_object.setCheckable(True)
         #     # print(type(children[count]), children[count])
-        #     print(type(parent), parent)
         #     parent.appendRow(item_object)
         #     if isinstance(children[key], list):
-        #         count += 1
         #         self.model_populate(children[key], item_object)
 
     def model_base(self, parent):
