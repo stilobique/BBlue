@@ -97,11 +97,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         return self
 
-    #   Generate the Tree Levels ----------------------------------------------
-    def tree_levels(self, model):
-        # self.ProjectTreeLevels.reset()
-        path = normpath(dirname(self.project_file_text.text()) + '/Content/')
-
     def levels_list(self, path):
         """
         Generate a list with all levels inside a path give than argument
