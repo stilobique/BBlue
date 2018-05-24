@@ -17,7 +17,7 @@ from BatchLightUE4.Models.Database import TableProgram
 # Adding all Operator used
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Controllers.Swarm import swarm_setup
-from BatchLightUE4.Controllers.Files import file_save_project
+from BatchLightUE4.Controllers.Files import load_generic
 
 # TODO Add a check if an UE version has launch
 
@@ -52,8 +52,10 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
     def menu_setup(self):
         # File Menu
         self.actionNew_Setup.triggered.connect(self.dial_setup_project)
-        # self.actionLoad_Lastproject.triggered.connect(lambda:
-        #                                               file_save_project(self))
+        open_project = self.actionLoad_Lastproject
+        open_project.triggered.connect(lambda: load_generic(self,
+                                                            'Open Project',
+                                                            '*.db'))
 
         # Setup Menu
         self.actionProject.triggered.connect(self.dial_setup_project)

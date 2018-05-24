@@ -8,7 +8,8 @@ from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Models.Database import TableProgram
 from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
-from BatchLightUE4.Controllers.Files import file_save_project
+from BatchLightUE4.Controllers.Files import \
+    file_save_project, file_open, load_generic
 
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
@@ -32,8 +33,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.list_levels = QtGui.QStandardItemModel()
 
         #   Write all Slot and Connect ----------------------------------------
-        self.ue4_path_edit.clicked.connect(lambda: self.btn_open(1))
-        self.project_file_edit.clicked.connect(lambda: self.btn_open(2))
+        self.ue4_path_edit.clicked.connect(lambda: file_open(self, 1))
+        self.project_file_edit.clicked.connect(lambda: file_open(self, 2))
         self.sub_folder_edit.clicked.connect(
             lambda: self.tab_project_setup(
                 self.paths_dict['unreal'],
@@ -60,7 +61,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         btn = self.buttonBox.button
         btn(box_btn.RestoreDefaults).clicked.connect(self.btn_restore)
         btn(box_btn.Save).clicked.connect(lambda: file_save_project(self))
-        btn(box_btn.Open).clicked.connect(self.btn_open)
+        btn(box_btn.Open).clicked.connect(load_generic)
         btn(box_btn.Cancel).clicked.connect(self.close)
 
     # Ui Functions ------------------------------------------------------------
@@ -126,6 +127,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :return:
         """
         print('hi')
+        print(level_name)
         self.data.write_data_levels()
 
     def model_populate(self, children, parent):
@@ -203,45 +205,3 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :return:
         """
         return print('Restore View')
-
-    def btn_open(self, index):
-        if index == 1:
-            description = 'Select your Unreal Path'
-            file = 'UE4Editor.exe'
-            key_value = 'unreal'
-        elif index == 2:
-            description = 'Select your Project file'
-            file = '*.uproject'
-            key_value = 'project'
-        else:
-            description = 'Load a project generate with BBlue'
-            file = '*.db'
-            key_value = 'folder'
-
-        popup = self.load(description, file)
-        self.paths_dict[key_value] = popup[0]
-        self.tab_project_setup(
-            unreal=self.paths_dict['unreal'],
-            project=self.paths_dict['project'],
-        )
-
-        return self
-
-    def load(self, description, file):
-        """
-        This function generate a popup to load a file, it's to take a string
-        path and all data returns is the Path and the file name.
-        :param description: this field give the dialogue name
-        :param file: use it to specify a type file (.png, .db...)
-        :return: a tuple with the path and the file name
-        """
-        options = QtWidgets.QFileDialog.Options()
-        popup = QtWidgets.QFileDialog()
-        popup = popup.getOpenFileName(
-            parent=self,
-            caption=description,
-            filter=file,
-            options=options
-        )
-
-        return popup
