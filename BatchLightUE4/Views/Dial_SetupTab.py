@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 from os import listdir
-from os.path import join, dirname, basename, isdir
+from os.path import join, dirname, basename, isdir, normpath
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
@@ -107,7 +107,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     folders[key] = levels
             else:
                 if '.umap' in item:
-                    levels.append(item)
+                    levels.append(normpath(absolute_path))
                     key = basename(dirname(absolute_path))
                     folders[key] = levels
 
