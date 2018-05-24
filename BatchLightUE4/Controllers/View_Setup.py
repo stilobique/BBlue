@@ -33,7 +33,7 @@ def setup_tab_paths(unreal, project, folder, update=False):
     return paths_field
 
 
-def setup_tab_paths_save(file, paths):
+def setup_tab_paths_save(paths):
     """
     Function to generate or update the database file.
     :param file: tuple with the path file and file format

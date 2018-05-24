@@ -7,7 +7,7 @@ from os.path import join, dirname, basename, isdir
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Models.Database import TableProgram
-from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
+# from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
 from BatchLightUE4.Controllers.Files import \
     file_save_project, file_open, load_generic
 
@@ -25,25 +25,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         # All Tab setup, options are split inside many function
         # Tab Project setup ---------------------------------------------------
         #   Defined data needed -----------------------------------------------
-        self.paths_dict = {
-            'unreal': self.ue4_path_text.text(),
-            'project': self.project_file_text.text(),
-            'folder': self.sub_folder_text.text(),
-        }
         self.list_levels = QtGui.QStandardItemModel()
 
         #   Write all Slot and Connect ----------------------------------------
         self.ue4_path_edit.clicked.connect(lambda: file_open(self, 1))
         self.project_file_edit.clicked.connect(lambda: file_open(self, 2))
-        self.sub_folder_edit.clicked.connect(
-            lambda: self.tab_project_setup(
-                self.paths_dict['unreal'],
-                self.paths_dict['project']))
-        # Don't work :-(
-        self.sub_folder_text.returnPressed.connect(
-            lambda: self.tab_project_setup(
-                self.paths_dict['unreal'],
-                self.paths_dict['project']))
+        self.sub_folder_edit.clicked.connect(self.tab_project_setup)
+        self.sub_folder_text.returnPressed.connect(self.tab_project_setup)
         self.tab_project_setup()
 
         self.model = self.model_base(self)
@@ -66,21 +54,28 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Project setup -----------------------------------------------------
-    def tab_project_setup(self, unreal='', project=''):
+    def tab_project_setup(self, index=int, value=str):
         """
         Generate the Tab Setup, include the Paths field and the Tree Levels
         with all editable data.
         It's only a function to add the slot and signal inside the Ui.
 
-        :param unreal: string with the editor path
-        :param project: string with the 'uproject' file path
         :return:
         """
-        folder = self.sub_folder_text.text()
-        data = setup_tab_paths(unreal, project, folder)
+        if self.settings.last_job_run():
+            db = self.data.select_paths()
+            self.ue4_path_text.setText(db[0][1])
+            self.project_file_text.setText(db[0][2])
+            self.sub_folder_text.setText(db[0][3])
 
-        self.ue4_path_text.setText(data['editor'])
-        self.project_file_text.setText(data['project'])
+        elif index:
+            if index == 1:
+                self.ue4_path_text.setText(value)
+            elif index == 2:
+                self.project_file_text.setText(value)
+        else:
+            print('Clean Value')
+
         if self.project_file_text.text():
             level_path = join(dirname(self.project_file_text.text()),
                               'Content',

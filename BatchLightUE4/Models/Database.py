@@ -51,7 +51,7 @@ class TableProgram(object):
         self.bd.commit()
         # self.bd.close()
 
-    def select_paths(self, id_project):
+    def select_paths(self, id_project=1):
         """
         Select a Data path from a project used
         :param id_project: Select the project number, it's a DB constraint,
