@@ -1,6 +1,6 @@
 import perforce
 
-from os.path import basename, dirname, isfile
+from os.path import basename, dirname
 from PyQt5 import QtWidgets
 
 from PyQt5.QtWidgets import QMessageBox
@@ -36,9 +36,9 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         # Setup settings base
 
-        self.data = Setup()
-        self.job = None
-        self.job = self.data.last_job_run()
+        self.settings = Setup()
+        self.data = TableProgram()
+        self.job = self.settings.last_job_run()
 
         self.checkBoxLevels = {}
 
@@ -76,7 +76,6 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
     def levels_generate(self):
         # Generate all Checkbox Levels.
         if self.job:
-            self.data = TableProgram()
             levels = self.data.select_levels()
             level_checkbox = self.data.select_levels(state=2)
             self.csv = self.data.csv_data()
