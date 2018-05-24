@@ -1,3 +1,4 @@
+import re
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
@@ -69,8 +70,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                 self.ue4_path_text.setText(value)
             elif index == 2:
                 self.project_file_text.setText(value)
-        else:
-            print('Clean Value')
 
         level_path = join(dirname(self.project_file_text.text()),
                           'Content',
@@ -83,7 +82,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
         self.ProjectTreeLevels.expandAll()
-        self.ProjectTreeLevels.setColumnWidth(0, 300)
+        self.ProjectTreeLevels.setColumnWidth(0, 250)
         # self.ProjectTreeLevels.clicked.connect(self.update_level)
         root_model.itemChanged.connect(self.update_level)
 
@@ -107,7 +106,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     folders[key] = levels
             else:
                 if '.umap' in item:
-                    levels.append(normpath(absolute_path))
+                    regex = r"^.*\Content"
+                    absolute_path = normpath(absolute_path)
+                    relative_path = re.sub(regex, '', dirname(absolute_path))
+                    relative_path = join(relative_path, item)
+                    levels.append(relative_path)
                     key = basename(dirname(absolute_path))
                     folders[key] = levels
 
@@ -150,8 +153,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             if type(values) == list:
                 for value in values:
                     if type(value) == str:
-                        print(value)
-                        item_name = QStandardItem(value)
+                        item_name = QStandardItem(basename(value))
                         item_name.setCheckable(True)
                         item_path = QStandardItem(value)
                         item_object.appendRow([item_name, item_path])
