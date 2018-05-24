@@ -109,8 +109,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                     regex = r"^.*\Content"
                     absolute_path = normpath(absolute_path)
                     relative_path = re.sub(regex, '', dirname(absolute_path))
-                    relative_path = join(relative_path, item)
-                    levels.append(relative_path)
+                    levels.append(join(relative_path, item))
                     key = basename(dirname(absolute_path))
                     folders[key] = levels
 
