@@ -139,31 +139,6 @@ class TableProgram(object):
             print('False, remove a data')
             self.bd.execute('''DELETE FROM levels WHERE name=?''', (name,))
 
-        # path_data = self.select_paths(id_project)
-        # path_project = dirname(path_data[0][2])
-        # path_subfolder = path_data[0][3]
-
-        # Check if the levels are write
-        # Isn't into the table add a news entry
-        # Else update this entry
-
-        # for root, dirs, files in os.walk(path_project):
-        #     for file in files:
-        #         path = root.replace('\\', '/') + '/' + file
-        #         request = self.bd.execute('''SELECT * FROM levels
-        #         WHERE name = ?''', (file, ))
-        #         if request.fetchone() is None:
-        #             self.bd.execute('''INSERT INTO levels
-        #                                     (name, path, state)
-        #                                     VALUES(?, ?, ?)''',
-        #                             (file, path, 0))
-        #         elif index is not None:
-        #             level_list = treeview.levels_list
-        #             name = level_list.data(index)
-        #             state = level_list.itemFromIndex(index).checkState()
-        #             self.bd.execute('''UPDATE levels SET state = ? WHERE
-        #             name = ?''', (state, name, ))
-
         self.bd.commit()
 
     def csv_data(self, csv=str()):
