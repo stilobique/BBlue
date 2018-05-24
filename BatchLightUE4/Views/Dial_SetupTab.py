@@ -34,9 +34,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.sub_folder_text.returnPressed.connect(self.tab_project_setup)
         self.tab_project_setup()
 
-        self.model = self.model_base(self)
-        self.ProjectTreeLevels.setModel(self.model)
-        self.ProjectTreeLevels.setColumnWidth(0, 200)
+        # self.model = self.model_base(self)
+        # self.ProjectTreeLevels.setModel(self.model)
 
         # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
@@ -50,11 +49,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         btn(box_btn.RestoreDefaults).clicked.connect(self.btn_restore)
         btn(box_btn.Save).clicked.connect(lambda: file_save_project(self))
         btn(box_btn.Open).clicked.connect(load_generic)
-        btn(box_btn.Cancel).clicked.connect(self.close)
+        btn(box_btn.Close).clicked.connect(self.close)
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Project setup -----------------------------------------------------
-    def tab_project_setup(self, index=int, value=str):
+    def tab_project_setup(self, index=None, value=str):
         """
         Generate the Tab Setup, include the Paths field and the Tree Levels
         with all editable data.
@@ -76,18 +75,19 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         else:
             print('Clean Value')
 
-        if self.project_file_text.text():
-            level_path = join(dirname(self.project_file_text.text()),
-                              'Content',
-                              self.sub_folder_text.text())
+        level_path = join(dirname(self.project_file_text.text()),
+                          'Content',
+                          self.sub_folder_text.text())
 
-            root_model = self.model_base(self)
-            self.ProjectTreeLevels.setModel(root_model)
+        root_model = self.model_base(self)
+        self.ProjectTreeLevels.setModel(root_model)
+        if self.project_file_text.text():
             data_tree = self.levels_list(level_path)
             self.model_populate(data_tree,
                                 root_model.invisibleRootItem())
-            self.ProjectTreeLevels.expandAll()
-            self.ProjectTreeLevels.clicked.connect(self.update_level)
+        self.ProjectTreeLevels.expandAll()
+        self.ProjectTreeLevels.setColumnWidth(0, 300)
+        self.ProjectTreeLevels.clicked.connect(self.update_level)
 
         return self
 
