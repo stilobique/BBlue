@@ -17,6 +17,7 @@ from BatchLightUE4.Models.Database import TableProgram
 # Adding all Operator used
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Controllers.Swarm import swarm_setup
+from BatchLightUE4.Controllers.Files import file_save_project
 
 # TODO Add a check if an UE version has launch
 
@@ -51,7 +52,8 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
     def menu_setup(self):
         # File Menu
         self.actionNew_Setup.triggered.connect(self.dial_setup_project)
-        self.actionLoad_Lastproject.triggered.connect(self.open_save)
+        # self.actionLoad_Lastproject.triggered.connect(lambda:
+        #                                               file_save_project(self))
 
         # Setup Menu
         self.actionProject.triggered.connect(self.dial_setup_project)
@@ -127,21 +129,6 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             print('Rejected !')
         else:
             print('Error, nothing ??')
-
-    # All Events --------------------------------------------------------------
-    def open_save(self, state):
-        # TODO Proof of concept, no object has setup
-        if state == 1:
-            self.str_debug = 'First Value'
-            self.file_setup = filter="Project (*.db)"
-        else:
-            self.str_debug = 'Pas de status, basique way'
-            self.file_setup = filter="Project (*.db)"
-
-        (filename, filter) = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            'Open a previous project',
-            self.file_setup)
 
     # Old, refactoring function -----------------------------------------------
     def view_log(self):

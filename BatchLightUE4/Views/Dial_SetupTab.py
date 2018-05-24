@@ -2,16 +2,13 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 from os import listdir
-from os.path import join, expanduser, dirname, basename, isdir
+from os.path import join, dirname, basename, isdir
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
-
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Models.Database import TableProgram
-
-from BatchLightUE4.Controllers.View_Setup import \
-    setup_tab_paths, \
-    setup_tab_paths_save
+from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
+from BatchLightUE4.Controllers.Files import file_save_project
 
 
 class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
@@ -62,7 +59,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         box_btn = QtWidgets.QDialogButtonBox
         btn = self.buttonBox.button
         btn(box_btn.RestoreDefaults).clicked.connect(self.btn_restore)
-        btn(box_btn.Save).clicked.connect(self.btn_save)
+        btn(box_btn.Save).clicked.connect(lambda: file_save_project(self))
         btn(box_btn.Open).clicked.connect(self.btn_open)
         btn(box_btn.Cancel).clicked.connect(self.close)
 
@@ -201,28 +198,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     # Buttons Box Function ----------------------------------------------------
     @staticmethod
     def btn_restore():
+        """
+        Function to restore the clean view.
+        :return:
+        """
         return print('Restore View')
-
-    def btn_save(self):
-        description = 'Save your Project'
-        file = '*.db'
-        directory = join(expanduser('~'), 'BBLUE4')
-        options = QtWidgets.QFileDialog.Options()
-        popup = QtWidgets.QFileDialog()
-        popup = popup.getSaveFileName(
-            parent=self,
-            directory=directory,
-            caption=description,
-            filter=file,
-            options=options
-        )
-
-        # Write the setup file (.ini) with the last DB write.
-        self.settings.last_job_add(popup[0])
-
-        self.paths_dict['folder'] = self.sub_folder_text.text()
-        setup_tab_paths_save(popup, self.paths_dict)
-        # self.close()
 
     def btn_open(self, index):
         if index == 1:
