@@ -34,9 +34,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.sub_folder_text.returnPressed.connect(self.tab_project_setup)
         self.tab_project_setup()
 
-        # self.model = self.model_base(self)
-        # self.ProjectTreeLevels.setModel(self.model)
-
         # Tab Network Setup ---------------------------------------------------
         # self.tab_network()
 
