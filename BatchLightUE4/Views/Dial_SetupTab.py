@@ -119,13 +119,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :param index_item: A string with the level name to save it.
         :return:
         """
-        if index_item.checkState() == Qt.Checked:
+        state = index_item.checkState()
+        if state == Qt.Checked:
             info = [index_item.text(), 'Path', 1]
         else:
             info = [index_item.text(), 'Path', 0]
 
         print(info)
-        # self.data.write_data_levels()
+        self.data.write_data_levels(parent=self, state=state, data=info)
 
     def model_populate(self, children, parent):
         """

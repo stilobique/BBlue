@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from os.path import dirname
+from os.path import normpath, dirname, basename
 from BatchLightUE4.Models.Setup import Setup
 
 
@@ -111,35 +111,58 @@ class TableProgram(object):
         self.bd.commit()
         self.bd.close()
 
-    def write_data_levels(self, treeview=None, index=None):
+    def write_data_levels(self, parent, state, data):
         id_project = 1
         self.bd.cursor()
 
-        path_data = self.select_paths(id_project)
-        path_project = dirname(path_data[0][2])
-        path_subfolder = path_data[0][3]
-        path_project = path_project + '/Content/' + path_subfolder
+        dict_path = {
+            'unreal': parent.ue4_path_text.text(),
+            'project': parent.project_file_text.text(),
+            'folder': parent.sub_folder_text.text()
+        }
+
+        path_project = dirname(dict_path['project']) + '/Content/' + dict_path[
+            'folder']
+        path_project = normpath(path_project)
+
+        name = data[0]
+        path = data[1]
+
+        if state:
+            print('True, add a value')
+            self.bd.execute('''INSERT INTO levels
+                                            (name, path, state)
+                                            VALUES(?, ?, ?)''',
+                            (name, path, state))
+
+        else:
+            print('False, remove a data')
+            self.bd.execute('''DELETE FROM levels WHERE name=?''', (name,))
+
+        # path_data = self.select_paths(id_project)
+        # path_project = dirname(path_data[0][2])
+        # path_subfolder = path_data[0][3]
 
         # Check if the levels are write
         # Isn't into the table add a news entry
         # Else update this entry
 
-        for root, dirs, files in os.walk(path_project):
-            for file in files:
-                path = root.replace('\\', '/') + '/' + file
-                request = self.bd.execute('''SELECT * FROM levels 
-                WHERE name = ?''', (file, ))
-                if request.fetchone() is None:
-                    self.bd.execute('''INSERT INTO levels
-                                            (name, path, state)
-                                            VALUES(?, ?, ?)''',
-                                    (file, path, 0))
-                elif index is not None:
-                    level_list = treeview.levels_list
-                    name = level_list.data(index)
-                    state = level_list.itemFromIndex(index).checkState()
-                    self.bd.execute('''UPDATE levels SET state = ? WHERE 
-                    name = ?''', (state, name, ))
+        # for root, dirs, files in os.walk(path_project):
+        #     for file in files:
+        #         path = root.replace('\\', '/') + '/' + file
+        #         request = self.bd.execute('''SELECT * FROM levels
+        #         WHERE name = ?''', (file, ))
+        #         if request.fetchone() is None:
+        #             self.bd.execute('''INSERT INTO levels
+        #                                     (name, path, state)
+        #                                     VALUES(?, ?, ?)''',
+        #                             (file, path, 0))
+        #         elif index is not None:
+        #             level_list = treeview.levels_list
+        #             name = level_list.data(index)
+        #             state = level_list.itemFromIndex(index).checkState()
+        #             self.bd.execute('''UPDATE levels SET state = ? WHERE
+        #             name = ?''', (state, name, ))
 
         self.bd.commit()
 
