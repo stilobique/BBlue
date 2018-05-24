@@ -150,9 +150,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             if type(values) == list:
                 for value in values:
                     if type(value) == str:
-                        sub_item = QStandardItem(value)
-                        sub_item.setCheckable(True)
-                        item_object.appendRow(sub_item)
+                        print(value)
+                        item_name = QStandardItem(value)
+                        item_name.setCheckable(True)
+                        item_path = QStandardItem(value)
+                        item_object.appendRow([item_name, item_path])
                     elif type(value) == dict:
                         self.model_populate(value, item_object)
 
