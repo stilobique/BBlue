@@ -107,10 +107,12 @@ def popup_msg(parent, popup_type, title, description):
 
     elif popup_type == 'question':
         popup.question(
-            parent,
+            QMessageBox.parent(parent),
             title,
             description,
-            QMessageBox.Yes | QMessageBox.Cancel
+            QMessageBox.Yes | QMessageBox.Cancel,
+            QMessageBox.Yes
             )
 
     return popup
+

@@ -162,19 +162,16 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 lvl_rendering.append(key)
 
         if len(lvl_rendering) == 0:
-            popup_type = 'information'
-            title = 'Error'
             message = 'No level selected !'
-            popup_msg(self, popup_type, title, message)
+            popup_msg(self, 'information', 'Error', message)
 
         else:
-            popup_type = 'question'
-            title = 'Rendering'
             message = 'Launch the rendering ?'
-            reply = popup_msg(self, popup_type, title, message)
+            reply = popup_msg(self, 'question', 'Rendering', message)
             lvl_rendering.sort()
 
-            if reply == QMessageBox.Yes:
+            if reply.Yes:
+                message = 'Building Level(s)'
                 machines = self.checkBoxMachines
                 swarm_setup(QtWidgets.QAbstractButton.isChecked(machines))
                 submit = self.checkBoxSubmit
@@ -186,7 +183,6 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 swarm_setup(False)
                 message = 'Level Build'
-
             else:
                 message = 'Rendering abort.'
 
