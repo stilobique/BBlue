@@ -8,7 +8,6 @@ from os.path import join, dirname, basename, isdir, normpath
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Models.Database import TableProgram
-# from BatchLightUE4.Controllers.View_Setup import setup_tab_paths
 from BatchLightUE4.Controllers.Files import \
     file_save_project, file_open, load_generic
 
@@ -83,7 +82,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                                 root_model.invisibleRootItem())
         self.ProjectTreeLevels.expandAll()
         self.ProjectTreeLevels.setColumnWidth(0, 250)
-        # self.ProjectTreeLevels.clicked.connect(self.update_level)
         root_model.itemChanged.connect(self.update_level)
 
         return self
@@ -127,7 +125,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         else:
             info = [index_item.text(), 'Path', 0]
 
-        print(info)
         self.data.write_data_levels(parent=self, state=state, data=info)
 
     def model_populate(self, children, parent):
