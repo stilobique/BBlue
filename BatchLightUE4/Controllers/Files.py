@@ -6,6 +6,7 @@ from BatchLightUE4.Controllers.View_Setup import setup_tab_paths_save
 def file_save_project(self, close=None):
     """
     Function to save a Project (a .db file at the moment).
+
     :param self: need to keep all data, paths, sc... and more.
     :param close: a Boolean option for close the Windows, optional setup
     :return:
@@ -38,6 +39,14 @@ def file_save_project(self, close=None):
 
 
 def file_open(self, index):
+    """
+    Popup to select a file.
+
+    :param self: a 'parent' parameter, need to find all data.
+    :param index: this index (a Int) give an info to specify the type file
+    desired and the description.
+    :return:
+    """
     if index == 1:
         description = 'Select your Unreal Path'
         file = 'UE4Editor.exe'
@@ -49,15 +58,15 @@ def file_open(self, index):
         file = '*.db'
 
     popup = load_generic(self, description, file)
-    self.tab_project_setup(index, popup[0])
 
-    return popup[0]
+    return popup
 
 
 def load_generic(self, description, file):
     """
     This function generate a popup to load a file, it's to take a string
     path and all data returns is the Path and the file name.
+
     :param self: windows data, needed to keep information
     :param description: this field give the dialogue name
     :param file: use it to specify a type file (.png, .db...)
