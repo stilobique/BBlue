@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from os.path import join, expanduser
 from BatchLightUE4.Controllers.View_Setup import setup_tab_paths_save
 
@@ -80,5 +80,25 @@ def load_generic(self, description, file):
         filter=file,
         options=options
     )
+
+    return popup
+
+
+def popup_msg(parent, popup_type, title, description):
+    popup = QMessageBox()
+
+    if popup_type == 'information':
+        popup.information(parent,
+                          title,
+                          description,
+                          QMessageBox.Close)
+
+    elif popup_type == 'question':
+        popup.question(
+            parent,
+            title,
+            description,
+            QMessageBox.Yes | QMessageBox.Cancel
+            )
 
     return popup

@@ -17,7 +17,7 @@ from BatchLightUE4.Models.Database import TableProgram
 # Adding all Operator used
 from BatchLightUE4.Models.Setup import Setup
 from BatchLightUE4.Controllers.Swarm import swarm_setup
-from BatchLightUE4.Controllers.Files import load_generic
+from BatchLightUE4.Controllers.Files import load_generic, popup_msg
 
 # TODO Add a check if an UE version has launch
 
@@ -167,13 +167,17 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         # -> Non, abort rendering
         # -> Oui, je lance mon thread et ma progress bar.
 
-        if level_count == 0:
-            msg = 'No level(s) selected !'
-            QMessageBox.information(self, 'Information', msg)
+        if len(lvl_rendering) == 0:
+            popup_type = 'information'
+            title = 'Error'
+            message = 'No level selected !'
+            popup_msg(self, popup_type, title, message)
 
         else:
-            text = 'Launch the rendering ?'
-            reply = QMessageBox.question(self, 'Rendering', text)
+            popup_type = 'question'
+            title = 'Rendering'
+            message = 'Launch the rendering ?'
+            reply = popup_msg(self, popup_type, title, message)
             lvl_rendering.sort()
 
             if reply == QMessageBox.Yes:
@@ -187,12 +191,12 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                               submit).show()
 
                 swarm_setup(False)
-                msg = 'Level Build'
+                message = 'Level Build'
 
             else:
-                msg = 'Rendering abort.'
+                message = 'Rendering abort.'
 
-        self.statusbar.showMessage(msg)
+        self.statusbar.showMessage(message)
 
 
 if __name__ == "__main__":
