@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from os.path import normpath, dirname, basename
+from os.path import normpath, dirname
 from BatchLightUE4.Models.Setup import Setup
 
 
@@ -110,19 +110,8 @@ class TableProgram(object):
         self.bd.commit()
         self.bd.close()
 
-    def write_data_levels(self, parent, state, data):
-        id_project = 1
+    def write_data_levels(self, state, data):
         self.bd.cursor()
-
-        dict_path = {
-            'unreal': parent.ue4_path_text.text(),
-            'project': parent.project_file_text.text(),
-            'folder': parent.sub_folder_text.text()
-        }
-
-        path_project = dirname(dict_path['project']) + '/Content/' + dict_path[
-            'folder']
-        path_project = normpath(path_project)
 
         name = data[0]
         path = data[1]
