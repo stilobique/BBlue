@@ -85,6 +85,18 @@ def load_generic(self, description, file):
 
 
 def popup_msg(parent, popup_type, title, description):
+    """
+    A simple function to launch a popup box, with a basic option -yes, no,
+    close and more option.
+
+    :param parent: give a parent, it's a Modal ; this function want a
+    referential object.
+    :param popup_type: String object to define the Message Box wanted,
+    like 'information' or 'question'
+    :param title: The dialog title
+    :param description: insert a simple message with the dialog box
+    :return: the function return a QMessageBox.
+    """
     popup = QMessageBox()
 
     if popup_type == 'information':

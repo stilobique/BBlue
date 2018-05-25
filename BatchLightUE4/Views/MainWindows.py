@@ -155,17 +155,11 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def view_rendering(self):
         lvl_rendering = []
-        level_count = 0
 
         for key, value in self.checkBoxLevels.items():
             btn = self.checkBoxLevels[key]
             if QtWidgets.QAbstractButton.isChecked(btn):
                 lvl_rendering.append(key)
-                level_count = len(lvl_rendering)
-
-        # Check si je peut faire un build (More than 1 levels selected ?
-        # -> Non, abort rendering
-        # -> Oui, je lance mon thread et ma progress bar.
 
         if len(lvl_rendering) == 0:
             popup_type = 'information'
