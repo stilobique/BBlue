@@ -1,7 +1,6 @@
 import os
 import sqlite3
 
-from os.path import normpath, dirname
 from BatchLightUE4.Models.Setup import Setup
 
 
