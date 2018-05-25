@@ -28,10 +28,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.list_levels = QtGui.QStandardItemModel()
 
         #   Write all Slot and Connect ----------------------------------------
-        self.ue4_path_edit.clicked.connect(lambda: file_open(self, 1))
-        self.project_file_edit.clicked.connect(lambda: file_open(self, 2))
-        self.sub_folder_edit.clicked.connect(self.tab_project_setup)
-        self.sub_folder_text.returnPressed.connect(self.tab_project_setup)
+        self.field_setup()
         self.tab_project_setup()
 
         # Tab Network Setup ---------------------------------------------------
@@ -61,23 +58,27 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :param value: String data, it a simple information to send it a field
         :return:
         """
-        if self.settings.last_job_run():
-            db = self.data.select_paths()
-            self.ue4_path_text.setText(db[0][1])
-            self.project_file_text.setText(db[0][2])
-            self.sub_folder_text.setText(db[0][3])
-
-        elif index:
+        if index:
             if index == 1:
                 self.ue4_path_text.setText(value)
             elif index == 2:
                 self.project_file_text.setText(value)
+            elif index == 3:
+                value = self.sub_folder_text.text()
+                self.sub_folder_text.setText(value)
+        elif self.settings.last_job_run():
+            db = self.data.select_paths()
+            self.ue4_path_text.setText(db[0][1])
+            self.project_file_text.setText(db[0][2])
+            self.sub_folder_text.setText(db[0][3])
+            print(self.sub_folder_text.text())
 
         level_path = join(dirname(self.project_file_text.text()),
                           'Content',
                           self.sub_folder_text.text())
 
         root_model = self.model_base(self)
+        self.ProjectTreeLevels.reset()
         self.ProjectTreeLevels.setModel(root_model)
         if self.project_file_text.text():
             data_tree = self.levels_list(level_path)
@@ -85,34 +86,45 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                                 root_model.invisibleRootItem())
         self.ProjectTreeLevels.expandAll()
         self.ProjectTreeLevels.setColumnWidth(0, 250)
+        self.ProjectTreeLevels.setSortingEnabled(True)
+        self.ProjectTreeLevels.sortByColumn(0, Qt.AscendingOrder)
         root_model.itemChanged.connect(self.update_level)
 
         return self
 
+    def field_setup(self):
+        self.ue4_path_edit.clicked.connect(lambda: self.select_file(1))
+        self.project_file_edit.clicked.connect(lambda: self.select_file(2))
+        self.sub_folder_edit.clicked.connect(lambda: self.tab_project_setup(
+            index=3))
+
     def levels_list(self, path):
         """
         Generate a list with all levels inside a path give than argument
-        :param path: specify a path to scan the folder
+        :param path: specify a path to scan the folder, it's a simple string
         :return: a dict with all levels and folder
         """
         folders = {}
         levels = []
-        for item in listdir(path):
-            absolute_path = join(path, item)
-            if isdir(absolute_path):
-                key = basename(dirname(absolute_path))
-                sub_levels = self.levels_list(absolute_path)
-                if len(sub_levels) and type(sub_levels) == dict:
-                    levels.append(sub_levels)
-                    folders[key] = levels
-            else:
-                if '.umap' in item:
-                    regex = r"^.*\Content"
-                    absolute_path = normpath(absolute_path)
-                    relative_path = re.sub(regex, '', dirname(absolute_path))
-                    levels.append(join(relative_path, item))
+        if isdir(path):
+            for item in listdir(path):
+                absolute_path = join(path, item)
+                if isdir(absolute_path):
                     key = basename(dirname(absolute_path))
-                    folders[key] = levels
+                    sub_levels = self.levels_list(absolute_path)
+                    if len(sub_levels) and type(sub_levels) == dict:
+                        levels.append(sub_levels)
+                        folders[key] = levels
+                else:
+                    if '.umap' in item:
+                        regex = r"^.*\Content"
+                        absolute_path = normpath(absolute_path)
+                        relative_path = re.sub(regex, '', dirname(absolute_path))
+                        levels.append(join(relative_path, item))
+                        key = basename(dirname(absolute_path))
+                        folders[key] = levels
+        else:
+            folders = {'No Data': 'Error Path'}
 
         return folders
 
@@ -171,6 +183,10 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         model.setHeaderData(self.header2, Qt.Horizontal, 'Paths')
 
         return model
+
+    def select_file(self, index):
+        select = file_open(self, index)
+        self.tab_project_setup(index, select[0])
 
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
