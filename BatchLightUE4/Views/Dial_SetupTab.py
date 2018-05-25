@@ -56,6 +56,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         with all editable data.
         It's only a function to add the slot and signal inside the Ui.
 
+        :param index: None by default, this value give a Int to choice the
+        field used, Unreal Editor (1) or the Project field (2).
+        :param value: String data, it a simple information to send it a field
         :return:
         """
         if self.settings.last_job_run():
@@ -172,10 +175,19 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
     # Ui Functions ------------------------------------------------------------
     #   Tab Source Control ----------------------------------------------------
     def tab_source_control(self):
+        """
+        The Ui about the Source Control panel, all option and slot connect.
+        :return:
+        """
         soft_work = self.softwares_comboBox
         soft_work.currentIndexChanged.connect(self.sc_software)
 
     def sc_software(self):
+        """
+        Event on the Source control tab, activate or disable all fields about
+        the option on this tab.
+        :return:
+        """
         # Todo Use a loop with a children to change the statue
         if self.softwares_comboBox.currentText() == 'Disabled':
             self.path_sc_label.setDisabled(True)
