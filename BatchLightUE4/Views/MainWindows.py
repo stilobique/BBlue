@@ -3,8 +3,6 @@ import perforce
 from os.path import basename, dirname
 from PyQt5 import QtWidgets
 
-from PyQt5.QtWidgets import QMessageBox
-
 # Adding all view used
 from BatchLightUE4.Views.Dial_About import DialViewAbout
 from BatchLightUE4.Views.Dial_LogTools import DialLogTools
