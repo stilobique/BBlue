@@ -37,7 +37,7 @@ def build(level_used):
 def swarm_setup(boolean):
     """Change your setup with all parameter."""
     data = TableProgram()
-    path_ue4 = data.select_paths(1)
+    path_ue4 = data.select_paths()
     path_exe = os.path.dirname(path_ue4[0][1])
     os.path.dirname(path_exe)
     path_exe = os.path.dirname(path_exe)
