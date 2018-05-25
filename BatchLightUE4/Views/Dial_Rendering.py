@@ -9,17 +9,21 @@ from BatchLightUE4.Controllers.Perfoce import p4_checkout, p4_submit
 
 
 class DialRendering(QtWidgets.QDialog, Ui_Rendering):
-    """Rendering Dialog Box."""
     value_slide = pyqtSignal(int)
 
-    def __init__(self, parent, lvl_list, csv='False', submit=False):
-        """lvl_list: list with all level rendering.
-        csv: data with the CSV used (booelan or list)"""
+    def __init__(self, parent, lvl_list, csv=False, submit=False):
+        """
+        Rendering Dialog Box, all connect and slot.
+
+        :param lvl_list: a list with all level rendering.
+        :param csv: data with the CSV used (boolean or list)
+        :param submit: Boolean, launch or not the submit phase
+        """
         super(DialRendering, self).__init__(parent)
         self.setupUi(self)
 
         # TODO Split the rendering process on a another thread.
-        # Je setup ma progress bar avec les data de base
+        # Setup the Progress bar with the data
         self.progressBar.setMaximum(len(lvl_list))
         self.progressBar.setValue(0)
         btn = QtWidgets.QDialogButtonBox
@@ -35,21 +39,21 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
     def get_progress_value(self, value):
         self.progressBar.setValue(value)
 
-    # def progress_built(self, value):
-    #     self.value_slide.emit(value)
-        # # value = QtCore.pyqtSignal([int], ['ProgressValue'])
-        # print('+1 progress bar')
-        # print(self.progressBar.value())
-        # value = self.progressBar.value() + 1
-        # print(value)
-        # max_value = self.progressBar.maximum()
-        # print('Max > ', max_value)
-        # self.progressBar.setValue(value)
-        #
-        # if value == max_value:
-        #     print('Rendering Finished')
-        #     btn = QtWidgets.QDialogButtonBox
-        #     self.buttonBox.button(btn.Ok).setEnabled(True)
+    def progress_built(self, value):
+        self.value_slide.emit(value)
+        # value = QtCore.pyqtSignal([int], ['ProgressValue'])
+        print('+1 progress bar')
+        print(self.progressBar.value())
+        value = self.progressBar.value() + 1
+        print(value)
+        max_value = self.progressBar.maximum()
+        print('Max > ', max_value)
+        self.progressBar.setValue(value)
+
+        if value == max_value:
+            print('Rendering Finished')
+            btn = QtWidgets.QDialogButtonBox
+            self.buttonBox.button(btn.Ok).setEnabled(True)
 
 
 class ThreadRendering(QtCore.QThread):

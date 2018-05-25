@@ -51,13 +51,12 @@ class TableProgram(object):
         self.bd.commit()
         # self.bd.close()
 
-    def select_paths(self, id_project=1):
+    def select_paths(self):
         """
         Select a Data path from a project used
-        :param id_project: Select the project number, it's a DB constraint,
-        need to be refactoring
         :return:
         """
+        id_project = 1
         request = self.bd.cursor()
         request.execute('''SELECT * FROM paths 
                         WHERE path_id = ?''',

@@ -24,7 +24,7 @@ def setup_tab_paths(unreal, project, folder, update=False):
     }
 
     if isfile(setup.last_job_run()):
-        paths_data = data.select_paths(1)
+        paths_data = data.select_paths()
     #     paths_data = paths_data[0]
     #     paths_field['editor'] = paths_data[1]
     #     paths_field['project'] = paths_data[2]

@@ -174,10 +174,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 swarm_setup(QtWidgets.QAbstractButton.isChecked(machines))
                 submit = self.checkBoxSubmit
 
-                DialRendering(self,
-                              lvl_rendering,
-                              self.csv[0],
-                              submit).show()
+                DialRendering(self, lvl_rendering, False, submit).show()
 
                 swarm_setup(False)
                 message = 'Level Build'
