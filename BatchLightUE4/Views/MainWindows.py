@@ -219,13 +219,18 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 swarm_setup(QtWidgets.QAbstractButton.isChecked(machines))
                 submit = self.checkBoxSubmit
 
-                DialRendering(self,
-                              lvl_list=lvl_rendering,
-                              csv=False,
-                              submit=submit).show()
+                dial_rendering = DialRendering(self,
+                                               lvl_list=lvl_rendering,
+                                               csv=False,
+                                               submit=submit)
+                dial_rendering.show()
+                rsp = dial_rendering.exec_()
 
-                swarm_setup(False)
-                message = 'Level Build'
+                if rsp == QtWidgets.QDialog.Accepted:
+                    print('Rendering Validate')
+                    swarm_setup(False)
+                    message = 'Level Build'
+
             else:
                 message = 'Rendering abort.'
 
