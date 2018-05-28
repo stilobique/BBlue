@@ -23,21 +23,32 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         self.setupUi(self)
 
         # TODO Split the rendering process on a another thread.
+
+        # Button Box Setup
+        self.buttons_box()
+
         # Setup the Progress bar with the data
-        self.progressBar.setMaximum(len(lvl_list))
-        self.progressBar.setValue(0)
-        btn = QtWidgets.QDialogButtonBox
-        self.buttonBox.button(btn.Ok).setEnabled(False)
-        self.swarm = ThreadRendering(lvl_list, csv, submit)
-        self.progressBar.valueChanged.connect(self.progress_built)
-        self.swarm.start()
+        # self.progressBar.setMaximum(len(lvl_list))
+        # self.progressBar.setValue(0)
+        # self.swarm = ThreadRendering(lvl_list, csv, submit)
+        # self.progressBar.valueChanged.connect(self.progress_built)
+        # self.swarm.start()
+
+    # Ui Function -------------------------------------------------------------
+    #   Bottom Toolbars, option to launch the rendering and the log -----------
+    def buttons_box(self, state=True):
+        box_btn = QtWidgets.QDialogButtonBox
+        btn = self.buttonBox.button
+        btn(box_btn.Ok).clicked.connect(self.close)
+        btn(box_btn.Ok).setEnabled(state)
+        btn(box_btn.Abort).clicked.connect(self.stop_rendering)
 
     def value_connect(self, slider_object):
         slider_object.changedValue.connect(self.get_slider_value)
 
-    @pyqtSlot(int)
-    def get_progress_value(self, value):
-        self.progressBar.setValue(value)
+    # @pyqtSlot(value=int)
+    # def get_progress_value(self, value):
+    #     self.progressBar.setValue(value)
 
     def progress_built(self, value):
         self.value_slide.emit(value)
@@ -55,6 +66,10 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             btn = QtWidgets.QDialogButtonBox
             self.buttonBox.button(btn.Ok).setEnabled(True)
 
+    def stop_rendering(self):
+        print('Stop Rendering')
+        self.swarm.stop()
+
 
 class ThreadRendering(QtCore.QThread):
     def __init__(self, level_rendering, csv, submit):
@@ -64,7 +79,7 @@ class ThreadRendering(QtCore.QThread):
 
         :param level_rendering: A level list we want build it
         :type level_rendering: list
-        :param csv: infomartion about the CSV used (False or other)
+        :param csv: information about the CSV used (False or other)
         :type csv: String
         :param submit: Info if the instance need to submit the rendering
         :type submit: bool
@@ -73,6 +88,7 @@ class ThreadRendering(QtCore.QThread):
         self.lvl_list = level_rendering
         self.csv_data = csv
         self.submit = submit
+        self._running = True
 
     def __del__(self):
         self.wait()
@@ -84,8 +100,8 @@ class ThreadRendering(QtCore.QThread):
         self.sleep(4)
 
         for level in self.lvl_list:
-            if 'False' not in self.csv_data:
-                cl = p4_checkout(self.lvl_list[0])
+            # if 'False' not in self.csv_data:
+            #     cl = p4_checkout(self.lvl_list[0])
             swarm = build(level)
             while swarm:
                 self.sleep(30)
@@ -94,13 +110,21 @@ class ThreadRendering(QtCore.QThread):
 
                 else:
                     print('Update progress bar')
-                    self.value_progress()
+                    # self.value_progress()
+                    count = self.lvl_list.index(level)
+                    print('Progress Bar', count)
                     break
 
-            if QtWidgets.QAbstractButton.isChecked(self.submit):
-                p4_submit(cl)
+            # if QtWidgets.QAbstractButton.isChecked(self.submit):
+            #     p4_submit(cl)
 
             print('End Looping')
 
-    def progress_built(self, value):
-        self.value_slide.emit(value)
+    # def progress_built(self, value):
+    #     self.value_slide.emit(value)
+
+    @pyqtSlot()
+    def stop(self):
+        print('Abort the thread')
+        self._running = False
+        self.terminate()
