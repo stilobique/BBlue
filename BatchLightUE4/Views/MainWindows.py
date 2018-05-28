@@ -35,9 +35,13 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         # Setup settings base
 
+        # Generate all variable needed with this window
         self.settings = Setup()
         self.data = TableProgram()
         self.job = self.settings.last_job_run()
+
+        if self.job:
+            self.csv = self.data.csv_data()
 
         self.checkBoxLevels = {}
 
@@ -47,7 +51,12 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.bottom_tools()
 
     # Ui Function -------------------------------------------------------------
+    #   File Menu setup -------------------------------------------------------
     def menu_setup(self):
+        """
+        Function to setup all connection an signal inside the File Menu bar.
+        :return:
+        """
         # File Menu
         self.actionNew_Setup.triggered.connect(self.dial_setup_project)
         open_project = self.actionLoad_Lastproject
@@ -63,24 +72,33 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                                          self.dial_setup_project(1))
 
         # Log Menu
-        self.actionShow_log_folder.triggered.connect(self.view_log)
-        self.actionClean_Log.triggered.connect(self.view_log)
+        self.actionShow_log_folder.triggered.connect(self.dialogue_log)
+        self.actionClean_Log.triggered.connect(self.dialogue_log)
 
         # Help Menu
-        self.actionAbout.triggered.connect(self.view_help)
-        self.actionShortcut.triggered.connect(lambda: self.view_help(1))
+        self.actionAbout.triggered.connect(self.dialogue_help)
+        self.actionShortcut.triggered.connect(lambda: self.dialogue_help(1))
 
+    # Ui Function -------------------------------------------------------------
+    #   Toolbars and function about the levels --------------------------------
     def levels_tools(self):
-        self.pushLevelsSelect.clicked.connect(lambda: self.select_level(True))
+        """
+        Function to setup the tools about the levels, add all signal used.
+        :return:
+        """
+        self.pushLevelsSelect.clicked.connect(lambda: self.select_level(2))
         self.pushLevelsDeselect.clicked.connect(self.select_level)
         self.toolLevelsEdit.clicked.connect(self.dial_setup_project)
 
     def levels_generate(self):
+        """
+        Function to draw all levels setup with this project.
+        :return:
+        """
         # Generate all Checkbox Levels.
         if self.job:
             levels = self.data.select_levels()
             level_checkbox = self.data.select_levels(state=2)
-            self.csv = self.data.csv_data()
             i = 0
             while i < len(level_checkbox):
                 key = level_checkbox[i][1]
@@ -109,49 +127,77 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             if 'False' not in self.csv[0]:
                 self.checkBoxSubmit.setEnabled(True)
 
+    # Ui Function -------------------------------------------------------------
+    #   Bottom Toolbars, option to launch the rendering and the log -----------
     def bottom_tools(self):
+        """
+        Function to add signal on the bottom toolbars.
+        :return:
+        """
         self.pushToolsBuils.clicked.connect(self.view_rendering)
         self.pushToolsBuils.setToolTip(self.pushToolsBuils.statusTip())
 
     # Window Call -------------------------------------------------------------
-    @staticmethod
-    def dial_setup_project(index):
+    #   Tab Setup dialogue ---------------------------------------------------
+    def dial_setup_project(self, index):
+        """
+        Function to show the dialogue 'Setup Tab', when it's close the
+        function 'levels_generate' is rebuilt.
+        :param index: A simple index to select the Tab opened.
+        :return:
+        """
         ui_setup_tab = DialSetupTab()
         ui_setup_tab.tabWidget.setCurrentIndex(index)
 
         ui_setup_tab.show()
         rsp = ui_setup_tab.exec_()
 
-        if rsp == QtWidgets.QDialog.Accepted:
-            print('Project Saved')
-
-        elif rsp == QtWidgets.QDialog.Rejected:
-            print('Rejected !')
-        else:
-            print('Error, nothing ??')
+        if rsp == QtWidgets.QDialog.Rejected:
+            layout_levels = self.allLevelsCheck
+            for item in reversed(range(layout_levels.count())):
+                delete_item = layout_levels.itemAt(item).widget()
+                layout_levels.removeWidget(delete_item)
+                delete_item.setParent(None)
+            self.levels_generate()
 
     # Old, refactoring function -----------------------------------------------
-    def view_log(self):
+    def dialogue_log(self):
+        """
+        A simple function to show the Windows Log with all option
+        :return:
+        """
         dialog_log = DialLogTools(self)
         dialog_log.show()
 
-    def view_help(self, index):
+    def dialogue_help(self, index):
+        """
+        Function to show the dialogue 'Help'.
+
+        :param index: A simple index to select the Tab opened.
+        :return:
+        """
         dialog_help = DialViewAbout(self)
         dialog_help.show()
         dialog_help.tabWidget.setCurrentIndex(index)
 
-    def select_level(self, state):
-        boolean = False
-        if state:
-            boolean = 2
-
-        data = self.checkBoxLevels
-        for key, value in data.items():
+    def select_level(self, state=0):
+        """
+        Evvent to select or deselect all levels,
+        :param state: return the state checkbox, 0 to off, 1 to be
+        semi-push and 2 to be check
+        :return:
+        """
+        for key, value in self.checkBoxLevels.items():
             btn = self.checkBoxLevels[key]
             if QtWidgets.QAbstractButton.isEnabled(btn):
-                btn.setCheckState(boolean)
+                btn.setCheckState(state)
 
     def view_rendering(self):
+        """
+        Event to launch the rendering windows and all build -check the
+        swarm, the source control used... and more.
+        :return:
+        """
         lvl_rendering = []
 
         for key, value in self.checkBoxLevels.items():
@@ -169,12 +215,14 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             lvl_rendering.sort()
 
             if reply.Yes:
-                message = 'Building Level(s)'
                 machines = self.checkBoxMachines
                 swarm_setup(QtWidgets.QAbstractButton.isChecked(machines))
                 submit = self.checkBoxSubmit
 
-                DialRendering(self, lvl_rendering, False, submit).show()
+                DialRendering(self,
+                              lvl_list=lvl_rendering,
+                              csv=False,
+                              submit=submit).show()
 
                 swarm_setup(False)
                 message = 'Level Build'
