@@ -1,7 +1,7 @@
 import psutil
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
 
 from BatchLightUE4.Views.Dial_Rendering_convert import Ui_Rendering
 from BatchLightUE4.Controllers.Swarm import build
@@ -24,6 +24,8 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
 
         # TODO Split the rendering process on a another thread.
 
+        # Generate all levels works
+        self.levels_works(lvl_list)
         # Button Box Setup
         self.buttons_box()
 
@@ -35,8 +37,41 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         # self.swarm.start()
 
     # Ui Function -------------------------------------------------------------
+    #   Generate the list with all levels rendering ---------------------------
+    def levels_works(self, lvl_list):
+        """
+        Function to show all levels and what's is working.
+        :param lvl_list: list with all levels to build
+        :return:
+        """
+        group_parent = self.levels_group
+        vertical_parent = self.layout_vertical
+        print('Alls Levels')
+        for item in lvl_list:
+            # Define horizontal layout
+            h_layout = QtWidgets.QHBoxLayout()
+            h_layout.setObjectName('h_layout')
+
+            # Define all label text
+            level_name = QtWidgets.QLabel(group_parent)
+            level_name.setText("Level rendering name :")
+            level_name.setAlignment(Qt.AlignRight)
+            level_item = QtWidgets.QLabel(group_parent)
+            level_item.setText(item)
+            level_item.setAlignment(Qt.AlignLeft)
+
+            h_layout.addWidget(level_name)
+            h_layout.addWidget(level_item)
+            # layout.addWidget(level)
+            vertical_parent.addLayout(h_layout)
+
     #   Bottom Toolbars, option to launch the rendering and the log -----------
     def buttons_box(self, state=True):
+        """
+        Setup the UI Buttons
+        :param state: Boolean to define the state about the button "Ok"
+        :return:
+        """
         box_btn = QtWidgets.QDialogButtonBox
         btn = self.buttonBox.button
         btn(box_btn.Ok).clicked.connect(self.close)
@@ -68,7 +103,7 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
 
     def stop_rendering(self):
         print('Stop Rendering')
-        self.swarm.stop()
+        # self.swarm.stop()
 
 
 class ThreadRendering(QtCore.QThread):
