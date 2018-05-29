@@ -18,13 +18,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupLvlState">
+    <widget class="QGroupBox" name="levels_group">
      <property name="title">
       <string>States building :</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="lyt_lvl1">
+       <layout class="QHBoxLayout" name="levels_layout">
         <item>
          <widget class="QLabel" name="lvl_name_placeholder">
           <property name="toolTip">
