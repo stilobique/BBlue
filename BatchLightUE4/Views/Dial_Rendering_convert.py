@@ -22,6 +22,8 @@ class Ui_Rendering(object):
         self.layout_vertical = QtWidgets.QVBoxLayout()
         self.layout_vertical.setObjectName("layout_vertical")
         self.verticalLayout.addLayout(self.layout_vertical)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
         self.gridLayout.addWidget(self.levels_group, 0, 0, 1, 2)
         self.progressBar = QtWidgets.QProgressBar(Rendering)
         self.progressBar.setProperty("value", 24)
