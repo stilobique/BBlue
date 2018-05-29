@@ -93,6 +93,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         return self
 
     def field_setup(self):
+        """Generate the fields and signal about all paths"""
         self.ue4_path_edit.clicked.connect(lambda: self.select_file(1))
         self.project_file_edit.clicked.connect(lambda: self.select_file(2))
         self.sub_folder_edit.clicked.connect(lambda: self.tab_project_setup(
