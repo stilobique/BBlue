@@ -1,6 +1,6 @@
 import psutil
 
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
 
 from BatchLightUE4.Views.Dial_Rendering_convert import Ui_Rendering
@@ -46,22 +46,29 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         """
         group_parent = self.levels_group
         vertical_parent = self.layout_vertical
-        print('Alls Levels')
         for item in lvl_list:
             # Define horizontal layout
             h_layout = QtWidgets.QHBoxLayout()
             h_layout.setObjectName('h_layout')
 
-            # Define all label text
+            #Generate the logo used
+            icon = QtGui.QPixmap("Resources/Icons/s-valid.png")
+
+            # Define all label
             level_name = QtWidgets.QLabel(group_parent)
             level_name.setText("Level rendering name :")
-            level_name.setAlignment(Qt.AlignRight)
+            level_logo = QtWidgets.QLabel(group_parent)
+            level_logo.setText('')
+            level_logo.setPixmap(icon)
+            level_logo.setScaledContents(False)
+            level_logo.setAlignment(QtCore.Qt.AlignCenter)
+            level_logo.setMaximumSize(QtCore.QSize(16, 16))
             level_item = QtWidgets.QLabel(group_parent)
             level_item.setText(item)
-            level_item.setAlignment(Qt.AlignLeft)
 
-            h_layout.addWidget(level_name)
-            h_layout.addWidget(level_item)
+            h_layout.addWidget(level_name, alignment=Qt.AlignRight)
+            h_layout.addWidget(level_logo, alignment=Qt.AlignCenter)
+            h_layout.addWidget(level_item, alignment=Qt.AlignLeft)
             # layout.addWidget(level)
             vertical_parent.addLayout(h_layout)
 
