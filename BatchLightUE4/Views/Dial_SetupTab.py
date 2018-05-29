@@ -141,7 +141,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         else:
             info = [index_item.text(), 'Path', 0]
 
-        self.data.write_data_levels(parent=self, state=state, data=info)
+        self.data.write_data_levels(state=state, data=info)
 
     def model_populate(self, children, parent):
         """
