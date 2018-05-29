@@ -119,8 +119,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                 else:
                     if '.umap' in item:
                         regex = r"^.*\Content"
+                        folder = dirname(absolute_path)
                         absolute_path = normpath(absolute_path)
-                        relative_path = re.sub(regex, '', dirname(absolute_path))
+                        relative_path = re.sub(regex, '', folder)
                         levels.append(join(relative_path, item))
                         key = basename(dirname(absolute_path))
                         folders[key] = levels
