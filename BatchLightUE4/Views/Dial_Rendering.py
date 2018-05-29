@@ -51,7 +51,7 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             h_layout = QtWidgets.QHBoxLayout()
             h_layout.setObjectName('h_layout')
 
-            #Generate the logo used
+            # Generate the logo used
             icon = QtGui.QPixmap("Resources/Icons/s-valid.png")
 
             # Define all label
@@ -60,8 +60,6 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             level_logo = QtWidgets.QLabel(group_parent)
             level_logo.setText('')
             level_logo.setPixmap(icon)
-            level_logo.setScaledContents(False)
-            level_logo.setAlignment(QtCore.Qt.AlignCenter)
             level_logo.setMaximumSize(QtCore.QSize(16, 16))
             level_item = QtWidgets.QLabel(group_parent)
             level_item.setText(item)
@@ -165,8 +163,8 @@ class ThreadRendering(QtCore.QThread):
     # def progress_built(self, value):
     #     self.value_slide.emit(value)
 
-    @pyqtSlot()
-    def stop(self):
-        print('Abort the thread')
-        self._running = False
-        self.terminate()
+    # @pyqtSlot()
+    # def stop(self):
+    #     print('Abort the thread')
+    #     self._running = False
+    #     self.terminate()
