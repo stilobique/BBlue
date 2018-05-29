@@ -22,16 +22,12 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         super(DialRendering, self).__init__(parent)
         self.setupUi(self)
 
-        # TODO Split the rendering process on a another thread.
-
-        # Generate all levels works
+        # Base UI
         self.levels_works(lvl_list)
-        # Button Box Setup
+        self.progress_bar_ui(total=len(lvl_list))
         self.buttons_box()
 
         # Setup the Progress bar with the data
-        # self.progressBar.setMaximum(len(lvl_list))
-        # self.progressBar.setValue(0)
         # self.swarm = ThreadRendering(lvl_list, csv, submit)
         # self.progressBar.valueChanged.connect(self.progress_built)
         # self.swarm.start()
@@ -69,6 +65,18 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             h_layout.addWidget(level_item, alignment=Qt.AlignLeft)
             # layout.addWidget(level)
             vertical_parent.addLayout(h_layout)
+
+    #   Bottom Toolbars, option to launch the rendering and the log -----------
+    def progress_bar_ui(self, value=0, total=100):
+        """
+        Setup the Progress Bar, give the maxime value and the value used.
+        :param value: a Int value, this value give the statue about the bar
+        :param total: another Int, give the maximum value
+        :return:
+        """
+        # Setup the Progress bar with the data
+        self.progressBar.setValue(value)
+        self.progressBar.setMaximum(total)
 
     #   Bottom Toolbars, option to launch the rendering and the log -----------
     def buttons_box(self, state=True):
