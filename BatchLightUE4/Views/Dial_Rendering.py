@@ -42,10 +42,13 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         """
         group_parent = self.levels_group
         vertical_parent = self.layout_vertical
+        vertical_parent.setAlignment(Qt.AlignJustify)
+
         for item in lvl_list:
             # Define horizontal layout
             h_layout = QtWidgets.QHBoxLayout()
             h_layout.setObjectName('h_layout')
+            h_layout.setAlignment(Qt.AlignLeft)
 
             # Generate the logo used
             icon = QtGui.QPixmap("Resources/Icons/s-valid.png")
@@ -56,14 +59,12 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             level_logo = QtWidgets.QLabel(group_parent)
             level_logo.setText('')
             level_logo.setPixmap(icon)
-            level_logo.setMaximumSize(QtCore.QSize(16, 16))
             level_item = QtWidgets.QLabel(group_parent)
             level_item.setText(item)
 
             h_layout.addWidget(level_name, alignment=Qt.AlignRight)
             h_layout.addWidget(level_logo, alignment=Qt.AlignCenter)
             h_layout.addWidget(level_item, alignment=Qt.AlignLeft)
-            # layout.addWidget(level)
             vertical_parent.addLayout(h_layout)
 
     #   Bottom Toolbars, option to launch the rendering and the log -----------
