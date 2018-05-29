@@ -27,6 +27,10 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         self.progress_bar_ui(total=len(lvl_list))
         self.buttons_box()
 
+        # Launch all building light.
+        self.building_light = ThreadRendering(lvl_list, csv, submit)
+        self.building_light.start()
+
         # Setup the Progress bar with the data
         # self.swarm = ThreadRendering(lvl_list, csv, submit)
         # self.progressBar.valueChanged.connect(self.progress_built)
@@ -92,28 +96,28 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         btn(box_btn.Ok).setEnabled(state)
         btn(box_btn.Abort).clicked.connect(self.stop_rendering)
 
-    def value_connect(self, slider_object):
-        slider_object.changedValue.connect(self.get_slider_value)
+    # def value_connect(self, slider_object):
+    #     slider_object.changedValue.connect(self.get_slider_value)
 
     # @pyqtSlot(value=int)
     # def get_progress_value(self, value):
     #     self.progressBar.setValue(value)
 
-    def progress_built(self, value):
-        self.value_slide.emit(value)
-        # value = QtCore.pyqtSignal([int], ['ProgressValue'])
-        print('+1 progress bar')
-        print(self.progressBar.value())
-        value = self.progressBar.value() + 1
-        print(value)
-        max_value = self.progressBar.maximum()
-        print('Max > ', max_value)
-        self.progressBar.setValue(value)
-
-        if value == max_value:
-            print('Rendering Finished')
-            btn = QtWidgets.QDialogButtonBox
-            self.buttonBox.button(btn.Ok).setEnabled(True)
+    # def progress_built(self, value):
+    #     self.value_slide.emit(value)
+    #     # value = QtCore.pyqtSignal([int], ['ProgressValue'])
+    #     print('+1 progress bar')
+    #     print(self.progressBar.value())
+    #     value = self.progressBar.value() + 1
+    #     print(value)
+    #     max_value = self.progressBar.maximum()
+    #     print('Max > ', max_value)
+    #     self.progressBar.setValue(value)
+    #
+    #     if value == max_value:
+    #         print('Rendering Finished')
+    #         btn = QtWidgets.QDialogButtonBox
+    #         self.buttonBox.button(btn.Ok).setEnabled(True)
 
     def stop_rendering(self):
         print('Stop Rendering')
