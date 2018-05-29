@@ -166,8 +166,14 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             if type(values) == list:
                 for value in values:
                     if type(value) == str:
-                        item_name = QStandardItem(basename(value))
+                        level_name = basename(value)
+                        check = False
+                        if self.settings.last_job_run():
+                            if len(self.data.select_levels(name=level_name)):
+                                check = 2
+                        item_name = QStandardItem(level_name)
                         item_name.setCheckable(True)
+                        item_name.setCheckState(check)
                         item_path = QStandardItem(value)
                         item_object.appendRow([item_name, item_path])
                     elif type(value) == dict:
