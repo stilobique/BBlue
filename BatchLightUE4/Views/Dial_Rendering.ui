@@ -24,65 +24,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="levels_layout">
-        <item>
-         <widget class="QLabel" name="lvl_name_placeholder">
-          <property name="toolTip">
-           <string notr="true"/>
-          </property>
-          <property name="statusTip">
-           <string notr="true"/>
-          </property>
-          <property name="whatsThis">
-           <string notr="true"/>
-          </property>
-          <property name="accessibleName">
-           <string notr="true"/>
-          </property>
-          <property name="accessibleDescription">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string notr="true">Level rendering name :</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lvl_logo_placeholder">
-          <property name="minimumSize">
-           <size>
-            <width>16</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16</width>
-            <height>16</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap>../../Resources/Icons/s-valid.png</pixmap>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lvl_state_placeholder">
-          <property name="text">
-           <string>statut levels</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QVBoxLayout" name="layout_vertical"/>
       </item>
      </layout>
     </widget>
