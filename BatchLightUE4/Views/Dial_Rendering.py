@@ -9,8 +9,6 @@ from BatchLightUE4.Controllers.Perfoce import p4_checkout, p4_submit
 
 
 class DialRendering(QtWidgets.QDialog, Ui_Rendering):
-    value_slide = pyqtSignal(int)
-
     def __init__(self, parent, lvl_list, csv=False, submit=False):
         """
         Rendering Dialog Box, all connect and slot.
@@ -22,19 +20,19 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         super(DialRendering, self).__init__(parent)
         self.setupUi(self)
 
+        # Define data and variables.
+        self.levels = lvl_list
+        self.levels_count = len(lvl_list)
+
         # Base UI
-        self.levels_works(lvl_list)
-        self.progress_bar_ui(total=len(lvl_list))
+        self.levels_works(self.levels)
+        self.progress_bar_ui()
         self.buttons_box()
 
         # Launch all building light.
         self.building_light = ThreadRendering(lvl_list, csv, submit)
         self.building_light.start()
-
-        # Setup the Progress bar with the data
-        # self.swarm = ThreadRendering(lvl_list, csv, submit)
-        # self.progressBar.valueChanged.connect(self.progress_built)
-        # self.swarm.start()
+        self.building_light.progress_value.connect(self.progress_bar_ui)
 
     # Ui Function -------------------------------------------------------------
     #   Generate the list with all levels rendering ---------------------------
@@ -55,7 +53,8 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             h_layout.setAlignment(Qt.AlignLeft)
 
             # Generate the logo used
-            icon = QtGui.QPixmap("Resources/Icons/s-valid.png")
+            lvl_list.index(item)
+            icon = QtGui.QPixmap("Resources/Icons/s-empty.png")
 
             # Define all label
             level_name = QtWidgets.QLabel(group_parent)
@@ -72,16 +71,15 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             vertical_parent.addLayout(h_layout)
 
     #   Bottom Toolbars, option to launch the rendering and the log -----------
-    def progress_bar_ui(self, value=0, total=100):
+    def progress_bar_ui(self, value=0):
         """
-        Setup the Progress Bar, give the maxime value and the value used.
+        Setup the Progress Bar, give the maximum value and the value used.
         :param value: a Int value, this value give the statue about the bar
-        :param total: another Int, give the maximum value
         :return:
         """
         # Setup the Progress bar with the data
         self.progressBar.setValue(value)
-        self.progressBar.setMaximum(total)
+        self.progressBar.setMaximum(self.levels_count)
 
     #   Bottom Toolbars, option to launch the rendering and the log -----------
     def buttons_box(self, state=True):
@@ -96,35 +94,14 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         btn(box_btn.Ok).setEnabled(state)
         btn(box_btn.Abort).clicked.connect(self.stop_rendering)
 
-    # def value_connect(self, slider_object):
-    #     slider_object.changedValue.connect(self.get_slider_value)
-
-    # @pyqtSlot(value=int)
-    # def get_progress_value(self, value):
-    #     self.progressBar.setValue(value)
-
-    # def progress_built(self, value):
-    #     self.value_slide.emit(value)
-    #     # value = QtCore.pyqtSignal([int], ['ProgressValue'])
-    #     print('+1 progress bar')
-    #     print(self.progressBar.value())
-    #     value = self.progressBar.value() + 1
-    #     print(value)
-    #     max_value = self.progressBar.maximum()
-    #     print('Max > ', max_value)
-    #     self.progressBar.setValue(value)
-    #
-    #     if value == max_value:
-    #         print('Rendering Finished')
-    #         btn = QtWidgets.QDialogButtonBox
-    #         self.buttonBox.button(btn.Ok).setEnabled(True)
-
-    def stop_rendering(self):
+    @staticmethod
+    def stop_rendering():
         print('Stop Rendering')
-        # self.swarm.stop()
 
 
 class ThreadRendering(QtCore.QThread):
+    progress_value = pyqtSignal(int)
+
     def __init__(self, level_rendering, csv, submit):
         """
         This Class use the building operator in a separated thread, without
@@ -147,37 +124,16 @@ class ThreadRendering(QtCore.QThread):
         self.wait()
 
     def run(self):
-        # My Thread :) .
         print('Hello, i am a thread')
-
         self.sleep(4)
 
         for level in self.lvl_list:
-            # if 'False' not in self.csv_data:
-            #     cl = p4_checkout(self.lvl_list[0])
             swarm = build(level)
             while swarm:
-                self.sleep(30)
-                if swarm.pid in psutil.pids():
-                    print('looping 30s | ', swarm.pid)
-
-                else:
-                    print('Update progress bar')
-                    # self.value_progress()
+                self.sleep(20)
+                if swarm.pid not in psutil.pids():
                     count = self.lvl_list.index(level)
-                    print('Progress Bar', count)
+                    self.progress_value.emit(count + 1)
                     break
 
-            # if QtWidgets.QAbstractButton.isChecked(self.submit):
-            #     p4_submit(cl)
-
             print('End Looping')
-
-    # def progress_built(self, value):
-    #     self.value_slide.emit(value)
-
-    # @pyqtSlot()
-    # def stop(self):
-    #     print('Abort the thread')
-    #     self._running = False
-    #     self.terminate()
