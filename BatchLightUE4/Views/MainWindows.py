@@ -41,7 +41,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.settings.last_job_run()
 
         if self.job:
-            self.csv = self.data.select_csv()
+            self.csv = self.data.select_scv()
 
         self.checkBoxLevels = {}
 

@@ -261,9 +261,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
     def save_tab(self):
         print('Save tab.')
+        # Save Paths
+        # Save Levels
+        # Save SC
         if not self.settings.last_job_run():
             print('Write new data')
             file_save_project(self)
 
         else:
             print('Update data')
+            self.sc_save()

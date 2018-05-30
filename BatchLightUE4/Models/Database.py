@@ -26,14 +26,14 @@ class TableProgram(object):
         self.bd.execute('''CREATE TABLE  projects(
                 id          INTEGER PRIMARY KEY,
                 name        TEXT,
-                CSV         TEXT)''')
+                scv         TEXT)''')
 
         self.bd.execute('''CREATE TABLE  paths(
                 path_id     INTEGER PRIMARY KEY,
                 editor      TEXT,
                 project     TEXT,
                 scene       TEXT,
-                csv         TEXT)''')
+                scv         TEXT)''')
 
         self.bd.execute('''CREATE TABLE levels(
                 level_id    INTEGER PRIMARY KEY,
@@ -41,12 +41,12 @@ class TableProgram(object):
                 path        TEXT,
                 state       INTEGER)''')
 
-        self.bd.execute('''CREATE TABLE csv(
+        self.bd.execute('''CREATE TABLE scv(
                 software    TEXT,
                 user        TEXT,
                 password    TEXT)''')
 
-        self.bd.execute('''INSERT INTO csv VALUES (?, ?, ?)''',
+        self.bd.execute('''INSERT INTO scv VALUES (?, ?, ?)''',
                         ('False', '', ''))
 
         self.bd.commit()
@@ -85,12 +85,12 @@ class TableProgram(object):
 
         return data
 
-    def select_csv(self):
+    def select_scv(self):
         """
         Function to select all Source Control options
         :return:
         """
-        data = self.bd.execute('''SELECT * FROM csv''')
+        data = self.bd.execute('''SELECT * FROM scv''')
         data = data.fetchone()
 
         return data
@@ -150,8 +150,16 @@ class TableProgram(object):
         self.bd.cursor()
         print(scv_data)
 
-        if not self.select_csv():
+        if not self.select_scv():
             print('No data, write something')
+            self.bd.execute('''INSERT INTO scv
+                                            (software, user, password)
+                                            VALUES(?, ?, ?)''',
+                            (scv_data[0], scv_data[1], scv_data[2]))
 
         else:
             print('Update a data')
+            self.bd.execute('''UPDATE scv 
+                            SET software = ?, user = ?, password = ? 
+                            WHERE id = 1''',
+                            (scv_data[0], scv_data[1], scv_data[2]))
