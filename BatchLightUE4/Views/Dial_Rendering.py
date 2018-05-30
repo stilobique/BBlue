@@ -33,6 +33,7 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         self.building_light = ThreadRendering(lvl_list, csv, submit)
         self.building_light.start()
         self.building_light.progress_value.connect(self.progress_bar_ui)
+        self.building_light.button_ok.connect(self.buttons_box)
 
     # Ui Function -------------------------------------------------------------
     #   Generate the list with all levels rendering ---------------------------
@@ -82,7 +83,7 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         self.progressBar.setMaximum(self.levels_count)
 
     #   Bottom Toolbars, option to launch the rendering and the log -----------
-    def buttons_box(self, state=True):
+    def buttons_box(self, state=False):
         """
         Setup the UI Buttons
         :param state: Boolean to define the state about the button "Ok"
@@ -101,6 +102,7 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
 
 class ThreadRendering(QtCore.QThread):
     progress_value = pyqtSignal(int)
+    button_ok = pyqtSignal(bool)
 
     def __init__(self, level_rendering, csv, submit):
         """
@@ -129,11 +131,15 @@ class ThreadRendering(QtCore.QThread):
 
         for level in self.lvl_list:
             swarm = build(level)
+            count = self.lvl_list.index(level) + 1
             while swarm:
                 self.sleep(20)
                 if swarm.pid not in psutil.pids():
-                    count = self.lvl_list.index(level)
-                    self.progress_value.emit(count + 1)
+                    self.progress_value.emit(count)
                     break
 
-            print('End Looping')
+            if count == len(self.lvl_list):
+                print('Finish rendering')
+                test = True
+                self.button_ok.emit(test)
+            print('End Looping Level > ', level)
