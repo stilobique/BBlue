@@ -115,4 +115,3 @@ def popup_msg(parent, popup_type, title, description):
             )
 
     return popup
-
