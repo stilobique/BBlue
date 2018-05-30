@@ -41,11 +41,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         box_btn = QtWidgets.QDialogButtonBox
         btn = self.buttonBox.button
         btn(box_btn.RestoreDefaults).clicked.connect(self.btn_restore)
-        btn(box_btn.Save).clicked.connect(lambda: file_save_project(self))
+        btn(box_btn.Save).clicked.connect(self.save_tab)
         btn(box_btn.Open).clicked.connect(load_generic)
         btn(box_btn.Close).clicked.connect(self.close)
 
-        # TODO Disable the network settings
+        # TODO Disable the Network tab settings
         self.tabWidget.setTabEnabled(2, False)
 
     # Ui Functions ------------------------------------------------------------
@@ -91,7 +91,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.ProjectTreeLevels.setColumnWidth(0, 250)
         self.ProjectTreeLevels.setSortingEnabled(True)
         self.ProjectTreeLevels.sortByColumn(0, Qt.AscendingOrder)
-        root_model.itemChanged.connect(self.update_level)
+        root_model.itemChanged.connect(self.save_level)
 
         return self
 
@@ -101,6 +101,11 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         self.project_file_edit.clicked.connect(lambda: self.select_file(2))
         self.sub_folder_edit.clicked.connect(
             lambda: self.tab_project_setup(index=3))
+
+    def save_field(self):
+        self.data.write_data_path(self.ue4_path_text,
+                                  self.project_file_text,
+                                  self.sub_folder_text)
 
     def levels_list(self, path):
         """
@@ -133,7 +138,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         return folders
 
-    def update_level(self, index_item):
+    def save_level(self, index_item):
         """
         Function to save or remove the levels from the Data Base
         :param index_item: A string with the level name to save it.
@@ -235,11 +240,30 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.password_text.setDisabled(False)
             self.password_label.setDisabled(False)
 
+    def sc_save(self):
+        print('Save Source Control setup')
+        sc_data = [
+            self.softwares_comboBox.currentText(),
+            self.user_text.text(),
+            self.password_text.text()
+        ]
+
+        self.data.write_scv(sc_data)
+
     # Buttons Box Function ----------------------------------------------------
     @staticmethod
     def btn_restore():
         """
-        Function to restore the clean view.
+        Function to restore the view.
         :return:
         """
         return print('Restore View')
+
+    def save_tab(self):
+        print('Save tab.')
+        if not self.settings.last_job_run():
+            print('Write new data')
+            file_save_project(self)
+
+        else:
+            print('Update data')
