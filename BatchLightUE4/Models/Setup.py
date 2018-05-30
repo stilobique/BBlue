@@ -60,6 +60,10 @@ class Setup(object):
         return data
 
     def last_job_run(self):
+        """
+        Function to call the 'last job run'
+        :return: return a string with the path for the job used
+        """
         self.config.read(self.config_path)
         data = self.config.get('Project Work', 'run')
 
