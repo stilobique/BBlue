@@ -41,7 +41,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.settings.last_job_run()
 
         if self.job:
-            self.csv = self.data.csv_data()
+            self.csv = self.data.select_csv()
 
         self.checkBoxLevels = {}
 
@@ -235,10 +235,3 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 message = 'Rendering abort.'
 
         self.statusbar.showMessage(message)
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    window = MainWindows()
-    app.exec_()

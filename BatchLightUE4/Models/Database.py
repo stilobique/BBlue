@@ -128,7 +128,7 @@ class TableProgram(object):
 
         self.bd.commit()
 
-    def csv_data(self, csv=str()):
+    def select_csv(self, csv=str()):
         self.bd.cursor()
         if csv:
             data = self.bd.execute('''UPDATE csv SET software = ?''', (csv, ))
@@ -138,15 +138,3 @@ class TableProgram(object):
         self.bd.commit()
 
         return data
-
-    def debug_data(self):
-        cur = self.bd.cursor()
-        cur.execute('''SELECT * FROM paths''')
-
-        rows = cur.fetchall()
-
-        for row in rows:
-            print('Data : ', row)
-
-        msg_func = 'Read Data from the base data'
-        print(msg_func)
