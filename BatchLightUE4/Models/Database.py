@@ -42,10 +42,12 @@ class TableProgram(object):
                 state       INTEGER)''')
 
         self.bd.execute('''CREATE TABLE csv(
-                software    TEXT)''')
+                software    TEXT,
+                user        TEXT,
+                password    TEXT)''')
 
-        csv = 'False'
-        self.bd.execute('''INSERT INTO csv VALUES (?)''', (csv,))
+        self.bd.execute('''INSERT INTO csv VALUES (?, ?, ?)''',
+                        ('False', '', ''))
 
         self.bd.commit()
         # self.bd.close()
@@ -80,6 +82,16 @@ class TableProgram(object):
             request.execute('''SELECT * FROM levels''')
 
         data = request.fetchall()
+
+        return data
+
+    def select_csv(self):
+        """
+        Function to select all Source Control options
+        :return:
+        """
+        data = self.bd.execute('''SELECT * FROM csv''')
+        data = data.fetchone()
 
         return data
 
@@ -128,13 +140,20 @@ class TableProgram(object):
 
         self.bd.commit()
 
-    def select_csv(self, csv=str()):
+    def write_scv(self, scv_data):
+        """
+        Function to Write the Source Control data.
+        :param scv_data: a list with all data to saved :
+                            - The software used
+                            - username
+                            - password
+        :return:
+        """
         self.bd.cursor()
-        if csv:
-            data = self.bd.execute('''UPDATE csv SET software = ?''', (csv, ))
-        else:
-            data = self.bd.execute('''SELECT * FROM csv''')
-            data = data.fetchone()
-        self.bd.commit()
+        print(scv_data)
 
-        return data
+        if not self.select_csv():
+            print('No data, write something')
+
+        else:
+            print('Update a data')
