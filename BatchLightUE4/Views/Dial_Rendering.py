@@ -71,13 +71,14 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
             h_layout.addWidget(level_item, alignment=Qt.AlignLeft)
             vertical_parent.addLayout(h_layout)
 
-    def level_icon(self, level):
+    def level_icon(self, level, check):
         """
         Function to change the Icon used ; at the moment we have 3 states :
         - Empty, the basic setup
         - WIP, when one level has rendering
         - Finish, to show all levels build.
-        :param level:
+        :param level: str, the level name, used to find the label
+        :param check: bool, define if the level is finished
         :return:
         """
         label = self.levels_group.findChildren(QtWidgets.QLabel)
@@ -86,6 +87,8 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         for label_name in label:
             item = label_name.objectName()
             if item == level:
+                if check:
+                    icon = QtGui.QPixmap("Resources/Icons/s-valid.png")
                 label_name.setPixmap(icon)
 
     #   Bottom Toolbars, option to launch the rendering and the log -----------
@@ -118,9 +121,12 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
 
 
 class ThreadRendering(QtCore.QThread):
+    """
+    Py Qt Thread, needed to split the Ui and the rendering.
+    """
     progress_value = pyqtSignal(int)
     button_ok = pyqtSignal(bool)
-    level_run = pyqtSignal(str)
+    level_run = pyqtSignal(str, bool)
 
     def __init__(self, level_rendering, csv, submit):
         """
@@ -148,12 +154,14 @@ class ThreadRendering(QtCore.QThread):
         for level in self.lvl_list:
             swarm = build(level)
             count = self.lvl_list.index(level) + 1
-            self.level_run.emit(level)
+            self.level_run.emit(level, False)
             while swarm:
                 self.sleep(20)
                 if swarm.pid not in psutil.pids():
                     self.progress_value.emit(count)
                     break
+
+            self.level_run.emit(level, True)
 
             if count == len(self.lvl_list):
                 test = True
