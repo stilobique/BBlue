@@ -1,9 +1,7 @@
-from unicodedata import name
-
 import psutil
 
 from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal, Qt
 
 from BatchLightUE4.Views.Dial_Rendering_convert import Ui_Rendering
 from BatchLightUE4.Controllers.Swarm import build
@@ -43,7 +41,6 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
     def levels_works(self):
         """
         Function to show all levels and what's is working.
-        :param run: str with the level on run
         :return:
         """
         group_parent = self.levels_group
