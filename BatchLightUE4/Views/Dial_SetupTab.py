@@ -45,6 +45,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         btn(box_btn.Open).clicked.connect(load_generic)
         btn(box_btn.Close).clicked.connect(self.close)
 
+        # TODO Disable the network settings
+        self.tabWidget.setTabEnabled(2, False)
+
     # Ui Functions ------------------------------------------------------------
     #   Tab Project setup -----------------------------------------------------
     def tab_project_setup(self, index=None, value=str):
