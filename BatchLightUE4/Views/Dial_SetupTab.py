@@ -96,8 +96,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         """Generate the fields and signal about all paths"""
         self.ue4_path_edit.clicked.connect(lambda: self.select_file(1))
         self.project_file_edit.clicked.connect(lambda: self.select_file(2))
-        self.sub_folder_edit.clicked.connect(lambda: self.tab_project_setup(
-            index=3))
+        self.sub_folder_edit.clicked.connect(
+            lambda: self.tab_project_setup(index=3))
 
     def levels_list(self, path):
         """
@@ -193,6 +193,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         return model
 
     def select_file(self, index):
+        """Function to choose a path about the Editor and Project file"""
         select = file_open(self, index)
         self.tab_project_setup(index, select[0])
 
