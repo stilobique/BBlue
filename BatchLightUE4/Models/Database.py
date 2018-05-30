@@ -128,14 +128,12 @@ class TableProgram(object):
         path = data[1]
 
         if state:
-            print('True, add a value')
             self.bd.execute('''INSERT INTO levels
                                             (name, path, state)
                                             VALUES(?, ?, ?)''',
                             (name, path, state))
 
         else:
-            print('False, remove a data')
             self.bd.execute('''DELETE FROM levels WHERE name=?''', (name,))
 
         self.bd.commit()
