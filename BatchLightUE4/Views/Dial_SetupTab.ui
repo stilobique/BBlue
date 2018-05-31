@@ -22,7 +22,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_project">
         <attribute name="icon">
@@ -185,7 +185,7 @@
          <item row="0" column="0">
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
-            <widget class="QGroupBox" name="groupBox_3">
+            <widget class="QGroupBox" name="sc_groupBox_soft">
              <property name="title">
               <string>Source Control Software</string>
              </property>
@@ -265,7 +265,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox_4">
+            <widget class="QGroupBox" name="sc_groupBox_setup">
              <property name="title">
               <string>Sotware Setup</string>
              </property>
