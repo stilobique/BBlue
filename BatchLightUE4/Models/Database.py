@@ -119,7 +119,7 @@ class TableProgram(object):
                             (editor, project, scene, id_project))
 
         self.bd.commit()
-        self.bd.close()
+        # self.bd.close()
 
     def write_data_levels(self, state, data):
         self.bd.cursor()
@@ -149,8 +149,9 @@ class TableProgram(object):
         """
         self.bd.cursor()
         print(scv_data)
+        scv_db = self.select_scv()
 
-        if not self.select_scv():
+        if not scv_db:
             print('No data, write something')
             self.bd.execute('''INSERT INTO scv
                                             (software, user, password)
@@ -159,7 +160,8 @@ class TableProgram(object):
 
         else:
             print('Update a data')
+            print(scv_db[0])
             self.bd.execute('''UPDATE scv 
                             SET software = ?, user = ?, password = ? 
-                            WHERE id = 1''',
-                            (scv_data[0], scv_data[1], scv_data[2]))
+                            WHERE software = ?''',
+                            (scv_data[0], scv_data[1], scv_data[2], scv_db[0]))
