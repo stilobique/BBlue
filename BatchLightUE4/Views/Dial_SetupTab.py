@@ -2,6 +2,7 @@ import re
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLineEdit, QLabel, QPushButton
 from os import listdir
 from os.path import join, dirname, basename, isdir, normpath
 
@@ -219,28 +220,20 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         """
         Event on the Source control tab, activate or disable all fields about
         the option on this tab.
+        Hide the password field.
         :return:
         """
-        self.password_text.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.password_text.setEchoMode(QLineEdit.Password)
 
-        # Todo Use a loop with a children to change the statue
+        type_items = QLineEdit, QLabel, QPushButton
+        parent_setup = self.sc_groupBox_setup.findChildren(type_items)
+        state = False
+
         if self.softwares_comboBox.currentText() == 'Disabled':
-            self.path_sc_label.setDisabled(True)
-            self.path_sc_text.setDisabled(True)
-            self.path_sc_edit.setDisabled(True)
-            self.user_label.setDisabled(True)
-            self.user_text.setDisabled(True)
-            self.password_label.setDisabled(True)
-            self.password_text.setDisabled(True)
+            state = True
 
-        else:
-            self.path_sc_label.setDisabled(False)
-            self.path_sc_text.setDisabled(False)
-            self.path_sc_edit.setDisabled(False)
-            self.user_text.setDisabled(False)
-            self.user_label.setDisabled(False)
-            self.password_text.setDisabled(False)
-            self.password_label.setDisabled(False)
+        for item in parent_setup:
+            item.setDisabled(state)
 
     def sc_save(self):
         print('Save Source Control setup')
