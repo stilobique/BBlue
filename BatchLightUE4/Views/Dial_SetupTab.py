@@ -221,6 +221,8 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         the option on this tab.
         :return:
         """
+        self.password_text.setEchoMode(QtWidgets.QLineEdit.Password)
+
         # Todo Use a loop with a children to change the statue
         if self.softwares_comboBox.currentText() == 'Disabled':
             self.path_sc_label.setDisabled(True)
