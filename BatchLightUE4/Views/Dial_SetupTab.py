@@ -266,10 +266,10 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         return print('Restore View')
 
     def save_tab(self):
-        print('Save tab.')
-        # Save Paths
-        # Save Levels
-        # Save SC
+        """
+        Simple function to save a new project or update the Data Base
+        :return:
+        """
         if not self.settings.last_job_run():
             print('Write new data')
             file_save_project(self)
@@ -278,4 +278,4 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             print('Update data')
             # self.save_field()
             self.sc_save()
-            # TODO Close the DB connection
+            self.data.close()
