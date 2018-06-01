@@ -1,6 +1,6 @@
 import perforce
 
-from os.path import basename, dirname, abspath, join, normpath
+from os.path import basename, dirname, normpath
 from PyQt5 import QtWidgets
 
 # Adding all view used
