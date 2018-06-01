@@ -219,8 +219,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         soft_work.currentIndexChanged.connect(self.sc_software)
 
         if self.settings.last_job_run():
-            print('Fill all Field')
-
             data_sc = self.data.select_scv()
             index_cb = self.softwares_comboBox.findText(data_sc[0])
             self.softwares_comboBox.setCurrentIndex(index_cb)
@@ -247,7 +245,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             item.setDisabled(state)
 
     def sc_save(self):
-        print('Save Source Control setup')
         sc_data = [
             self.softwares_comboBox.currentText(),
             self.user_text.text(),
@@ -271,11 +268,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :return:
         """
         if not self.settings.last_job_run():
-            print('Write new data')
             file_save_project(self)
 
         else:
-            print('Update data')
             # self.save_field()
             self.sc_save()
             self.data.close()
