@@ -4,22 +4,22 @@ from configparser import ConfigParser
 from os.path import dirname, join, exists, expanduser
 
 """
-    This file control the instances to work with the INI files, write and 
-    read it. He include the setup name file and the number version ; it's 
+    This file control the instances to work with the INI files, write and
+    read it. He include the setup name file and the number version ; it's
     automatically update with the built setup.
-    
+
     The ``Setup`` Class
     ===================
-    
+
     Main Class, all function use this class.
-    
+
 """
 
 
 class Setup(object):
     config = ConfigParser()
     config_name = 'settings.ini'
-    number = '0.9.4'
+    number = '0.9.5'
     config_path = join(expanduser('~'), 'BBLUE4', config_name)
 
     if not exists(dirname(config_path)):

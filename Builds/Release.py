@@ -15,7 +15,7 @@ from BatchLightUE4.Models.Setup import Setup
 # All Variable
 init = Setup()
 setup_file = join(
-    'E:\WORKS\Git\BatchBuildLightUE4\BatchLightUE4\Controllers\Setup.py')
+    'E:\WORKS\Git\BatchBuildLightUE4\BatchLightUE4\Models\Setup.py')
 # str_find = re.search('number = \'\' ', setup_file)
 package = dirname(__file__) + '/packages.bat'
 
