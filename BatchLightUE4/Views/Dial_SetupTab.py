@@ -218,6 +218,15 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         soft_work = self.softwares_comboBox
         soft_work.currentIndexChanged.connect(self.sc_software)
 
+        if self.settings.last_job_run():
+            print('Fill all Field')
+
+            data_sc = self.data.select_scv()
+            index_cb = self.softwares_comboBox.findText(data_sc[0])
+            self.softwares_comboBox.setCurrentIndex(index_cb)
+            self.user_text.setText(data_sc[1])
+            self.password_text.setText(data_sc[2])
+
     def sc_software(self):
         """
         Event on the Source control tab, activate or disable all fields about
