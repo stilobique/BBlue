@@ -100,19 +100,19 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             levels = self.data.select_levels()
             level_checkbox = self.data.select_levels(state=2)
             i = 0
+            project_path = self.data.select_paths()
+            project_path = dirname(project_path[0][2])
             while i < len(level_checkbox):
                 key = level_checkbox[i][1]
                 key_folder = basename(dirname(level_checkbox[i][2]))
                 self.checkBoxLevels[key] = QtWidgets.QCheckBox(key)
                 self.checkBoxLevels[key].setObjectName(key)
                 csv_value = self.csv[0]
-                if csv_value != str('False'):
+                if csv_value != str('Disabled'):
                     # TODO Add a progress bar, check levels on sc can be long
                     for level_name in levels:
                         # Setup the relative path to absolute
-                        path = self.data.select_paths()
-                        path = dirname(path[0][2])
-                        path = normpath(path + '/Content/' + level_name[2])
+                        path = normpath(project_path + '/Content/' + level_name[2])
                         if key_folder in path:
                             p4 = perforce.connect()
                             filename = perforce.Revision(p4, path)
