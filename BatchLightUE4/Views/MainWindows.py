@@ -1,6 +1,6 @@
 import perforce
 
-from os.path import basename, dirname
+from os.path import basename, dirname, abspath, join, normpath
 from PyQt5 import QtWidgets
 
 # Adding all view used
@@ -107,12 +107,16 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.checkBoxLevels[key].setObjectName(key)
                 csv_value = self.csv[0]
                 if csv_value != str('False'):
-                    # TODO Add a progress bar, the the soft check many levels
-                    #  the request can be long.
+                    # TODO Add a progress bar, check levels on sc can be long
                     for level_name in levels:
-                        if key_folder in level_name[2]:
+                        # Setup the relative path to absolute
+                        path = self.data.select_paths()
+                        path = dirname(path[0][2])
+                        path = normpath(path + '/Content/' + level_name[2])
+                        if key_folder in path:
                             p4 = perforce.connect()
-                            filename = perforce.Revision(p4, level_name[2])
+                            filename = perforce.Revision(p4, path)
+                            # filename = perforce.Revision(p4, level_name[2])
 
                             if 'otherOpen' in filename._p4dict:
                                 bubble_msg = filename._p4dict.get('otherOpen0')
