@@ -267,4 +267,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
 
         else:
             print('Update data')
+            # self.save_field()
             self.sc_save()
+            # TODO Close the DB connection
