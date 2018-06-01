@@ -1,6 +1,7 @@
 import perforce
 
-from os.path import basename, dirname, normpath
+from os.path import basename, dirname, normpath, join
+from os import walk
 from PyQt5 import QtWidgets
 
 # Adding all view used
@@ -41,7 +42,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         self.job = self.settings.last_job_run()
 
         if self.job:
-            self.csv = self.data.select_scv()
+            self.scv_data = self.data.select_scv()
 
         self.checkBoxLevels = {}
 
@@ -98,37 +99,38 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         # Generate all Checkbox Levels.
         if self.job:
             levels = self.data.select_levels()
-            level_checkbox = self.data.select_levels(state=2)
-            i = 0
             project_path = self.data.select_paths()
             project_path = dirname(project_path[0][2])
-            while i < len(level_checkbox):
-                key = level_checkbox[i][1]
-                key_folder = basename(dirname(level_checkbox[i][2]))
-                self.checkBoxLevels[key] = QtWidgets.QCheckBox(key)
-                self.checkBoxLevels[key].setObjectName(key)
-                csv_value = self.csv[0]
-                if csv_value != str('Disabled'):
-                    # TODO Add a progress bar, check levels on sc can be long
-                    for level_name in levels:
-                        # Setup the relative path to absolute
-                        path = normpath(project_path + '/Content/' + level_name[2])
-                        if key_folder in path:
-                            p4 = perforce.connect()
-                            filename = perforce.Revision(p4, path)
-                            # filename = perforce.Revision(p4, level_name[2])
+            project_path = normpath(project_path + '/Content/')
+            sc_software = self.scv_data[0]
+            for level in levels:
+                state = True
+                nbr = levels.index(level)
+                level_name = level[1]
+                level_path = dirname(level[2])
+                level_path = normpath(project_path + level_path)
 
-                            if 'otherOpen' in filename._p4dict:
-                                bubble_msg = filename._p4dict.get('otherOpen0')
-                                tooltip = bubble_msg
-                                self.checkBoxLevels[key].setToolTip(tooltip)
-                                self.checkBoxLevels[key].setEnabled(False)
+                # Test with the Source Control -work only with Perforce
+                # TODO Add a progress bar, check levels on sc can be long
+                if sc_software != str('Disabled'):
+                    for path, folders, files in walk(level_path):
+                        p4 = perforce.connect()
+                        for file in files:
+                            file = join(level_path, file)
+                            filename = perforce.Revision(file, p4)
+                            if len(filename.openedBy):
+                                print(file)
+                                state = False
+                                break
 
-                self.allLevelsCheck.addWidget(self.checkBoxLevels[key])
+                # Generate the Ui with all parameter
+                self.checkBoxLevels[nbr] = QtWidgets.QCheckBox(level_name)
+                self.checkBoxLevels[nbr].setObjectName(level_name)
+                self.checkBoxLevels[nbr].setEnabled(state)
+                self.allLevelsCheck.addWidget(self.checkBoxLevels[nbr])
                 self.allLevelsCheck.contentsMargins()
-                i = i + 1
 
-            if 'False' not in self.csv[0]:
+            if 'False' not in self.scv_data[0]:
                 self.checkBoxSubmit.setEnabled(True)
 
     # Ui Function -------------------------------------------------------------
