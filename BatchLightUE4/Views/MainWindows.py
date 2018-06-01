@@ -117,6 +117,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                         p4 = perforce.connect()
                         for file in files:
                             file = join(level_path, file)
+                            perforce.sync(file, p4)
                             filename = perforce.Revision(file, p4)
                             if len(filename.openedBy):
                                 print(file)
