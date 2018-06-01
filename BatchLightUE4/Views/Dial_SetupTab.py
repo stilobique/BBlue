@@ -271,6 +271,7 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             file_save_project(self)
 
         else:
+            # TODO Look to save the path field with the function save_field()
             # self.save_field()
             self.sc_save()
             self.data.close()
