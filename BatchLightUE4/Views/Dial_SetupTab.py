@@ -75,7 +75,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
             self.ue4_path_text.setText(db[0][1])
             self.project_file_text.setText(db[0][2])
             self.sub_folder_text.setText(db[0][3])
-            print(self.sub_folder_text.text())
 
         level_path = join(dirname(self.project_file_text.text()),
                           'Content',
@@ -146,10 +145,13 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         :return:
         """
         state = index_item.checkState()
+        row = index_item.row()
+        parent = index_item.parent()
+        path_level = parent.child(row, 1)
         if state == Qt.Checked:
-            info = [index_item.text(), 'Path', 1]
+            info = [index_item.text(), path_level.text(), 1]
         else:
-            info = [index_item.text(), 'Path', 0]
+            info = [index_item.text(), path_level.text(), 0]
 
         self.data.write_data_levels(state=state, data=info)
 
