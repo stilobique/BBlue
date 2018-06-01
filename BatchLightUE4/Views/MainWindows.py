@@ -1,6 +1,6 @@
 import perforce
 
-from os.path import basename, dirname, normpath, join
+from os.path import dirname, normpath, join
 from os import walk
 from PyQt5 import QtWidgets
 
@@ -189,7 +189,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def select_level(self, state=0):
         """
-        Evvent to select or deselect all levels,
+        Event to select or deselect all levels,
         :param state: return the state checkbox, 0 to off, 1 to be
         semi-push and 2 to be check
         :return:
