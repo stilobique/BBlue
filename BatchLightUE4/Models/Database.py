@@ -165,3 +165,12 @@ class TableProgram(object):
                             SET software = ?, user = ?, password = ? 
                             WHERE software = ?''',
                             (scv_data[0], scv_data[1], scv_data[2], scv_db[0]))
+
+    def close(self):
+        """
+        Function to close the Data Base.
+        :return: String message to confirm the status closed
+        """
+        self.bd.close()
+
+        return 'Close'
