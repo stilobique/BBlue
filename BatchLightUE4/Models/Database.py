@@ -47,7 +47,7 @@ class TableProgram(object):
                 password    TEXT)''')
 
         self.bd.execute('''INSERT INTO scv VALUES (?, ?, ?)''',
-                        ('False', '', ''))
+                        ('Disabled', '', ''))
 
         self.bd.commit()
         # self.bd.close()
@@ -165,6 +165,8 @@ class TableProgram(object):
                             SET software = ?, user = ?, password = ? 
                             WHERE software = ?''',
                             (scv_data[0], scv_data[1], scv_data[2], scv_db[0]))
+
+        self.bd.commit()
 
     def close(self):
         """
