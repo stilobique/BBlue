@@ -30,6 +30,7 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         self.buttons_box()
 
         # Launch all building light.
+        print('Launch a Thread rendering')
         self.building_light = ThreadRendering(lvl_list, csv, submit)
         self.building_light.start()
         self.building_light.level_run.connect(self.level_icon)
@@ -142,7 +143,7 @@ class ThreadRendering(QtCore.QThread):
         """
         QtCore.QThread.__init__(self)
         self.lvl_list = level_rendering
-        self.csv_data = csv
+        self.scv_data = csv
         self.submit = submit
 
     def __del__(self):
@@ -150,8 +151,15 @@ class ThreadRendering(QtCore.QThread):
 
     def run(self):
         self.sleep(4)
+        sc = ''
 
         for level in self.lvl_list:
+            # Setup the Source Control used
+            if self.scv_data:
+                print('Use a Source Control')
+                sc = p4_checkout(self.lvl_list[0])
+
+            print('Launch rendering')
             swarm = build(level)
             count = self.lvl_list.index(level) + 1
             self.level_run.emit(level, False)
@@ -161,8 +169,14 @@ class ThreadRendering(QtCore.QThread):
                     self.progress_value.emit(count)
                     break
 
+            if self.submit and sc:
+                print('Submit the Changing List')
+                p4_submit(sc)
             self.level_run.emit(level, True)
 
+            # Submit the Data if the SC is used.
+
             if count == len(self.lvl_list):
-                test = True
-                self.button_ok.emit(test)
+                # Add a condition to activate the 'Ok' button
+                btn_state = True
+                self.button_ok.emit(btn_state)
