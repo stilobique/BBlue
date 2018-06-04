@@ -1,4 +1,4 @@
 PyQt5
-python-perforce (0.3.15)
+python-perforce
 psutil
 ifaddr
