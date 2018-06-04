@@ -211,8 +211,9 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
         for key, value in self.checkBoxLevels.items():
             btn = self.checkBoxLevels[key]
+            name = btn.text()
             if QtWidgets.QAbstractButton.isChecked(btn):
-                lvl_rendering.append(key)
+                lvl_rendering.append(name)
 
         if len(lvl_rendering) == 0:
             message = 'No level selected !'
