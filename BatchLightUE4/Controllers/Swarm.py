@@ -18,6 +18,7 @@ def build(level_used):
     :type level_used: basestring
     :return The process ID, wait to communicate it
     """
+    print('Launch the Swarm ops')
     data = TableProgram()
     paths = data.select_paths()
     ue4_editor = paths[0][1]
@@ -29,6 +30,8 @@ def build(level_used):
                               '-AllowCommandletRendering',
                               '-MapsOnly',
                               '-ProjectOnly',
+                              '-AutoCheckOutPackages',
+                              '-AutoCheckIn',
                               '-map=' + level_used])
 
     return swarm
