@@ -105,6 +105,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             sc_software = self.scv_data[0]
             for level in levels:
                 state = True
+                tooltip = ''
                 nbr = levels.index(level)
                 level_name = level[1]
                 level_path = dirname(level[2])
@@ -120,14 +121,15 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                             perforce.sync(file, p4)
                             filename = perforce.Revision(file, p4)
                             if len(filename.openedBy):
-                                print(file)
                                 state = False
+                                tooltip = filename._p4dict.get('otherOpen0')
                                 break
 
                 # Generate the Ui with all parameter
                 self.checkBoxLevels[nbr] = QtWidgets.QCheckBox(level_name)
                 self.checkBoxLevels[nbr].setObjectName(level_name)
                 self.checkBoxLevels[nbr].setEnabled(state)
+                self.checkBoxLevels[nbr].setToolTip(tooltip)
                 self.allLevelsCheck.addWidget(self.checkBoxLevels[nbr])
                 self.allLevelsCheck.contentsMargins()
 
