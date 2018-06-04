@@ -1,8 +1,9 @@
+import re
 import perforce
 
-from os.path import dirname, normpath, join
-from os import walk
 from PyQt5 import QtWidgets
+from os import listdir
+from os.path import normpath, dirname
 
 # Adding all view used
 from BatchLightUE4.Views.Dial_About import DialViewAbout
@@ -111,21 +112,23 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 level_path = dirname(level[2])
                 level_path = normpath(project_path + level_path)
 
+                regex = r"^.*Perforce"
+                rel_path = re.sub(regex, '', level_path)
+
                 # Test with the Source Control -work only with Perforce
                 # TODO Add a progress bar, check levels on sc can be long
                 # TODO Setup another Source Control solution -git, subversion
                 if sc_software != str('Disabled'):
                     sc = perforce.connect()
-                    for path, folders, files in walk(level_path):
-                        for file in files:
-                            file = join(level_path, file)
-                            # TODO add an operator to sync the files ?
-                            # perforce.sync(file, sc)
-                            filename = perforce.Revision(file, sc)
-                            if len(filename.openedBy):
-                                state = False
-                                tooltip = filename._p4dict.get('otherOpen0')
-                                break
+                    rel_path = rel_path.replace('\\', '/')
+                    for file in listdir(level_path):
+                        # TODO add an operator to sync the files ?
+                        # perforce.sync(file, sc)
+                        file = r"/" + dirname(rel_path) + r"/" + file
+                        revision = sc.ls(file)
+                        if revision:
+                            state = False
+                            break
 
                 # Generate the Ui with all parameter
                 self.checkBoxLevels[nbr] = QtWidgets.QCheckBox(level_name)
