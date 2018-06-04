@@ -113,13 +113,15 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 # Test with the Source Control -work only with Perforce
                 # TODO Add a progress bar, check levels on sc can be long
+                # TODO Setup another Source Control solution -git, subversion
                 if sc_software != str('Disabled'):
+                    sc = perforce.connect()
                     for path, folders, files in walk(level_path):
-                        p4 = perforce.connect()
                         for file in files:
                             file = join(level_path, file)
-                            perforce.sync(file, p4)
-                            filename = perforce.Revision(file, p4)
+                            # TODO add an operator to sync the files ?
+                            # perforce.sync(file, sc)
+                            filename = perforce.Revision(file, sc)
                             if len(filename.openedBy):
                                 state = False
                                 tooltip = filename._p4dict.get('otherOpen0')
@@ -231,7 +233,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 dial_rendering = DialRendering(self,
                                                lvl_list=lvl_rendering,
-                                               csv=False,
+                                               csv=self.scv_data,
                                                submit=submit)
                 dial_rendering.show()
                 rsp = dial_rendering.exec_()
