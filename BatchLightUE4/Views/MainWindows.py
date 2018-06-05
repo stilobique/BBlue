@@ -2,7 +2,7 @@ import re
 import perforce
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QAbstractButton
 from os import listdir
 from os.path import normpath, dirname
 
@@ -214,11 +214,12 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         :return:
         """
         lvl_rendering = []
+        submit_state = False
 
         for key, value in self.checkBoxLevels.items():
             btn = self.checkBoxLevels[key]
             name = btn.text()
-            if QtWidgets.QAbstractButton.isChecked(btn):
+            if QAbstractButton.isChecked(btn):
                 lvl_rendering.append(name)
 
         if len(lvl_rendering) == 0:
@@ -232,13 +233,14 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
             if reply == QMessageBox.Yes:
                 machines = self.checkBoxMachines
-                swarm_setup(QtWidgets.QAbstractButton.isChecked(machines))
-                submit = self.checkBoxSubmit
+                swarm_setup(QAbstractButton.isChecked(machines))
+                if QAbstractButton.isChecked(self.checkBoxSubmit):
+                    submit_state = True
 
                 dial_rendering = DialRendering(self,
                                                lvl_list=lvl_rendering,
                                                csv=self.scv_data,
-                                               submit=submit)
+                                               submit=submit_state)
                 dial_rendering.show()
                 rsp = dial_rendering.exec_()
 
