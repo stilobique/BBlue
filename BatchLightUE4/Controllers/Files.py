@@ -106,7 +106,7 @@ def popup_msg(parent, popup_type, title, description):
                           QMessageBox.Close)
 
     elif popup_type == 'question':
-        popup.question(
+        popup = popup.question(
             QMessageBox.parent(parent),
             title,
             description,
