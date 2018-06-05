@@ -2,6 +2,7 @@ import re
 import perforce
 
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from os import listdir
 from os.path import normpath, dirname
 
@@ -229,7 +230,7 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
             reply = popup_msg(self, 'question', 'Rendering', message)
             lvl_rendering.sort()
 
-            if reply.Yes:
+            if reply == QMessageBox.Yes:
                 machines = self.checkBoxMachines
                 swarm_setup(QtWidgets.QAbstractButton.isChecked(machines))
                 submit = self.checkBoxSubmit
