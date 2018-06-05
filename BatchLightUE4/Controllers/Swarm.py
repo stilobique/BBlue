@@ -31,7 +31,7 @@ def build(level_used):
                               '-MapsOnly',
                               '-ProjectOnly',
                               '-AutoCheckOutPackages',
-                              '-AutoCheckIn',
+                              # '-AutoCheckIn',
                               '-map=' + level_used])
 
     return swarm
