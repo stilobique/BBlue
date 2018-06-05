@@ -30,9 +30,9 @@ def build(level_used):
                               '-AllowCommandletRendering',
                               '-MapsOnly',
                               '-ProjectOnly',
-                              '-AutoCheckOutPackages',
-                              # '-AutoCheckIn',
                               '-map=' + level_used])
+
+    print('Level rendering > ', level_used)
 
     return swarm
 
