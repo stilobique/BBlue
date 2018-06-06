@@ -1,4 +1,3 @@
-import re
 import perforce
 
 from PyQt5 import QtWidgets
@@ -114,15 +113,11 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 level_path = dirname(level[2])
                 level_path = normpath(project_path + level_path)
 
-                regex = r"^.*Perforce"
-                rel_path = re.sub(regex, '', level_path)
-
                 # Test with the Source Control -work only with Perforce
                 # TODO Add a progress bar, check levels on sc can be long
                 # TODO Setup another Source Control solution -git, subversion
                 if sc_software != str('Disabled'):
                     sc = perforce.connect()
-                    rel_path = rel_path.replace('\\', '/')
                     for file in listdir(level_path):
                         # TODO add an operator to sync the files ?
                         # perforce.sync(file, sc)
