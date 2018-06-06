@@ -1,8 +1,9 @@
 import perforce
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QAbstractButton
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMessageBox, QAbstractButton
 from os import listdir
 from os.path import normpath, dirname
 
@@ -98,20 +99,29 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
         Function to draw all levels setup with this project.
         :return:
         """
+        group_parent = self.allLevelsWidget
+        vertical_parent = self.allLevelsCheck
+        vertical_parent.setAlignment(Qt.AlignLeft)
+
         # Generate all Checkbox Levels.
         if self.job:
             levels = self.data.select_levels()
             project_path = self.data.select_paths()
-            project_path = dirname(project_path[0][2])
-            project_path = normpath(project_path + '/Content/')
+            project_path = normpath(dirname(project_path[0][2]) + '/Content/')
             sc_software = self.scv_data[0]
             for level in levels:
+                # Define horizontal layout
+                h_layout = QtWidgets.QHBoxLayout()
+                h_layout.setObjectName('h_layout')
+                h_layout.setAlignment(Qt.AlignLeft)
+                # Define all variable used
                 state = True
-                tooltip = ''
                 nbr = levels.index(level)
                 level_name = level[1]
+                msg_label = level_name
                 level_path = dirname(level[2])
                 level_path = normpath(project_path + level_path)
+                icon = QPixmap("Resources/Icons/s-empty.png")
 
                 # Test with the Source Control -work only with Perforce
                 # TODO Add a progress bar, check levels on sc can be long
@@ -126,25 +136,33 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                         if len(revision.openedBy):
                             print('Level', file, 'opening by someone.')
                             state = False
+                            msg_label = 'Level checkout'
                             break
 
                         if not revision.isSynced:
                             state = False
                             path = "Resources/Icons/cloud-download.png"
                             icon = QPixmap(path)
+                            msg_label = 'Not Sync, update it.'
                             print('Level', file, 'not sync.')
-                            sync_icon = QtWidgets.QLabel()
-                            sync_icon.setPixmap(icon)
-                            self.allLevelsCheck.addWidget(sync_icon)
                             break
 
                 # Generate the Ui with all parameter
                 self.checkBoxLevels[nbr] = QtWidgets.QCheckBox(level_name)
                 self.checkBoxLevels[nbr].setObjectName(level_name)
                 self.checkBoxLevels[nbr].setEnabled(state)
-                self.checkBoxLevels[nbr].setToolTip(tooltip)
-                self.allLevelsCheck.addWidget(self.checkBoxLevels[nbr])
-                self.allLevelsCheck.contentsMargins()
+                self.checkBoxLevels[nbr].setToolTip(msg_label)
+                h_layout.addWidget(self.checkBoxLevels[nbr],
+                                   alignment=Qt.AlignLeft)
+                label_work = QtWidgets.QLabel(group_parent)
+                label_work.setPixmap(icon)
+                label_work.setToolTip(msg_label)
+                h_layout.addWidget(label_work,
+                                   alignment=Qt.AlignLeft)
+                h_layout.addWidget(self.checkBoxLevels[nbr],
+                                   alignment=Qt.AlignLeft)
+                vertical_parent.addLayout(h_layout)
+                # self.allLevelsCheck.contentsMargins()
 
             if 'False' not in self.scv_data[0]:
                 self.checkBoxSubmit.setEnabled(True)
