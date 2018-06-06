@@ -1,7 +1,5 @@
 REM Generate the Shipping release
 pyinstaller --noconfirm ^
-    --noconsole ^
-    --uac-admin ^
 	--distpath %CD% ^
      %CD%/build-shipping.spec
 
@@ -19,8 +17,6 @@ rmdir /S /Q "BBlue4"
 REM Generate the debug release
 
 pyinstaller --noconfirm ^
-    --noconsole ^
-    --uac-admin ^
 	--distpath %CD% ^
      %CD%/build-debug.spec
 

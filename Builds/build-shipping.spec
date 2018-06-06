@@ -3,9 +3,6 @@ import os
 
 block_cipher = None
 
-# path = os.path.dirname(os.path.realpath(%CD%))
-# print(path)
-
 a = Analysis(['../main.py'],
              pathex=['E:\\WORKS\\Git\\Tools\\BBlue'],
              # pathex=[path],
