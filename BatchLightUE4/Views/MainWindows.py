@@ -3,6 +3,7 @@ import perforce
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QAbstractButton
+from PyQt5.QtGui import QPixmap
 from os import listdir
 from os.path import normpath, dirname
 
@@ -125,10 +126,21 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                     for file in listdir(level_path):
                         # TODO add an operator to sync the files ?
                         # perforce.sync(file, sc)
-                        file = r"/" + dirname(rel_path) + r"/" + file
-                        revision = sc.ls(file)
-                        if revision:
+                        item = normpath(level_path + r"/" + file)
+                        revision = perforce.Revision(item, sc)
+                        if len(revision.openedBy):
+                            print('Level', file, 'opening by someone.')
                             state = False
+                            break
+
+                        if not revision.isSynced:
+                            state = False
+                            path = "Resources/Icons/cloud-download.png"
+                            icon = QPixmap(path)
+                            print('Level', file, 'not sync.')
+                            sync_icon = QtWidgets.QLabel()
+                            sync_icon.setPixmap(icon)
+                            self.allLevelsCheck.addWidget(sync_icon)
                             break
 
                 # Generate the Ui with all parameter
