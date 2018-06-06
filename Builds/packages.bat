@@ -18,8 +18,6 @@ rmdir /S /Q "BBlue4"
 
 REM Generate the debug release
 
-pause
-
 pyinstaller --noconfirm ^
     --noconsole ^
     --uac-admin ^
