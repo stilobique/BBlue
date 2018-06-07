@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox, QAbstractButton
 from os import listdir
-from os.path import normpath, dirname
+from os.path import normpath, dirname, join, isfile
 
 # Adding all view used
 from BatchLightUE4.Views.Dial_About import DialViewAbout
@@ -105,11 +105,13 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Generate all Checkbox Levels.
         if self.job:
+            print('Make all levels Label')
             levels = self.data.select_levels()
             project_path = self.data.select_paths()
             project_path = normpath(dirname(project_path[0][2]) + '/Content/')
             sc_software = self.scv_data[0]
             for level in levels:
+                print('Loop about a level :', level)
                 # Define horizontal layout
                 h_layout = QtWidgets.QHBoxLayout()
                 h_layout.setObjectName('h_layout')
@@ -119,20 +121,23 @@ class MainWindows(QtWidgets.QMainWindow, Ui_MainWindow):
                 nbr = levels.index(level)
                 level_name = level[1]
                 msg_label = level_name
-                level_path = dirname(level[2])
-                level_path = normpath(project_path + level_path)
+                level_path = project_path + level[2]
                 icon = QPixmap("Resources/Icons/s-empty.png")
+                print('Level Name :', level_name)
 
                 # Test with the Source Control -work only with Perforce
                 # TODO Add a progress bar, check levels on sc can be long
                 # TODO Setup another Source Control solution -git, subversion
                 if sc_software != str('Disabled'):
                     sc = perforce.connect()
-                    for file in listdir(level_path):
+                    for file in listdir(dirname(level_path)):
                         # TODO add an operator to sync the files ?
                         # perforce.sync(file, sc)
-                        item = normpath(level_path + r"/" + file)
-                        revision = perforce.Revision(item, sc)
+                        item = normpath(dirname(level_path) + "\\" + file)
+                        item_norm = r"%s" % item
+                        print('Path SC Norm > ', item_norm)
+                        revision = perforce.Revision(connection=sc,
+                                                     data=item_norm)
                         if len(revision.openedBy):
                             print('Level', file, 'opening by someone.')
                             state = False
