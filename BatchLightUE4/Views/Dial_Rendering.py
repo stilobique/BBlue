@@ -157,7 +157,7 @@ class ThreadRendering(QtCore.QThread):
             # Setup the Source Control used
             if 'Disabled' not in self.scv_data[0]:
                 print('Use a Source Control')
-                sc = p4_checkout(self.lvl_list[0])
+                sc = p4_checkout(level)
 
             print('Launch rendering')
             swarm = build(level)
