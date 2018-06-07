@@ -155,7 +155,7 @@ class ThreadRendering(QtCore.QThread):
 
         for level in self.lvl_list:
             # Setup the Source Control used
-            if self.scv_data:
+            if 'Disabled' not in self.scv_data[0]:
                 print('Use a Source Control')
                 sc = p4_checkout(self.lvl_list[0])
 
