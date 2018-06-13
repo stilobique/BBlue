@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox, QAbstractButton
 from os import listdir
-from os.path import normpath, dirname, join, isfile
+from os.path import normpath, dirname
 
 # Adding all view used
 from BatchLightUE4.Views.Dial_About import DialViewAbout
