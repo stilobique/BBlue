@@ -116,9 +116,8 @@ class DialRendering(QtWidgets.QDialog, Ui_Rendering):
         btn(box_btn.Ok).setEnabled(state)
         btn(box_btn.Abort).clicked.connect(self.stop_rendering)
 
-    @staticmethod
-    def stop_rendering():
-        print('Stop Rendering')
+    def stop_rendering(self):
+        self.building_light.terminate()
 
 
 class ThreadRendering(QtCore.QThread):
@@ -180,3 +179,15 @@ class ThreadRendering(QtCore.QThread):
                 # Add a condition to activate the 'Ok' button
                 btn_state = True
                 self.button_ok.emit(btn_state)
+
+    def terminate(self):
+        """
+        Override the Terminate Process to close Unreal Engine.
+        :return:
+        """
+        print('Kill my Thread !')
+        for process in psutil.process_iter():
+            if process.name() == 'UE4Editor.exe':
+                print('Terminate the Editor')
+                process.kill()
+
