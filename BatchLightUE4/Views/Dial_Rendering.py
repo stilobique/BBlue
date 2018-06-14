@@ -190,4 +190,3 @@ class ThreadRendering(QtCore.QThread):
             if process.name() == 'UE4Editor.exe':
                 print('Terminate the Editor')
                 process.kill()
-
