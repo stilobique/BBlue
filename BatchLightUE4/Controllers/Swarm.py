@@ -29,6 +29,9 @@ def build(level_used):
                               '-buildlighting',
                               '-AllowCommandletRendering',
                               '-MapsOnly',
+                              # 'UseSCC=True',
+                              # '-AutoCheckOutPackages',
+                              # '-AutoCheckIn',
                               '-ProjectOnly',
                               '-map=' + level_used])
 
