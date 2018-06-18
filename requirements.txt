@@ -1,5 +1,5 @@
 PyQt5==5.9.2
-python-perforce
-psutil
-ifaddr
-pydevd
+path.py==8.3
+python-perforce==0.3.17
+psutil==5.4.6
+ifaddr==0.1.4
