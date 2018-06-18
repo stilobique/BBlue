@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLineEdit, QLabel, QPushButton
 from os import listdir
 from os.path import join, dirname, basename, isdir, normpath
+from pathlib import PureWindowsPath
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
@@ -116,22 +117,22 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         folders = {}
         levels = []
         if isdir(path):
-            for item in listdir(path):
-                absolute_path = join(path, item)
-                if isdir(absolute_path):
-                    key = basename(dirname(absolute_path))
-                    sub_levels = self.levels_list(absolute_path)
+            obj_path = PureWindowsPath(path)
+            for item in listdir(str(obj_path)):
+                abs_path = obj_path.joinpath(item)
+                if isdir(abs_path):
+                    key = obj_path.stem
+                    sub_levels = self.levels_list(abs_path)
                     if len(sub_levels) and type(sub_levels) == dict:
                         levels.append(sub_levels)
                         folders[key] = levels
                 else:
                     if '.umap' in item:
-                        regex = r"^.*\Content"
-                        folder = dirname(absolute_path)
-                        absolute_path = normpath(absolute_path)
-                        relative_path = re.sub(regex, '', folder)
+                        regex = r"^.*Content"
+                        # abs_path = PureWindowsPath(abs_path)
+                        relative_path = re.sub(regex, "", str(obj_path))
                         levels.append(join(relative_path, item))
-                        key = basename(dirname(absolute_path))
+                        key = basename(dirname(abs_path))
                         folders[key] = levels
         else:
             folders = {'No Data': 'Error Path'}

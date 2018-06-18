@@ -19,7 +19,7 @@ from os.path import dirname, join, exists, expanduser
 class Setup(object):
     config = ConfigParser()
     config_name = 'settings.ini'
-    number = '0.9.5'
+    number = '0.9.6'
     config_path = join(expanduser('~'), 'BBLUE4', config_name)
 
     if not exists(dirname(config_path)):
