@@ -4,8 +4,9 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLineEdit, QLabel, QPushButton
 from os import listdir
-from os.path import join, dirname, basename, isdir, normpath
+from os.path import join, dirname, basename, isdir
 from pathlib import PureWindowsPath
+from collections import OrderedDict
 
 from BatchLightUE4.Views.Dial_SetupTab_convert import Ui_DialogSetupProject
 from BatchLightUE4.Models.Setup import Setup
@@ -118,7 +119,9 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
         levels = []
         if isdir(path):
             obj_path = PureWindowsPath(path)
-            for item in listdir(str(obj_path)):
+            tree = listdir(str(obj_path))
+            tree.sort(key=lambda s: s.find('.umap'))
+            for item in tree:
                 abs_path = obj_path.joinpath(item)
                 if isdir(abs_path):
                     key = obj_path.stem
@@ -129,7 +132,6 @@ class DialSetupTab(QtWidgets.QDialog, Ui_DialogSetupProject):
                 else:
                     if '.umap' in item:
                         regex = r"^.*Content"
-                        # abs_path = PureWindowsPath(abs_path)
                         relative_path = re.sub(regex, "", str(obj_path))
                         levels.append(join(relative_path, item))
                         key = basename(dirname(abs_path))
