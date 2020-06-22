@@ -6,10 +6,10 @@
 Python tools [GUI] to automatize your *build light* process on UE4 project. This tools are in dev, it's functional but only for my project, a huge refactoring are needed to work for all project.
 
 # Dependence
-This tool use Python 3.6 and work with any package, more information are 
-avaible with the *requierment.txt*. Quickly, see this list :
+This tool use Python 3 and work with any package, more information are 
+available with the *requirement.txt*. Quickly, see this list :
  - PyQt5
- - python-perforce
+ - python-perforce (needed only to use P4, and not maintain with latest release)
  - psutil
  - ifaddr
  
