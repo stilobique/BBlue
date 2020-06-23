@@ -3,3 +3,4 @@ path.py==12.4.0
 python-perforce==0.3.17
 psutil==5.7.0
 ifaddr==0.1.7
+PyInstaller

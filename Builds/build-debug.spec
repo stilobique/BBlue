@@ -3,12 +3,8 @@ import os
 
 block_cipher = None
 
-# path = os.path.dirname(os.path.realpath(%CD%))
-# print(path)
-
 a = Analysis(['../main.py'],
-             pathex=['E:\\WORKS\\Git\\Tools\\BBlue'],
-             # pathex=[path],
+             pathex=['W:\\Git\\B-Blue'],
              binaries=[],
              datas=[('../Resources/Icons/*.png', 'Resources/Icons')],
              hiddenimports=[],
@@ -29,7 +25,7 @@ exe = EXE(pyz,
           upx=True,
           console=True,
           # uac_admin=True,
-          icon='E:\\WORKS\\Git\\Tools\\BBlue\\Resources\\light-bulb-icon.ico')
+          icon='W:\\Git\\B-Blue\\Resources\\light-bulb-icon.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

@@ -6,11 +6,11 @@ pyinstaller --noconfirm ^
 rmdir /S /Q build
 
 Set ZNAME="B-Blue4.zip"
-Set ARCHIVE=%CD%"\BBlue4\"
+Set ARCHIVE=%CD%"/BBlue4/"
 
 echo %ARCHIVE%
 
-E:\Tools\7-Zip\7z.exe a %ZNAME% %ARCHIVE%
+S:\7-Zip\7z.exe a %ZNAME% %ARCHIVE%
 
 rmdir /S /Q "BBlue4"
 
@@ -23,10 +23,10 @@ pyinstaller --noconfirm ^
 rmdir /S /Q build
 
 Set ZNAME="B-Blue4-debug.zip"
-Set ARCHIVE=%CD%"\BBlue4-debug\"
+Set ARCHIVE=%CD%"/BBlue4-debug/"
 
 echo %ARCHIVE%
 
-E:\Tools\7-Zip\7z.exe a %ZNAME% %ARCHIVE%
+S:\7-Zip\7z.exe a %ZNAME% %ARCHIVE%
 
 rmdir /S /Q "BBlue4-debug"
